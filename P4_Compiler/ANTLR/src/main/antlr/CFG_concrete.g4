@@ -36,7 +36,7 @@ parameterDeclareList : (declare (',' declare)*)? ;
 
 //--------------statements--------------
 return_ : 'return' expr? ;
-declare : Type Identifier TypeModifier? ('IS' expr)? ;
+declare : AccessModifier? Type Identifier TypeModifier? ('IS' expr)? ;
 assign  :      Identifier 'IS' expr ;
 
 
@@ -46,17 +46,15 @@ select  : ifSelect
 		;
 ifSelect     : 'if' '(' expr ')'  '{' stmt* '}' ('else' stmt)? ;            //the last "statement" can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
 switchSelect : 'switch' '(' expr ')'  '{' (definedCase)* defaultCase '}' ;
-definedCase     : 'case' expr ':' stmt* 'fallthrough;'? ; //break by default
+definedCase     : 'case' expr ':' stmt* ; //always implicitly break after the statements
 defaultCase     : 'default'    ':' stmt* ;
 
 
 //----iteration----
-iterate  : forIterate
-         | foreachIterate
+iterate  : foreachIterate
          | loopIterate
          | whileIterate
          ;
-forIterate     : 'for' '(' Type? assign ';' expr ';' assign ')' '{' stmt* '}' ;
 foreachIterate : 'foreach' '(' Identifier 'in' Identifier ')' '{' stmt* '}' ;
 loopIterate    : 'loop' '(' expr ')' '{' stmt* '}' ;
 whileIterate   : 'while' '(' expr ')' '{' stmt* '}' ;
@@ -118,8 +116,8 @@ arrayLiteral : '[' (literal (',' literal)*)? ']' ;
 IntLiteral    : '0'|([1-9][0-9]*) ;               //negative numbers are expressions with unary '-'
 FloatLiteral  : ('0'|([1-9][0-9]*))'.'([0-9]+) ;  //int literals are implicitly converted to float (to avoid ambiguity)
 StringLiteral : '"'(~[\n"])*'"' ;                 //contains anything but literal newline or quote-sign, but notably can contain '\n' (as 2 characters)
-BoolLiteral : [tT]'rue'
-			| [fF]'alse'
+BoolLiteral : 'TRUE'
+			| 'FALSE'
 			;
 AngleLiteral  : ('0'|([1-9][0-9]*))('.'[0-9]+)?'deg'
 			  | ('0'|([1-9][0-9]*))('.'[0-9]+)?'rad' //radians
@@ -127,7 +125,8 @@ AngleLiteral  : ('0'|([1-9][0-9]*))('.'[0-9]+)?'deg'
 
 
 //----types----
-Type  : 'void'
+AccessModifier : 'const' ;
+Type : 'void'
 	  | 'bool'
 	  | 'int'    //actually longs
 	  | 'float'  //actually doubles
@@ -137,7 +136,6 @@ Type  : 'void'
 	  | 'line'
 	  | 'triangle'
 	  | 'square'
-	  | 'closedfigure'
 	  | 'circle'
 	  | 'angle'
 	  ;
