@@ -1,0 +1,28 @@
+//for loops n stuff
+
+
+for(int i = 0; i < 17; i++)
+{
+	//do stuff
+}
+
+
+int numbers[] IS [3, 3, 3, 4];
+foreach(x in numbers)
+{
+	//do stuff, probably with x
+}
+
+
+loop(50)
+{
+	//do stuff
+}
+
+
+continue IS true;
+while(continue)
+{
+	//do stuff
+	//update "continue" at some point
+}

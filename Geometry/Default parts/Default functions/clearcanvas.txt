@@ -1,0 +1,6 @@
+//function that clears the canvas, making it blank
+
+void clearcanvas()
+{
+	//do it
+}

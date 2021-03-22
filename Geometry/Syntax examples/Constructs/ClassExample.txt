@@ -1,0 +1,15 @@
+class figure
+{
+	figure()
+	{
+		//constructor
+	}
+
+	//other stuff
+
+}
+
+
+//maybe make a way to generate classes without really writing them
+//e.g. to make a figure type with 7 points and give it a name
+//could be named e.g. "createFigureType" 

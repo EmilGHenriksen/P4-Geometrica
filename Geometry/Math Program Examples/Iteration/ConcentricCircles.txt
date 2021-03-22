@@ -1,0 +1,11 @@
+
+//opgave: lav 20 circler med midtpunkt 0, 0 og radius 1, 2, 3, ...
+
+
+//løsning
+int i IS 1;
+loop(20){
+	circle c IS circle(point(0,0), i);
+	draw(c);
+	i IS i + 1;
+}

@@ -1,0 +1,28 @@
+
+//find a hypotenuse's length give side lengths a and b of a right-angle triangle
+//a = 5, b = 7
+
+
+//----solution----
+float a IS 5;
+float b IS 7;
+float c IS sqrt(a^2 + b^2);
+
+
+//version 1
+point p[] = [point(0,0), point(0,a), point(b,0)];
+line lines[];
+lines.add(line(p[0], p[1])); //should arrays start at 0 or 1? (currently: 0)
+lines.add(line(p[1], p[2]));
+lines.add(line(p[2], p[0]));
+
+lines[1].label IS c; //makes it draw the value of c at the line
+draw(lines);
+
+
+//version 2
+/*
+triangle output IS triangle(point(0, 0), point(0, b), point(a, 0));
+draw(output);
+draw(c); //prints the value of c in top-left (or somewhere defined)
+*/

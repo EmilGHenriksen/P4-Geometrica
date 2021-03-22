@@ -1,0 +1,87 @@
+
+//given opgave (billede også nødvendigt)
+//a: 3
+//b: 3
+//A1: 50deg
+//bredde: 9
+
+
+//-----------------løsning-----------------
+float a IS 3;
+float b IS 3;
+angle A1 IS 50deg;
+float width IS 9;
+
+//find højde for øverste grønne linje
+float hGreen IS a + sin(A1)*b;
+
+//find bredde for øverste grønne linje
+float widthTop IS width - (2*cos(A1)*b);
+
+//radius for øverste cirkel
+float rTop IS widthTop / 2;
+
+//radius for side cirklerne
+float rSide IS b / 2;
+
+
+//midtpunkter for cirklerne
+float midTopX IS width / 2;
+float midTopY IS hGreen;
+point midTop IS point(midTopX, midTopY);
+
+float leftX IS 0.5 * cos(A1) * b;
+float leftY IS a + (0.5 * sin(A1) * b);
+point left IS point(leftX, leftY);
+
+float rightX IS 9 - leftX;
+float rightY IS leftY;
+point right IS point(rightX, rightY);
+
+
+//de sidste 6 punkter (mellem linjer)
+//disse punkter er i rækkefølje fra left->right, top->bottom (ligesom tekst)
+p1 IS point(midTopX-rTop, hGreen);
+p2 IS point(midTopX+rTop, hGreen);
+p3 IS point(0, a);
+p4 IS point(width, a);
+p5 IS point(0, 0);
+p6 IS point(width, 0);
+
+
+
+//----making things to draw----
+//lines, again in reading order
+line l1 IS line(p1, p2);
+line l2 IS line(p3, p1);
+line l3 IS line(p2, p4);
+line l4 IS line(p3, p4);
+line l5 IS line(p3, p5);
+line l6 IS line(p4, p6);
+line l7 IS line(p5, p6); 
+
+//semicircles
+circle cTop IS circle(midTop, rTop, 180deg, 0deg); //3rd and 4th parameters are optional. 3rd is the amount of circle to draw, and 4th is angle offset.
+circle cLeft IS circle(left, rSide, 180deg, A1);
+circle cRight IS circle(right, rSide, 180deg, -A1);
+
+
+
+//----drawing----
+drawAll(line);
+drawAll(circle);
+
+
+/*
+draw(l1);
+draw(l2);
+draw(l3);
+draw(l4);
+draw(l5);
+draw(l6);
+draw(l7);
+
+draw(cTop);
+draw(cLeft);
+draw(cRight);
+*/

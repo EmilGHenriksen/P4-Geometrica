@@ -1,0 +1,18 @@
+//takes an array of points and connects them in order of 1st to last point
+//should it connect last to 1st again?
+	//for: makes making e.g. squares nices
+	//against: might make some things worse (e.g. making a long squiggly line)
+	//solution: make it an optional parameter
+		//same with connecting all points
+
+
+//connect all -> use connect(thing[], true, true)
+
+//connects point 1 to 2, point 2 to 3, and so on (by default)
+Line[] connect(point[] points, bool connectEndToStart = true, bool connectAll = false)   // "= false" means it's an optional parameter, and default is "false"
+{
+	//find out how to connect them (based on booleans)
+		//if it's ([], false, true) give an appropriate error
+	//make the lines
+	//return the lines
+}
