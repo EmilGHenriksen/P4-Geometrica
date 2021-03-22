@@ -32,7 +32,8 @@ stmt -> return ';'
 
 return -> 'return' expr?
 declare    -> type identifier typeModifier? ('IS' expr)?
-assign     ->      identifier 'IS' expr
+assign     ->      identifier typeModAccess  'IS' expr
+typeModAccess -> ('[' expr ']')* 
 //--------------------------------------------------------------------------------
 
 
@@ -70,7 +71,7 @@ propertyCall -> identifier '.' identifier
 
 //--------------EXPRESSIONS-------------------------------------------------------
 expr -> literal
-	  | identifier
+	  | identifier typeModAccess?
 	  | functionCall
 	  | methodCall		//example: x.func()
 	  | propertyCall    //example: x.name

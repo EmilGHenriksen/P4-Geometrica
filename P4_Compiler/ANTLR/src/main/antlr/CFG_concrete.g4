@@ -37,8 +37,8 @@ parameterDeclareList : (declare (',' declare)*)? ;
 //--------------statements--------------
 return_ : 'return' expr? ;
 declare : AccessModifier? Type Identifier TypeModifier? ('IS' expr)? ;
-assign  :      Identifier 'IS' expr ;
-
+assign  :                      Identifier typeModAccess  'IS' expr ;
+typeModAccess : ('[' expr ']')* ;
 
 //----selection----
 select  : ifSelect
@@ -84,7 +84,7 @@ powerExpr : unaryExpr ('^' unaryExpr)* ;
 unaryExpr : ('-'|'+'|'!')? atomExpr ;
 atomExpr : '(' orExpr ')'
          | literal
-         | Identifier
+         | Identifier typeModAccess?
          | functionCall
          | methodCall
          | propertyCall
