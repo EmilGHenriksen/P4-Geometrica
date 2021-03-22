@@ -1,0 +1,12 @@
+
+
+// pixel part:
+//top-left is (0, 0)
+//x axis goes to the left
+//y axis goes down
+//(like normal but mirrored horizontally)
+
+
+//inputs would have the y axis mirrored, to correspond with the normal direction for school mathematics
+//an input offset can also be set for where (0, 0) should be
+

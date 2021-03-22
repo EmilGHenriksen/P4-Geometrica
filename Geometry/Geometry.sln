@@ -1,0 +1,127 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Specification", "1-Specification", "{3999CA6C-779D-4115-978C-F28EEAF1269F}"
+	ProjectSection(SolutionItems) = preProject
+		1-Specification\ASTnodes.java = 1-Specification\ASTnodes.java
+		1-Specification\CFG-Abstract.txt = 1-Specification\CFG-Abstract.txt
+		1-Specification\CFG.txt = 1-Specification\CFG.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Default parts", "Default parts", "{79C126A7-CC24-4DD1-A2F4-776F8DDCCD4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Default classes", "Default classes", "{6E192A9F-BB34-45AF-A50E-1801CB70D9BE}"
+	ProjectSection(SolutionItems) = preProject
+		Default parts\Default classes\canvas.txt = Default parts\Default classes\canvas.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Default functions", "Default functions", "{2B4FFD75-71B8-4681-99F1-5233FE2845EB}"
+	ProjectSection(SolutionItems) = preProject
+		Default parts\Default functions\clearcanvas.txt = Default parts\Default functions\clearcanvas.txt
+		Default parts\Default functions\connect.txt = Default parts\Default functions\connect.txt
+		Default parts\Default functions\draw.txt = Default parts\Default functions\draw.txt
+		Default parts\Default functions\drawAll.txt = Default parts\Default functions\drawAll.txt
+		Default parts\Default functions\move.txt = Default parts\Default functions\move.txt
+		Default parts\Default functions\root.txt = Default parts\Default functions\root.txt
+		Default parts\Default functions\sqrt.txt = Default parts\Default functions\sqrt.txt
+		Default parts\Default functions\wait.txt = Default parts\Default functions\wait.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Default values", "Default values", "{1E85B98A-9B2F-407F-ABF3-2750BBAD7345}"
+	ProjectSection(SolutionItems) = preProject
+		Default parts\Default values\PI.txt = Default parts\Default values\PI.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "figures", "figures", "{28F58592-DDA7-4861-8D76-DBFACB942B31}"
+	ProjectSection(SolutionItems) = preProject
+		Default parts\Default classes\figures\circle.txt = Default parts\Default classes\figures\circle.txt
+		Default parts\Default classes\figures\closedfigure.txt = Default parts\Default classes\figures\closedfigure.txt
+		Default parts\Default classes\figures\line.txt = Default parts\Default classes\figures\line.txt
+		Default parts\Default classes\figures\point.txt = Default parts\Default classes\figures\point.txt
+		Default parts\Default classes\figures\square.txt = Default parts\Default classes\figures\square.txt
+		Default parts\Default classes\figures\triangle.txt = Default parts\Default classes\figures\triangle.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "angle functions", "angle functions", "{065199A6-A53E-4C38-BDE0-6FF3EB30790D}"
+	ProjectSection(SolutionItems) = preProject
+		Default parts\Default functions\angle functions\arccos.txt = Default parts\Default functions\angle functions\arccos.txt
+		Default parts\Default functions\angle functions\arcsin.txt = Default parts\Default functions\angle functions\arcsin.txt
+		Default parts\Default functions\angle functions\arctan.txt = Default parts\Default functions\angle functions\arctan.txt
+		Default parts\Default functions\angle functions\cos.txt = Default parts\Default functions\angle functions\cos.txt
+		Default parts\Default functions\angle functions\sin.txt = Default parts\Default functions\angle functions\sin.txt
+		Default parts\Default functions\angle functions\tan.txt = Default parts\Default functions\angle functions\tan.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math Program Examples", "Math Program Examples", "{D39219BC-B4C4-4E01-8795-939F918F2260}"
+	ProjectSection(SolutionItems) = preProject
+		Math Program Examples\HypotenuseLength.txt = Math Program Examples\HypotenuseLength.txt
+		Math Program Examples\mat 9.kl. (10a).png = Math Program Examples\mat 9.kl. (10a).png
+		Math Program Examples\Mat 9.kl. (10a).txt = Math Program Examples\Mat 9.kl. (10a).txt
+		Math Program Examples\Spejlvend.txt = Math Program Examples\Spejlvend.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simple drawing program examples", "Simple drawing program examples", "{5C753456-D22D-4CF5-A7DB-15DD127B0F1E}"
+	ProjectSection(SolutionItems) = preProject
+		Simple drawing program examples\DrawCircle.txt = Simple drawing program examples\DrawCircle.txt
+		Simple drawing program examples\DrawTriangle.txt = Simple drawing program examples\DrawTriangle.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Syntax examples", "Syntax examples", "{C9194FDC-9FB4-40E8-A57B-15CDB33087A3}"
+	ProjectSection(SolutionItems) = preProject
+		Syntax examples\HelloWorld.txt = Syntax examples\HelloWorld.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Constructs", "Constructs", "{FB58E46F-3595-4901-B17A-7E9BE1358540}"
+	ProjectSection(SolutionItems) = preProject
+		Syntax examples\Constructs\ClassExample.txt = Syntax examples\Constructs\ClassExample.txt
+		Syntax examples\Constructs\IternationExample.txt = Syntax examples\Constructs\IternationExample.txt
+		Syntax examples\Constructs\SelectionExamples.txt = Syntax examples\Constructs\SelectionExamples.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "function use examples", "function use examples", "{24D7C598-1C9B-4EA2-B33C-BF16DFFCD813}"
+	ProjectSection(SolutionItems) = preProject
+		Syntax examples\function use examples\power.txt = Syntax examples\function use examples\power.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Variables", "Variables", "{14069DE8-A1AF-46E0-9B4B-E4C716FA5714}"
+	ProjectSection(SolutionItems) = preProject
+		Syntax examples\Variables\AngleVariables.txt = Syntax examples\Variables\AngleVariables.txt
+		Syntax examples\Variables\ArrayExample.txt = Syntax examples\Variables\ArrayExample.txt
+		Syntax examples\Variables\Booleans.txt = Syntax examples\Variables\Booleans.txt
+		Syntax examples\Variables\SimpleVariables.txt = Syntax examples\Variables\SimpleVariables.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Iteration", "Iteration", "{ACB3D848-35C8-416C-9491-D2053FF46199}"
+	ProjectSection(SolutionItems) = preProject
+		Math Program Examples\Iteration\ConcentricCircles.txt = Math Program Examples\Iteration\ConcentricCircles.txt
+		Math Program Examples\Iteration\ConcentricSquares.txt = Math Program Examples\Iteration\ConcentricSquares.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Conditional", "Conditional", "{B3FE4CDF-F444-417A-AFDD-D05B2A8D0E2D}"
+	ProjectSection(SolutionItems) = preProject
+		Math Program Examples\Conditional\CircleSort (2 elements).txt = Math Program Examples\Conditional\CircleSort (2 elements).txt
+		Math Program Examples\Conditional\LineRow.txt = Math Program Examples\Conditional\LineRow.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6E192A9F-BB34-45AF-A50E-1801CB70D9BE} = {79C126A7-CC24-4DD1-A2F4-776F8DDCCD4A}
+		{2B4FFD75-71B8-4681-99F1-5233FE2845EB} = {79C126A7-CC24-4DD1-A2F4-776F8DDCCD4A}
+		{1E85B98A-9B2F-407F-ABF3-2750BBAD7345} = {79C126A7-CC24-4DD1-A2F4-776F8DDCCD4A}
+		{28F58592-DDA7-4861-8D76-DBFACB942B31} = {6E192A9F-BB34-45AF-A50E-1801CB70D9BE}
+		{065199A6-A53E-4C38-BDE0-6FF3EB30790D} = {2B4FFD75-71B8-4681-99F1-5233FE2845EB}
+		{FB58E46F-3595-4901-B17A-7E9BE1358540} = {C9194FDC-9FB4-40E8-A57B-15CDB33087A3}
+		{24D7C598-1C9B-4EA2-B33C-BF16DFFCD813} = {C9194FDC-9FB4-40E8-A57B-15CDB33087A3}
+		{14069DE8-A1AF-46E0-9B4B-E4C716FA5714} = {C9194FDC-9FB4-40E8-A57B-15CDB33087A3}
+		{ACB3D848-35C8-416C-9491-D2053FF46199} = {D39219BC-B4C4-4E01-8795-939F918F2260}
+		{B3FE4CDF-F444-417A-AFDD-D05B2A8D0E2D} = {D39219BC-B4C4-4E01-8795-939F918F2260}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F522AD7C-1552-452C-844F-BA05885EBFF1}
+	EndGlobalSection
+EndGlobal

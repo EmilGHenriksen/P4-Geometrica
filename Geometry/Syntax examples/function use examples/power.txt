@@ -1,0 +1,3 @@
+
+//this means 2 to the power of 31
+a = 2^31 //becomes 2 billion and something

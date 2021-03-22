@@ -1,0 +1,27 @@
+
+//opgave: lav en række af 40 linjer med afstand 1
+//linjerne skal have en længde på 5
+//undtaget hver 3. linje (nr. 3, 6, 9, ...), som skal have en længde på 10 
+
+
+//---løsning---
+
+//valg: laver linjerne start i (0,0), går mod højre (+x) og peger opad (+y)
+
+int i IS 0;
+loop(40){
+	float length;
+	if(i % 3 == 0){
+		length IS 10;
+	}
+	else{
+		length IS 5;
+	}
+
+	point p1 IS point(i, 0);
+	point p2 IS point(i, length);
+	line L IS line(p1, p2);
+	draw(L);
+
+	i IS i+1;
+}

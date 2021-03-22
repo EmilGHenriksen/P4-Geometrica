@@ -1,0 +1,16 @@
+//functions that prints things to canvas
+//these things include:
+	//points
+	//lines
+	//triangles, squares, ...
+	//closedfigures
+
+//important note: when printing "triangles" or similar figures, it prints both the points and the lines associated
+//misc note: maybe rename to "show" instead of "print"
+
+
+void draw()
+{
+	//print the thing to canvas
+}
+//alternative versions of print(), with differing parameters

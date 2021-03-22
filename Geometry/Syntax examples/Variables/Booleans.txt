@@ -1,0 +1,34 @@
+bool somethingTrue = true;
+bool somethingFalse = false;
+
+
+//old version
+int a = 2;
+int b = 1;
+bool isZero = a EQUALS 0;  
+bool notZero = a !EQUALS 0;   
+
+
+//new version
+int a IS 2;
+int b IS 1;
+bool isZero IS a == 0;
+bool notZero IS a != 0; //idk
+
+//maybe find a better solution
+
+
+
+bool aGreaterThanb = a > b;
+//other similar operators: <, >=, <=
+//other potential similar operators: !<, !>, !<=, !>=  //probaly don't implement these, since they could just increase confusion, although easy to implement
+
+
+//demonstration of some logic
+bool impossible = isZero AND notZero;  //a && !a
+bool alwaysTrue = isZero OR notZero;   //a || !a
+
+//other similar operators: XOR, XNOR
+//unary boolean operators: ! 
+
+//no bitwise operations, since it doesn't fit the goal

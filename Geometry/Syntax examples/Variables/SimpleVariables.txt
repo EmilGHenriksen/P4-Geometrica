@@ -1,0 +1,37 @@
+//variables that can't be represented visually
+
+const int x IS 1;
+int y IS 2;
+
+
+
+//variables that can be visual -- maybe make 3D points an option
+
+//can this be nicer?
+point a = new point(x, y);
+point b = new point(y, x);
+line Line1 = new line(a, b);   //makes a line from a to b
+//maybe nicer
+point a = point(x, y);
+point b = point(y, x);
+line Line1 = line(a, b);   //makes a line from a to b
+
+
+point c = point(3, 3);  //maybe remove "new"
+point d = point(4, 4.5);
+triangle abc = triangle([a, b, c]);
+abc = triangle(a, b, c); //alternative, also applies for squares and closedfigures
+square s1 = square([a, b, c, d]);
+
+
+point e = point(2.73, 5);
+point f = point(5, -6);
+closedfigure figure3 = closedfigure([a, b, c, d, e, f]); //everything after "square"
+
+
+
+
+//circle stuff
+circle c1 = circle(point(0, 0), 2.5)  //center and radius
+c1.radius = 3;
+c1.move(1, 0); //moves it 1 to the right

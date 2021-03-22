@@ -1,0 +1,33 @@
+//if, switch, similar stuff
+
+int x = 1;
+int y = 2;
+
+if(x == y)
+{
+	//wow they're equal !!!
+}
+else if(x < y)
+{
+	//it's less
+}
+else
+{
+	//it's greater than
+}
+
+
+
+int a = 374;
+switch(a)
+{
+	case 0: //it's 0!
+	case 1: //it's 1!
+			int b = 7;
+			continue;        //"continue" makes it go into the next, to replace "break" making it NOT go into the next. In compilation, this might simply make it "the other way around".
+	case 2: //it's 1 or 2
+	case 3: //it's 3!
+	//...
+	case 375: //comngratltluglatjions! you've'me wun!
+	default: //idk
+}

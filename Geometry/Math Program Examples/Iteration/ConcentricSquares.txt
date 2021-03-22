@@ -1,0 +1,29 @@
+
+//opgave: lav 20 firkanter
+//hver med centrum 0,0
+//bredde 2, 4, 6, ...
+//rotation 0, 5, 10, 15deg, ...
+
+
+
+//---solution---
+
+//make squares without rotation
+square S[];
+for(int i = 1; i<20; i IS i+1){
+	p1 IS point(-i, i);
+	p2 IS point(i, i);
+	p3 IS point(-i, -i);
+	p4 IS point(i, -i);
+	S[i] IS square(p1, p2, p3, p4);
+}
+
+//rotate them
+for(int i = 1; i<20, i IS i+1){
+	S[i].rotate(5deg*(i-1));    //i-1 since the 1st element should be rotated by 0deg
+}
+
+//draw them
+foreach(s in S){
+	draw(s);
+}
