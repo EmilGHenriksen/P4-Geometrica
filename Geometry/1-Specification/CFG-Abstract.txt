@@ -48,11 +48,9 @@ defaultCase     -> 'default'    ':' stmt*
 
 
 //--------------ITERATION---------------------------------------------------------
-iterate -> forIterate
-         | foreachIterate
+iterate ->  foreachIterate
          | loopIterate
          | whileIterate
-forIterate     -> 'for' '(' type? assign ';' expr ';' assign ')' '{' stmt* '}'
 foreachIterate -> 'foreach' '(' identifier 'in' identifier ')' '{' stmt* '}'
 loopIterate    -> 'loop' '(' expr ')' '{' stmt* '}'
 whileIterate   -> 'while' '(' expr ')' '{' stmt* '}'
