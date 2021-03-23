@@ -23,9 +23,8 @@ stmt  : return_ ';'
 	  | assign ';'
 	  | select
 	  | iterate
-	  | functionCall ';'
-	  | methodCall ';'    //example:  a.move(...)
 	  | '{' stmt* '}'
+	  | expr ';'
 	  ;
 
 
@@ -37,8 +36,8 @@ parameterDeclareList : (declare (',' declare)*)? ;
 //--------------statements--------------
 return_ : 'return' expr? ;
 declare : AccessModifier? Type Identifier TypeModifier? ('IS' expr)? ;
-assign  :                      Identifier typeModAccess  'IS' expr ;
-typeModAccess : ('[' expr ']')* ;
+assign  :                      Identifier typeModAccess?  'IS' expr ;
+typeModAccess : ('[' expr ']')+ ;
 
 //----selection----
 select  : ifSelect
@@ -88,7 +87,6 @@ atomExpr : '(' orExpr ')'
          | functionCall
          | methodCall
          | propertyCall
-         | assign
          ;
 
 
