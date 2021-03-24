@@ -1,4 +1,5 @@
-package gen;// Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
+package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
+import AST.InvalidNodeException;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -14,7 +15,13 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitProgram(CFG_concreteParser.ProgramContext ctx);
+	T visitProgram(CFG_concreteParser.ProgramContext ctx) throws InvalidNodeException;
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#content}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitContent(CFG_concreteParser.ContentContext ctx) throws InvalidNodeException;
 	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#stmt}.
 	 * @param ctx the parse tree
@@ -51,6 +58,12 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssign(CFG_concreteParser.AssignContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#typeModAccess}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#select}.
 	 * @param ctx the parse tree

@@ -1,4 +1,4 @@
-package gen;// Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
+package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -16,6 +16,16 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProgram(CFG_concreteParser.ProgramContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#content}.
+	 * @param ctx the parse tree
+	 */
+	void enterContent(CFG_concreteParser.ContentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#content}.
+	 * @param ctx the parse tree
+	 */
+	void exitContent(CFG_concreteParser.ContentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#stmt}.
 	 * @param ctx the parse tree
@@ -76,6 +86,16 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssign(CFG_concreteParser.AssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#typeModAccess}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#typeModAccess}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#select}.
 	 * @param ctx the parse tree

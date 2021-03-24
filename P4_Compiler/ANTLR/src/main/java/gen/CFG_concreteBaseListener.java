@@ -1,4 +1,4 @@
-package gen;// Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
+package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -22,6 +22,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitProgram(CFG_concreteParser.ProgramContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterContent(CFG_concreteParser.ContentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitContent(CFG_concreteParser.ContentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -94,6 +106,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssign(CFG_concreteParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

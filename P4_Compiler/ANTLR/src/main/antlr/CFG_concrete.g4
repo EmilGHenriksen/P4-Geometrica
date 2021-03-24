@@ -17,7 +17,8 @@ the CFG is made with EBNF using this notation:
 
 
 
-program : (stmt | function)* EOF;
+program : content EOF;
+content : (stmt | function)+ ;
 stmt  : return_ ';'
 	  | declare ';'
 	  | assign ';'

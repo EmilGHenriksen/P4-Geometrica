@@ -2,12 +2,18 @@ package AST;
 
 import java.util.List;
 
-class ProgramNode {
+abstract class Node{}
+
+class ProgramNode extends Node {
+    public ContentNode content;
+}
+
+class ContentNode extends Node {
     public List<StmtNode> stmtNodes;
     public List<FunctionNode> functionNodes;
 }
 
-class FunctionNode {
+class FunctionNode extends Node {
     TypeNode type;
     IdentifierNode id;
     List<DeclareStmtNode> parameters;
@@ -16,7 +22,7 @@ class FunctionNode {
 
 
 //------------statements--------------
-abstract class StmtNode {
+abstract class StmtNode extends Node {
 }
 
 class ReturnStmtNode extends StmtNode {
@@ -44,13 +50,13 @@ class SwitchNode extends StmtNode {
     List<DefinedCaseNode> cases;
     DefaultCaseNode defaultCase;
 }
-class DefinedCaseNode {
+class DefinedCaseNode extends Node {
     ExprNode value;
     List<StmtNode> stmtNodes;
     boolean fallthrough;
 }
 
-class DefaultCaseNode {
+class DefaultCaseNode extends Node {
     List<StmtNode> stmtNodes;
 }
 
@@ -112,7 +118,7 @@ class ArrayLiteralNode extends LiteralNode{
     List<LiteralNode> elements;
 }
 
-class IdentifierNode{
+class IdentifierNode extends Node {
     String id;
 }
 
@@ -211,20 +217,20 @@ class OrNode extends BinaryExprNode{
 
 }
 
-class TypeNode {
-    AccessModiferNode modifer;
+class TypeNode extends Node {
+    AccessModifierNode modifer;
     SimpleTypeNode type;
 }
 
-abstract class AccessModiferNode {
+abstract class AccessModifierNode extends Node {
 
 }
 
-class ConstAccessModifierNode extends AccessModiferNode{
+class ConstAccessModifierNode extends AccessModifierNode{
 
 }
 
-abstract class SimpleTypeNode {
+abstract class SimpleTypeNode extends Node {
 
 }
 
@@ -272,7 +278,7 @@ class AngleTypeNode extends SimpleTypeNode {
 
 }
 
-abstract class TypeModifierNode {
+abstract class TypeModifierNode extends Node {
 
 }
 
