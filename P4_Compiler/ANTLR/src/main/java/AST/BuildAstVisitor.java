@@ -34,18 +34,15 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public FunctionNode visitFunction(CFG_concreteParser.FunctionContext context) {
         FunctionNode function = new FunctionNode();
-
         function.type = Visit(context.Type());
         function.id = Visit(context.Identifier());
         function.parameters = Visit(context.parameterDeclareList());
-        List<StmtNode> Statements = new ArrayList<StmtNode>();
-        for(int i = 3; i < context.children.size(); i++) {
-            Statements.add(Visit(context.stmt()));
-        }
-        function.stmtNodes = Statements;
-
+        function.stmtNodes = Visit(context.stmtList());
         return function;
     }
-    
+    @Override
+    public ReturnStmtNode visitStmtNode(CFG_concreteParser.Return_Context context) {
+
+    }
 }
 

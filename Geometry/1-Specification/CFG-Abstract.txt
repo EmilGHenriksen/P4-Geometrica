@@ -27,8 +27,10 @@ stmt -> return ';'
 	  | assign ';'
 	  | select
 	  | iterate
-	  | '{' stmt* '}'
+	  | '{' stmtList '}'
 	  | expr ';'
+
+stmtList -> stmt*
 
 return -> 'return' expr?
 declare    -> type typeModifier? identifier ('IS' expr)?
@@ -40,10 +42,10 @@ typeModAccess -> ('[' expr ']')*
 //--------------SELECTION---------------------------------------------------------
 select -> ifSelect
 		| switchSelect
-ifSelect     -> 'if' '(' expr ')'  '{' stmt* '}' ('else' stmt)?
+ifSelect     -> 'if' '(' expr ')'  '{' stmtList '}' ('else' stmt)?
 switchSelect -> 'switch' '(' expr ')'  '{' (definedCase)* defaultCase '}'
-definedCase     -> 'case' expr ':' stmt*
-defaultCase     -> 'default'    ':' stmt*
+definedCase     -> 'case' expr ':' stmtList
+defaultCase     -> 'default'    ':' stmtList
 //--------------------------------------------------------------------------------
 // the last "statement" in ifSelect can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
 
@@ -52,14 +54,14 @@ defaultCase     -> 'default'    ':' stmt*
 iterate ->  foreachIterate
          | loopIterate
          | whileIterate
-foreachIterate -> 'foreach' '(' identifier 'in' identifier ')' '{' stmt* '}'
-loopIterate    -> 'loop' '(' expr ')' '{' stmt* '}'
-whileIterate   -> 'while' '(' expr ')' '{' stmt* '}'
+foreachIterate -> 'foreach' '(' identifier 'in' identifier ')' '{' stmtList '}'
+loopIterate    -> 'loop' '(' expr ')' '{' stmtList '}'
+whileIterate   -> 'while' '(' expr ')' '{' stmtList '}'
 //--------------------------------------------------------------------------------
 
 
 //--------------CALLS-------------------------------------------------------------
-function      -> type typeModifier? identifier '(' parameterDeclareList ')' '{' stmt* '}'
+function      -> type typeModifier? identifier '(' parameterDeclareList ')' '{' stmtList '}'
 functionCall       ->               identifier '(' parameterValueList ')'
 parameterDeclareList -> (declare (',' declare)*)?
 parameterValueList   -> (expr (',' expr)*)?

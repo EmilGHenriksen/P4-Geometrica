@@ -24,15 +24,16 @@ stmt  : return_ ';'
 	  | assign ';'
 	  | select
 	  | iterate
-	  | '{' stmt* '}'
+	  | '{' stmtList '}'
 	  | expr ';'
 	  ;
 
 
 
 
-function      : Type TypeModifier? Identifier '(' parameterDeclareList ')' '{' stmt* '}' ;
+function      : Type TypeModifier? Identifier '(' parameterDeclareList ')' '{' stmtList '}' ;
 parameterDeclareList : (declare (',' declare)*)? ;
+stmtList : stmt* ;
 
 //--------------statements--------------
 return_ : 'return' expr? ;
@@ -44,10 +45,10 @@ typeModAccess : ('[' expr ']')+ ;
 select  : ifSelect
 		| switchSelect
 		;
-ifSelect     : 'if' '(' expr ')'  '{' stmt* '}' ('else' stmt)? ;            //the last "statement" can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
+ifSelect     : 'if' '(' expr ')'  '{' stmtList '}' ('else' stmt)? ;            //the last "statement" can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
 switchSelect : 'switch' '(' expr ')'  '{' (definedCase)* defaultCase '}' ;
-definedCase     : 'case' expr ':' stmt* ; //always implicitly break after the statements
-defaultCase     : 'default'    ':' stmt* ;
+definedCase     : 'case' expr ':' stmtList ; //always implicitly break after the statements
+defaultCase     : 'default'    ':' stmtList ;
 
 
 //----iteration----
@@ -55,9 +56,9 @@ iterate  : foreachIterate
          | loopIterate
          | whileIterate
          ;
-foreachIterate : 'foreach' '(' Identifier 'in' Identifier ')' '{' stmt* '}' ;
-loopIterate    : 'loop' '(' expr ')' '{' stmt* '}' ;
-whileIterate   : 'while' '(' expr ')' '{' stmt* '}' ;
+foreachIterate : 'foreach' '(' Identifier 'in' Identifier ')' '{' stmtList '}' ;
+loopIterate    : 'loop' '(' expr ')' '{' stmtList '}' ;
+whileIterate   : 'while' '(' expr ')' '{' stmtList '}' ;
 
 
 //----calls----
