@@ -44,12 +44,19 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public DeclareStmtListNode visitParameterDeclareList(CFG_concreteParser.ParameterDeclareListContext context) {
         DeclareStmtListNode dcls = new DeclareStmtListNode();
         for(int i = 0 ; i < context.children.size() ; i++) {
-            dcls.declarations.add(Visit(context.declare()));
+            dcls.declarations.add(Visit(context.getChild(i))); // maybe an alternative: Visit(context.declare())
         }
         return dcls;
     }
 
-
+    @Override
+    public StmtListNode visitStmtList(CFG_concreteParser.StmtListContext context) {
+        StmtListNode stmtListNode = new StmtListNode();
+        for (int i = 0 ; i < context.children.size() ; i++) {
+            stmtListNode.statements.add(Visit(context.getChild(i)));
+        }
+        return stmtListNode;
+    }
 
     @Override
     public ReturnStmtNode visitReturn_(CFG_concreteParser.Return_Context context) {
@@ -99,6 +106,69 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             caseList.cases.add(Visit(context.definedCase()));
         }
         return caseList;
+    }
+    @Override
+    public DefinedCaseNode visitDefinedCase(CFG_concreteParser.DefinedCaseContext context){
+        DefinedCaseNode definedCaseNode = new DefinedCaseNode();
+        definedCaseNode.value = Visit(context.expr());
+        definedCaseNode.stmtNodes = Visit(context.stmtList());
+        return definedCaseNode;
+    }
+    @Override
+    public DefaultCaseNode visitDefaultCase(CFG_concreteParser.DefaultCaseContext context){
+        DefaultCaseNode defaultCaseNode = new DefaultCaseNode();
+        defaultCaseNode.stmtNodes = Visit(context.stmtList());
+        return defaultCaseNode;
+    }
+    @Override
+    public ForeachNode visitForeachIterate(CFG_concreteParser.ForeachIterateContext context){
+        ForeachNode foreachNode = new ForeachNode();
+        foreachNode.elementID = Visit(context.Identifier(0));
+        foreachNode.collectionID = Visit(context.Identifier(1));
+        foreachNode.stmtNodes = Visit(context.stmtList());
+        return foreachNode;
+    }
+    @Override
+    public LoopNode visitLoopIterate(CFG_concreteParser.LoopIterateContext context){
+        LoopNode loopNode = new LoopNode();
+        loopNode.loopcount = Visit(context.expr());
+        loopNode.stmtNodes = Visit(context.stmtList());
+        return loopNode;
+    }
+    @Override
+    public WhileNode visitWhileIterate(CFG_concreteParser.WhileIterateContext context){
+        WhileNode whileNode = new WhileNode();
+        whileNode.conditionExpression = Visit(context.expr());
+        whileNode.stmtNodes = Visit(context.stmtList());
+        return whileNode;
+    }
+    @Override
+    public LiteralNode visitLiteral(CFG_concreteParser.LiteralContext context){
+        LiteralNode literalNode = Visit(context.children);
+
+        if(literalNode instanceof IntLiteralNode){
+
+        }
+        else if(literalNode instanceof FloatLiteralNode){
+
+        }
+        else if(literalNode instanceof PiLiteralNode){
+
+        }
+        else if(literalNode instanceof StringLiteralNode){
+
+        }
+        else if(literalNode instanceof BoolLiteralNode){
+
+        }
+        else if(literalNode instanceof AngleLiteralNode){
+
+        }
+
+        else if(literalNode instanceof ArrayLiteralNode){
+
+        }
+        return literalNode;
     }
 }
 

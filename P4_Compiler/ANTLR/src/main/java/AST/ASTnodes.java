@@ -70,13 +70,7 @@ class DefaultCaseNode extends Node {
 }
 
 //----iteration----
-class ForNode extends StmtNode {
-    TypeNode controlType;
-    AssignNode controlAssign;
-    ExprNode conditionExpression;
-    AssignNode updateAssign;
-    StmtListNode stmtNodes;
-}
+
 class ForeachNode extends StmtNode {
     IdentifierNode elementID;
     IdentifierNode collectionID;
@@ -96,7 +90,6 @@ abstract class ExprNode extends StmtNode{
 }
 
 abstract class LiteralNode extends ExprNode {
-
 }
 
 class IntLiteralNode extends LiteralNode{
