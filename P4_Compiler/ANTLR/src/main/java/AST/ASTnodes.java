@@ -30,8 +30,8 @@ class ReturnStmtNode extends StmtNode {
 }
 class DeclareStmtNode extends StmtNode {
     TypeNode type;
-    IdentifierNode id;
     TypeModifierNode modifier;
+    IdentifierNode id;
     ExprNode value;
 }
 class AssignNode extends StmtNode {

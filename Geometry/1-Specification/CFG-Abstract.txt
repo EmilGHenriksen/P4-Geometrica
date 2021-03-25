@@ -33,8 +33,8 @@ stmt -> return ';'
 stmtList -> stmt*
 
 return -> 'return' expr?
-declare    -> type typeModifier? identifier ('IS' expr)?
-assign     ->      identifier typeModAccess  'IS' expr
+declare    -> AccessModifier? type typeModifier? identifier ('IS' expr)?
+assign     ->           identifier typeModAccess  'IS' expr
 typeModAccess -> ('[' expr ']')* 
 //--------------------------------------------------------------------------------
 
@@ -118,20 +118,19 @@ angleLiteral  -> "(0|([1-9][0-9]*))([.][0-9]+)?deg"
 
 
 //--------------TYPES-------------------------------------------------------------
-type -> accessModifier? simpleType
-accessModifier -> 'const'
-simpleType -> 'void'
-			| 'bool'
-			| 'int'    //actually longs
-			| 'float'  //actually doubles
-			| 'string' //char is single-letter string
-			//figures below here
-			| 'point'
-			| 'line'
-			| 'triangle'
-			| 'square'
-			| 'circle'
-			| 'angle'
+AccessModifier : 'const' ;
+type -> 'void'
+	  | 'bool'
+	  | 'int'    //actually longs
+	  | 'float'  //actually doubles
+	  | 'string' //char is single-letter string
+	  //figures below here
+	  | 'point'
+	  | 'line'
+	  | 'triangle'
+	  | 'square'
+	  | 'circle'
+	  | 'angle'
 typeModifier -> '[]'*
 //--------------------------------------------------------------------------------
 
