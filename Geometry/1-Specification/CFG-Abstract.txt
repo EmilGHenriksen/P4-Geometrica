@@ -31,7 +31,7 @@ stmt -> return ';'
 	  | expr ';'
 
 return -> 'return' expr?
-declare    -> type identifier typeModifier? ('IS' expr)?
+declare    -> type typeModifier? identifier ('IS' expr)?
 assign     ->      identifier typeModAccess  'IS' expr
 typeModAccess -> ('[' expr ']')* 
 //--------------------------------------------------------------------------------
@@ -59,8 +59,8 @@ whileIterate   -> 'while' '(' expr ')' '{' stmt* '}'
 
 
 //--------------CALLS-------------------------------------------------------------
-function      -> type identifier '(' parameterDeclareList ')' '{' stmt* '}'
-functionCall       -> identifier '(' parameterValueList ')'
+function      -> type typeModifier? identifier '(' parameterDeclareList ')' '{' stmt* '}'
+functionCall       ->               identifier '(' parameterValueList ')'
 parameterDeclareList -> (declare (',' declare)*)?
 parameterValueList   -> (expr (',' expr)*)?
 
