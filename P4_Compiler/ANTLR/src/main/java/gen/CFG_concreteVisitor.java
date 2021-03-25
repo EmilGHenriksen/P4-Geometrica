@@ -88,6 +88,12 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSwitchSelect(CFG_concreteParser.SwitchSelectContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#definedCaseList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDefinedCaseList(CFG_concreteParser.DefinedCaseListContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#definedCase}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -137,6 +137,16 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 */
 	void exitSwitchSelect(CFG_concreteParser.SwitchSelectContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#definedCaseList}.
+	 * @param ctx the parse tree
+	 */
+	void enterDefinedCaseList(CFG_concreteParser.DefinedCaseListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#definedCaseList}.
+	 * @param ctx the parse tree
+	 */
+	void exitDefinedCaseList(CFG_concreteParser.DefinedCaseListContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#definedCase}.
 	 * @param ctx the parse tree
 	 */

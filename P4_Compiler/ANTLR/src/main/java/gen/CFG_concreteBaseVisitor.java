@@ -107,6 +107,13 @@ public class CFG_concreteBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitDefinedCaseList(CFG_concreteParser.DefinedCaseListContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitDefinedCase(CFG_concreteParser.DefinedCaseContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

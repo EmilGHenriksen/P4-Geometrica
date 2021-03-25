@@ -16,8 +16,14 @@ class ContentNode extends Node {
 class FunctionNode extends Node {
     TypeNode type;
     IdentifierNode id;
-    List<DeclareStmtNode> parameters;
-    List<StmtNode> stmtNodes;
+    DeclareStmtListNode parameters;
+    StmtListNode stmtFuncNodes;
+}
+class DeclareStmtListNode extends Node {
+    List<DeclareStmtNode> declarations;
+}
+class StmtListNode extends Node {
+    List<StmtNode> statements;
 }
 
 
@@ -43,22 +49,24 @@ class AssignNode extends StmtNode {
 //----selection----
 class IfNode extends StmtNode {
     ExprNode value;
-    List<StmtNode> ifStmtNodes;
-    List<StmtNode> elseStmtNodes;
+    StmtListNode ifStmtNodes;
+    StmtNode elseStmtNode;
 }
 class SwitchNode extends StmtNode {
     ExprNode value;
-    List<DefinedCaseNode> cases;
+    DefinedCaseListNode cases;
     DefaultCaseNode defaultCase;
+}
+class DefinedCaseListNode extends Node {
+    List<DefinedCaseNode> cases;
 }
 class DefinedCaseNode extends Node {
     ExprNode value;
-    List<StmtNode> stmtNodes;
-    boolean fallthrough;
+    StmtListNode stmtNodes;
 }
 
 class DefaultCaseNode extends Node {
-    List<StmtNode> stmtNodes;
+    StmtListNode stmtNodes;
 }
 
 //----iteration----
@@ -67,16 +75,16 @@ class ForNode extends StmtNode {
     AssignNode controlAssign;
     ExprNode conditionExpression;
     AssignNode updateAssign;
-    List<StmtNode> stmtNodes;
+    StmtListNode stmtNodes;
 }
 class ForeachNode extends StmtNode {
     IdentifierNode elementID;
     IdentifierNode collectionID;
-    List<StmtNode> stmtNodes;
+    StmtListNode stmtNodes;
 }
 class LoopNode extends StmtNode {
     ExprNode loopcount;
-    List<StmtNode> stmtNodes;
+    StmtListNode stmtNodes;
 }
 class WhileNode extends StmtNode {
     ExprNode conditionExpression;

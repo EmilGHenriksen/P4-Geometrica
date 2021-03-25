@@ -171,6 +171,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDefinedCaseList(CFG_concreteParser.DefinedCaseListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDefinedCaseList(CFG_concreteParser.DefinedCaseListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDefinedCase(CFG_concreteParser.DefinedCaseContext ctx) { }
 	/**
 	 * {@inheritDoc}

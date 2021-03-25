@@ -46,7 +46,8 @@ select  : ifSelect
 		| switchSelect
 		;
 ifSelect     : 'if' '(' expr ')'  '{' stmtList '}' ('else' stmt)? ;            //the last "statement" can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
-switchSelect : 'switch' '(' expr ')'  '{' (definedCase)* defaultCase '}' ;
+switchSelect : 'switch' '(' expr ')'  '{' definedCaseList defaultCase '}' ;
+definedCaseList : definedCase* ;
 definedCase     : 'case' expr ':' stmtList ; //always implicitly break after the statements
 defaultCase     : 'default'    ':' stmtList ;
 
