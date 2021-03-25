@@ -31,12 +31,12 @@ stmt  : return_ ';'
 
 
 
-function      : Type Identifier '(' parameterDeclareList ')' '{' stmt* '}' ;
+function      : Type TypeModifier? Identifier '(' parameterDeclareList ')' '{' stmt* '}' ;
 parameterDeclareList : (declare (',' declare)*)? ;
 
 //--------------statements--------------
 return_ : 'return' expr? ;
-declare : AccessModifier? Type Identifier TypeModifier? ('IS' expr)? ;
+declare : AccessModifier? Type TypeModifier? Identifier ('IS' expr)? ;
 assign  :                      Identifier typeModAccess?  'IS' expr ;
 typeModAccess : ('[' expr ']')+ ;
 
