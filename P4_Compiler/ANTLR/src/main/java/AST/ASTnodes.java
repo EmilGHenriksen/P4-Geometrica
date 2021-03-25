@@ -29,8 +29,9 @@ class ReturnStmtNode extends StmtNode {
     ExprNode value;
 }
 class DeclareStmtNode extends StmtNode {
+    AccessModifierNode accessModifier;
     TypeNode type;
-    TypeModifierNode modifier;
+    TypeModifierNode typeModifier;
     IdentifierNode id;
     ExprNode value;
 }
@@ -218,7 +219,6 @@ class OrNode extends BinaryExprNode{
 }
 
 class TypeNode extends Node {
-    AccessModifierNode modifer;
     SimpleTypeNode type;
 }
 
