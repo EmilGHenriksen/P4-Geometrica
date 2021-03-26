@@ -1,4 +1,4 @@
-package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
+package gen;// Generated from C:/Users/HrGaj/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -214,6 +214,12 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAtomExpr(CFG_concreteParser.AtomExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#parenthesisedExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -225,4 +231,10 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArrayLiteral(CFG_concreteParser.ArrayLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#identifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(CFG_concreteParser.IdentifierContext ctx);
 }

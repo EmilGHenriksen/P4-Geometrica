@@ -14,7 +14,8 @@ class ContentNode extends Node {
 }
 
 class FunctionNode extends Node {
-    TypeNode type;
+    String type;
+    String typeModifier;
     IdentifierNode id;
     DeclareStmtListNode parameters;
     StmtListNode stmtFuncNodes;
@@ -35,9 +36,9 @@ class ReturnStmtNode extends StmtNode {
     ExprNode value;
 }
 class DeclareStmtNode extends StmtNode {
-    AccessModifierNode accessModifier;
-    TypeNode type;
-    TypeModifierNode typeModifier;
+    String accessModifier;
+    String type;
+    String typeModifier;
     IdentifierNode id;
     ExprNode value;
 }
@@ -217,72 +218,4 @@ class AndNode extends BinaryExprNode{
 
 class OrNode extends BinaryExprNode{
 
-}
-
-class TypeNode extends Node {
-    SimpleTypeNode type;
-}
-
-abstract class AccessModifierNode extends Node {
-
-}
-
-class ConstAccessModifierNode extends AccessModifierNode{
-
-}
-
-abstract class SimpleTypeNode extends Node {
-
-}
-
-class VoidTypeNode extends SimpleTypeNode {
-
-}
-
-class BoolTypeNode extends SimpleTypeNode {
-
-}
-
-class IntTypeNode extends SimpleTypeNode {
-
-}
-
-class FloatTypeNode extends SimpleTypeNode {
-
-}
-
-class StringTypeNode extends SimpleTypeNode {
-
-}
-
-class PointTypeNode extends SimpleTypeNode {
-
-}
-
-class LineTypeNode extends SimpleTypeNode {
-
-}
-
-class TriangleTypeNode extends SimpleTypeNode {
-
-}
-
-class SquareTypeNode extends SimpleTypeNode {
-
-}
-
-class CircleTypeNode extends SimpleTypeNode {
-
-}
-
-class AngleTypeNode extends SimpleTypeNode {
-
-}
-
-abstract class TypeModifierNode extends Node {
-
-}
-
-class ArrayModifierNode extends TypeModifierNode {
-    int dimensions;
 }
