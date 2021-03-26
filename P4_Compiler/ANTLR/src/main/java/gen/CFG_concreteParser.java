@@ -2,8 +2,11 @@ package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_C
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CFG_concreteParser extends Parser {
@@ -135,9 +138,7 @@ public class CFG_concreteParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CFG_concreteVisitor ) {
-				return ((CFG_concreteVisitor<? extends T>)visitor).visitProgram(this);
-			}
+			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitProgram(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -192,9 +193,7 @@ public class CFG_concreteParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CFG_concreteVisitor ) {
-				return ((CFG_concreteVisitor<? extends T>)visitor).visitContent(this);
-			}
+			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitContent(this);
 			else return visitor.visitChildren(this);
 		}
 	}

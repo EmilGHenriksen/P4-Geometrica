@@ -1,5 +1,6 @@
 package AST;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class ProgramNode extends Node {
@@ -9,6 +10,10 @@ class ProgramNode extends Node {
 class ContentNode extends Node {
     public List<StmtNode> stmtNodes;
     public List<FunctionNode> functionNodes;
+    public ContentNode(){
+        stmtNodes = new ArrayList<StmtNode>();
+        functionNodes = new ArrayList<FunctionNode>();
+    }
 }
 
 class FunctionNode extends Node {
@@ -20,9 +25,15 @@ class FunctionNode extends Node {
 }
 class DeclareStmtListNode extends Node {
     List<DeclareStmtNode> declarations;
+    public DeclareStmtListNode(){
+        declarations = new ArrayList<DeclareStmtNode>();
+    }
 }
 class StmtListNode extends Node {
     List<StmtNode> statements;
+    public StmtListNode(){
+        statements = new ArrayList<StmtNode>();
+    }
 }
 
 
@@ -82,6 +93,9 @@ class LoopNode extends StmtNode {
 class WhileNode extends StmtNode {
     ExprNode conditionExpression;
     List<StmtNode> stmtNodes;
+    public WhileNode(){
+        stmtNodes = new ArrayList<StmtNode>();
+    }
 }
 
 //----------------expressions-----------------
@@ -117,6 +131,9 @@ class AngleLiteralNode extends LiteralNode{
 
 class ArrayLiteralNode extends LiteralNode{
     List<LiteralNode> elements;
+    public ArrayLiteralNode(){
+        elements = new ArrayList<LiteralNode>();
+    }
 }
 
 class IdentifierNode extends Node {
@@ -126,11 +143,17 @@ class IdentifierNode extends Node {
 class FunctionCallNode extends ExprNode {
     IdentifierNode id;
     List<ExprNode> parameters;
+    public FunctionCallNode(){
+        parameters = new ArrayList<ExprNode>();
+    }
 }
 class MethodCallNode extends ExprNode {
     IdentifierNode valueID;
     IdentifierNode methodID;
     List<ExprNode> parameters;
+    public MethodCallNode(){
+        parameters = new ArrayList<ExprNode>();
+    }
 }
 class PropertyCallNode extends ExprNode {
     IdentifierNode valueID;

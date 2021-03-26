@@ -14,8 +14,6 @@ import java.io.*;
 public class Program
 {
     public static void main(String[] args) {
-        System.out.print("> ");
-
         CharStream inputStream = null;
         try {
             inputStream = CharStreams.fromFileName("C:\\Users\\Anders\\Documents\\GitHub\\p4_compiler\\P4_Compiler\\ANTLR\\src\\main\\java\\test.txt");
@@ -28,20 +26,14 @@ public class Program
 
         try
         {
-            ParseTree t = parser.program();
-            ParseTreePattern p = parser.compileParseTreePattern("<ID>+0", CFG_concreteParser.RULE_identifier);
-            ParseTreeMatch m = p.match(t);
-
-            Node ast = new BuildAstVisitor().visit(t);
-
-            //var value = new EvaluateExpressionVisitor().Visit(ast);
-            //Console.WriteLine("= {0}", value);
+            var cst = parser.program();
+            var ast = new BuildAstVisitor().visitProgram(cst);
+            System.out.println(ast);
         }
         catch (Exception ex)
         {
             System.out.print(ex.toString());
         }
 
-        //Console.WriteLine();
     }
 }

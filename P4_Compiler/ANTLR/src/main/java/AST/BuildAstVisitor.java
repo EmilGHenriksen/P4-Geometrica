@@ -18,10 +18,10 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public ContentNode visitContent(CFG_concreteParser.ContentContext context) {
         ContentNode content = new ContentNode();
         for (int i = 0; i < context.children.size() ;i++) {
-            if (context.children.get(i) == context.function()) {
-                content.functionNodes.add((FunctionNode) visit((ParseTree) context.function()));
-            } else if (context.children.get(i) == context.stmt()) {
-                content.stmtNodes.add((StmtNode) visit((ParseTree) context.stmt()));
+            if (context.children.get(i) instanceof CFG_concreteParser.FunctionContext) {
+                content.functionNodes.add((FunctionNode) visit(context.function(0)));
+            } else if (context.children.get(i) instanceof CFG_concreteParser.StmtContext) {
+                content.stmtNodes.add((StmtNode) visit(context.stmt(0)));
             }
         }
         return content;
@@ -30,7 +30,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public FunctionNode visitFunction(CFG_concreteParser.FunctionContext context) {
         FunctionNode function = new FunctionNode();
         function.type = context.Type().getText();
-        function.typeModifier = context.TypeModifier().getText();
+        if(context.TypeModifier() != null) {
+            function.typeModifier = context.TypeModifier().getText();
+        }
         function.id = (IdentifierNode) visit(context.identifier());
         function.parameters = (DeclareStmtListNode) visit(context.parameterDeclareList());
         function.stmtFuncNodes = (StmtListNode) visit(context.stmtList());
@@ -39,8 +41,10 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public DeclareStmtListNode visitParameterDeclareList(CFG_concreteParser.ParameterDeclareListContext context) {
         DeclareStmtListNode dcls = new DeclareStmtListNode();
-        for(int i = 0 ; i < context.children.size() ; i++) {
-            dcls.declarations.add((DeclareStmtNode) visit(context.getChild(i))); // maybe an alternative: Visit(context.declare())
+        if(context.children != null) {
+            for (int i = 0; i < context.children.size(); i++) {
+                dcls.declarations.add((DeclareStmtNode) visit(context.getChild(i))); // maybe an alternative: Visit(context.declare())
+            }
         }
         return dcls;
     }
@@ -48,8 +52,10 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public StmtListNode visitStmtList(CFG_concreteParser.StmtListContext context) {
         StmtListNode stmtListNode = new StmtListNode();
-        for (int i = 0 ; i < context.children.size() ; i++) {
-            stmtListNode.statements.add((StmtNode) visit(context.getChild(i)));
+        if(context.children != null) {
+            for (int i = 0; i < context.children.size(); i++) {
+                stmtListNode.statements.add((StmtNode) visit(context.getChild(i)));
+            }
         }
         return stmtListNode;
     }
@@ -99,7 +105,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public DefinedCaseListNode visitDefinedCaseList(CFG_concreteParser.DefinedCaseListContext context){
         DefinedCaseListNode caseList = new DefinedCaseListNode();
         for(int i = 0 ; i < context.children.size() ; i++){
-            caseList.cases.add((DefinedCaseNode) visit((ParseTree) context.definedCase()));
+            caseList.cases.add((DefinedCaseNode) visit(context.definedCase(i)));
         }
         return caseList;
     }
