@@ -1,4 +1,4 @@
-package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
+package gen;// Generated from C:/Users/HrGaj/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -347,6 +347,16 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 */
 	void exitAtomExpr(CFG_concreteParser.AtomExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#parenthesisedExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#parenthesisedExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#literal}.
 	 * @param ctx the parse tree
 	 */
@@ -366,4 +376,14 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayLiteral(CFG_concreteParser.ArrayLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdentifier(CFG_concreteParser.IdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdentifier(CFG_concreteParser.IdentifierContext ctx);
 }

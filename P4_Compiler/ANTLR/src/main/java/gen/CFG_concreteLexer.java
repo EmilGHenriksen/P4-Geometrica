@@ -1,4 +1,4 @@
-package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
+package gen;// Generated from C:/Users/HrGaj/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -22,7 +22,7 @@ public class CFG_concreteLexer extends Lexer {
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
 		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, IntLiteral=38, 
 		FloatLiteral=39, StringLiteral=40, BoolLiteral=41, AngleLiteral=42, AccessModifier=43, 
-		Type=44, TypeModifier=45, Identifier=46, WS=47;
+		Type=44, TypeModifier=45, IdToken=46, WS=47;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -39,7 +39,7 @@ public class CFG_concreteLexer extends Lexer {
 			"T__25", "T__26", "T__27", "T__28", "T__29", "T__30", "T__31", "T__32", 
 			"T__33", "T__34", "T__35", "T__36", "IntLiteral", "FloatLiteral", "StringLiteral", 
 			"BoolLiteral", "AngleLiteral", "AccessModifier", "Type", "TypeModifier", 
-			"Identifier", "WS"
+			"IdToken", "WS"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -60,7 +60,7 @@ public class CFG_concreteLexer extends Lexer {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, "IntLiteral", "FloatLiteral", "StringLiteral", "BoolLiteral", 
-			"AngleLiteral", "AccessModifier", "Type", "TypeModifier", "Identifier", 
+			"AngleLiteral", "AccessModifier", "Type", "TypeModifier", "IdToken", 
 			"WS"
 		};
 	}

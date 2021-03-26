@@ -31,14 +31,14 @@ stmt  : return_ ';'
 
 
 
-function      : Type TypeModifier? Identifier '(' parameterDeclareList ')' '{' stmtList '}' ;
+function      : Type TypeModifier? identifier '(' parameterDeclareList ')' '{' stmtList '}' ;
 parameterDeclareList : (declare (',' declare)*)? ;
 stmtList : stmt* ;
 
 //--------------statements--------------
 return_ : 'return' expr? ;
-declare : AccessModifier? Type TypeModifier? Identifier ('IS' expr)? ;
-assign  :                      Identifier typeModAccess?  'IS' expr ;
+declare : AccessModifier? Type TypeModifier? identifier ('IS' expr)? ;
+assign  :                      identifier typeModAccess?  'IS' expr ;
 typeModAccess : ('[' expr ']')+ ;
 
 //----selection----
@@ -57,17 +57,17 @@ iterate  : foreachIterate
          | loopIterate
          | whileIterate
          ;
-foreachIterate : 'foreach' '(' Identifier 'in' Identifier ')' '{' stmtList '}' ;
+foreachIterate : 'foreach' '(' identifier 'in' identifier ')' '{' stmtList '}' ;
 loopIterate    : 'loop' '(' expr ')' '{' stmtList '}' ;
 whileIterate   : 'while' '(' expr ')' '{' stmtList '}' ;
 
 
 //----calls----
-functionCall       : Identifier '(' parameterValueList ')' ;
+functionCall       : identifier '(' parameterValueList ')' ;
 parameterValueList   : (expr (',' expr)*)? ;
 
-methodCall   : Identifier '.' Identifier '(' parameterValueList ')' ;
-propertyCall : Identifier '.' Identifier ;
+methodCall   : identifier '.' identifier '(' parameterValueList ')' ;
+propertyCall : identifier '.' identifier ;
 
 
 
@@ -84,14 +84,14 @@ additiveExpr : multiplicativeExpr (('-'|'+') multiplicativeExpr)* ;
 multiplicativeExpr : powerExpr (('*'|'/'|'%') powerExpr)* ;
 powerExpr : unaryExpr ('^' unaryExpr)* ;
 unaryExpr : ('-'|'+'|'!')? atomExpr ;
-atomExpr : '(' orExpr ')'
+atomExpr : parenthesisedExpr
          | literal
-         | Identifier typeModAccess?
+         | identifier typeModAccess?
          | functionCall
          | methodCall
          | propertyCall
          ;
-
+parenthesisedExpr : '(' orExpr ')' ;
 
 
 //----literals----
@@ -146,7 +146,8 @@ TypeModifier : '[]'+ ;
 
 
 //identifiers have lowest priority, adn are therefore placed lowest
-Identifier : ([a-zA-Z_])([a-zA-Z_0-9])* ;
+identifier : IdToken ;
+IdToken : ([a-zA-Z_])([a-zA-Z_0-9])* ;
 
 
 

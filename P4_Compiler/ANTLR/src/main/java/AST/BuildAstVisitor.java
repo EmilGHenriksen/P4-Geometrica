@@ -1,7 +1,7 @@
 package AST;
+
 import gen.CFG_concreteBaseVisitor;
 import gen.CFG_concreteParser;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +34,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public FunctionNode visitFunction(CFG_concreteParser.FunctionContext context) {
         FunctionNode function = new FunctionNode();
-        function.type = Visit(context.Type());
-        function.id = Visit(context.Identifier());
+        function.type = context.Type().getText();
+        function.typeModifier = context.TypeModifier().getText();
+        function.id = Visit(context.identifier());
         function.parameters = Visit(context.parameterDeclareList());
         function.stmtFuncNodes = Visit(context.stmtList());
         return function;
@@ -69,9 +70,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public DeclareStmtNode visitDeclare(CFG_concreteParser.DeclareContext context) {
         DeclareStmtNode dcl = new DeclareStmtNode();
-        dcl.accessModifier = Visit(context.AccessModifier());
-        dcl.type = Visit(context.Type());
-        dcl.typeModifier = Visit(context.TypeModifier());
+        dcl.accessModifier = context.AccessModifier().getText();
+        dcl.type = context.Type().getText();
+        dcl.typeModifier = context.TypeModifier().getText();
         dcl.id = Visit(context.Identifier());
         dcl.value = Visit(context.expr());
         return dcl;
@@ -147,28 +148,128 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         LiteralNode literalNode = Visit(context.children);
 
         if(literalNode instanceof IntLiteralNode){
-
+            IntLiteralNode intLiteralNode = new IntLiteralNode();
+            intLiteralNode.value = ((IntLiteralNode) literalNode).value;
+            literalNode = intLiteralNode;
         }
         else if(literalNode instanceof FloatLiteralNode){
-
+            FloatLiteralNode floatLiteralNode = new FloatLiteralNode();
+            floatLiteralNode.value = ((FloatLiteralNode) literalNode).value;
+            literalNode = floatLiteralNode;
         }
         else if(literalNode instanceof PiLiteralNode){
-
+            literalNode = new PiLiteralNode();
         }
         else if(literalNode instanceof StringLiteralNode){
-
+            StringLiteralNode stringLiteralNode = new StringLiteralNode();
+            stringLiteralNode.value = ((StringLiteralNode) literalNode).value;
+            literalNode = stringLiteralNode;
         }
         else if(literalNode instanceof BoolLiteralNode){
-
+            BoolLiteralNode boolLiteralNode = new BoolLiteralNode();
+            boolLiteralNode.value = ((BoolLiteralNode) literalNode).value;
+            literalNode = boolLiteralNode;
         }
         else if(literalNode instanceof AngleLiteralNode){
-
+            AngleLiteralNode angleLiteralNode = new AngleLiteralNode();
+            angleLiteralNode.value = ((AngleLiteralNode) literalNode).value;
+            literalNode = angleLiteralNode;
         }
-
         else if(literalNode instanceof ArrayLiteralNode){
-
+            ArrayLiteralNode arrayLiteralNode = new ArrayLiteralNode();
+            arrayLiteralNode.elements = ((ArrayLiteralNode) literalNode).elements;
+            literalNode = arrayLiteralNode;
         }
         return literalNode;
+    }
+    @Override
+    public IdentifierNode visitIdentifier(CFG_concreteParser.IdentifierContext context){
+        IdentifierNode identifierNode = new IdentifierNode();
+        identifierNode.id = context.getText();
+        return identifierNode;
+    }
+    @Override
+    public FunctionCallNode visitFunctionCall(CFG_concreteParser.FunctionCallContext context){
+        FunctionCallNode functionCallNode = new FunctionCallNode();
+        functionCallNode.id = Visit(context.identifier());
+        functionCallNode.parameters = Visit(context.parameterValueList());
+        return functionCallNode;
+    }
+    @Override
+    public MethodCallNode visitMethodCall(CFG_concreteParser.MethodCallContext context){
+        MethodCallNode methodCallNode = new MethodCallNode();
+        methodCallNode.valueID = Visit(context.identifier(0));
+        methodCallNode.methodID = Visit(context.identifier(1));
+        methodCallNode.parameters = Visit(context.parameterValueList());
+        return methodCallNode;
+    }
+    @Override
+    public PropertyCallNode visitPropertyCall(CFG_concreteParser.PropertyCallContext context){
+        PropertyCallNode propertyCallNode = new PropertyCallNode();
+        propertyCallNode.valueID = Visit(context.identifier(0));
+        propertyCallNode.propertyID = Visit(context.identifier(1));
+        return propertyCallNode;
+    }
+    @Override
+    public ParenthesisedExprNode visitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext context){
+        ParenthesisedExprNode parenthesisedExprNode = new ParenthesisedExprNode();
+        parenthesisedExprNode.innerExpr = Visit(context.orExpr());
+        return parenthesisedExprNode;
+    }
+    @Override
+    public UnaryExprNode visitUnaryExpr(CFG_concreteParser.UnaryExprContext context){
+        UnaryExprNode unaryExprNode = Visit(context.children);
+        unaryExprNode.expr = Visit(context.atomExpr());
+        return unaryExprNode;
+    }
+    @Override
+    public BinaryExprNode visitOrExpr(CFG_concreteParser.OrExprContext context){
+        BinaryExprNode binaryExprNode = Visit(context.children);
+        binaryExprNode.left = Visit(context.getChild(0));
+        binaryExprNode.right = Visit(context.getChild(1));
+        return binaryExprNode;
+    }
+    @Override
+    public BinaryExprNode visitAndExpr(CFG_concreteParser.AndExprContext context){
+        BinaryExprNode binaryExprNode = Visit(context.children);
+        binaryExprNode.left = Visit(context.getChild(0));
+        binaryExprNode.right = Visit(context.getChild(1));
+        return binaryExprNode;
+    }
+    @Override
+    public BinaryExprNode visitEqualityExpr(CFG_concreteParser.EqualityExprContext context){
+        BinaryExprNode binaryExprNode = Visit(context.children);
+        binaryExprNode.left = Visit(context.getChild(0));
+        binaryExprNode.right = Visit(context.getChild(1));
+        return binaryExprNode;
+    }
+    @Override
+    public BinaryExprNode visitRelationExpr(CFG_concreteParser.RelationExprContext context){
+        BinaryExprNode binaryExprNode = Visit(context.children);
+        binaryExprNode.left = Visit(context.getChild(0));
+        binaryExprNode.right = Visit(context.getChild(1));
+        return binaryExprNode;
+    }
+    @Override
+    public BinaryExprNode visitAdditiveExpr(CFG_concreteParser.AdditiveExprContext context){
+        BinaryExprNode binaryExprNode = Visit(context.children);
+        binaryExprNode.left = Visit(context.getChild(0));
+        binaryExprNode.right = Visit(context.getChild(1));
+        return binaryExprNode;
+    }
+    @Override
+    public BinaryExprNode visitMultiplicativeExpr(CFG_concreteParser.MultiplicativeExprContext context){
+        BinaryExprNode binaryExprNode = Visit(context.children);
+        binaryExprNode.left = Visit(context.getChild(0));
+        binaryExprNode.right = Visit(context.getChild(1));
+        return binaryExprNode;
+    }
+    @Override
+    public BinaryExprNode visitPowerExpr(CFG_concreteParser.PowerExprContext context){
+        BinaryExprNode binaryExprNode = Visit(context.children);
+        binaryExprNode.left = Visit(context.getChild(0));
+        binaryExprNode.right = Visit(context.getChild(1));
+        return binaryExprNode;
     }
 }
 
