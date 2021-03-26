@@ -65,26 +65,122 @@ public abstract class AstVisitor<T> {
     public abstract T Visit(ArrayModifierNode node);
 
     public T Visit(Node node) {
-        if (node instanceof ProgramNode) {
+        if(node instanceof ProgramNode){
             return Visit((ProgramNode)node);
-        } else if(node instanceof ContentNode){
+        }else if(node instanceof ContentNode){
             return Visit((ContentNode)node);
-        } else if(node instanceof FunctionNode){
+        }else if(node instanceof FunctionNode){
             return Visit((FunctionNode)node);
-        } else if(node instanceof DeclareStmtListNode){
+        }else if(node instanceof DeclareStmtListNode){
             return Visit((DeclareStmtListNode)node);
-        } else if(node instanceof ReturnStmtNode){
-            return Visit((ReturnStmtNode) node);
-        } else if(node instanceof DeclareStmtNode){
-            return Visit((DeclareStmtNode) node);
-        } else if(node instanceof AssignNode){
-            return Visit((AssignNode) node);
-        } else if(node instanceof IfNode){
-            return Visit((IfNode) node);
-        } else if(node instanceof SwitchNode){
-            return Visit((SwitchNode) node);
-        } else if(node instanceof DefinedCaseListNode){
-            return Visit((DefinedCaseListNode) node);
+        }else if(node instanceof ReturnStmtNode){
+            return Visit((ReturnStmtNode)node);
+        }else if(node instanceof DeclareStmtNode){
+            return Visit((DeclareStmtNode)node);
+        }else if(node instanceof AssignNode){
+            return Visit((AssignNode)node);
+        }else if(node instanceof IfNode){
+            return Visit((IfNode)node);
+        }else if(node instanceof SwitchNode){
+            return Visit((SwitchNode)node);
+        }else if(node instanceof DefinedCaseListNode){
+            return Visit((DefinedCaseListNode)node);
+        }else if(node instanceof DefinedCaseNode){
+            return Visit((DefinedCaseNode)node);
+        }else if(node instanceof DefaultCaseNode){
+            return Visit((DefaultCaseNode)node);
+        }else if(node instanceof ForeachNode){
+            return Visit((ForeachNode)node);
+        }else if(node instanceof LoopNode){
+            return Visit((LoopNode)node);
+        }else if(node instanceof WhileNode){
+            return Visit((WhileNode)node);
+        }else if(node instanceof IntLiteralNode){
+            return Visit((IntLiteralNode)node);
+        }else if(node instanceof FloatLiteralNode){
+            return Visit((FloatLiteralNode)node);
+        }else if(node instanceof PiLiteralNode){
+            return Visit((PiLiteralNode)node);
+        }else if(node instanceof StringLiteralNode){
+            return Visit((StringLiteralNode)node);
+        }else if(node instanceof BoolLiteralNode){
+            return Visit((BoolLiteralNode)node);
+        }else if(node instanceof AngleLiteralNode){
+            return Visit((AngleLiteralNode)node);
+        }else if(node instanceof ArrayLiteralNode){
+            return Visit((ArrayLiteralNode)node);
+        }else if(node instanceof IdentifierNode){
+            return Visit((IdentifierNode)node);
+        }else if(node instanceof FunctionCallNode){
+            return Visit((FunctionCallNode)node);
+        }else if(node instanceof MethodCallNode){
+            return Visit((MethodCallNode)node);
+        }else if(node instanceof PropertyCallNode){
+            return Visit((PropertyCallNode)node);
+        }else if(node instanceof ParenthesisedExprNode){
+            return Visit((ParenthesisedExprNode)node);
+        }else if(node instanceof UnaryMinusNode){
+            return Visit((UnaryMinusNode)node);
+        }else if(node instanceof UnaryPlusNode){
+            return Visit((UnaryPlusNode)node);
+        }else if(node instanceof UnaryNegationNode){
+            return Visit((UnaryNegationNode)node);
+        }else if(node instanceof SubtractionNode){
+            return Visit((SubtractionNode)node);
+        }else if(node instanceof AdditionNode){
+            return Visit((AdditionNode)node);
+        }else if(node instanceof MultiplicationNode){
+            return Visit((MultiplicationNode)node);
+        }else if(node instanceof DivisionNode){
+            return Visit((DivisionNode)node);
+        }else if(node instanceof PowerNode){
+            return Visit((PowerNode)node);
+        }else if(node instanceof ModuloNode){
+            return Visit((ModuloNode)node);
+        }else if(node instanceof EqualsNode){
+            return Visit((EqualsNode)node);
+        }else if(node instanceof NotEqualsNode){
+            return Visit((NotEqualsNode)node);
+        }else if(node instanceof LesserThanNode){
+            return Visit((LesserThanNode)node);
+        }else if(node instanceof GreaterThanNode){
+            return Visit((GreaterThanNode)node);
+        }else if(node instanceof LesserOrEqualsNode){
+            return Visit((LesserOrEqualsNode)node);
+        }else if(node instanceof GreaterOrEqualsNode){
+            return Visit((GreaterOrEqualsNode)node);
+        }else if(node instanceof AndNode){
+            return Visit((AndNode)node);
+        }else if(node instanceof OrNode){
+            return Visit((OrNode)node);
+        }else if(node instanceof TypeNode){
+            return Visit((TypeNode)node);
+        }else if(node instanceof ConstAccessModifierNode){
+            return Visit((ConstAccessModifierNode)node);
+        }else if(node instanceof VoidTypeNode){
+            return Visit((VoidTypeNode)node);
+        }else if(node instanceof BoolTypeNode){
+            return Visit((BoolTypeNode)node);
+        }else if(node instanceof IntTypeNode){
+            return Visit((IntTypeNode)node);
+        }else if(node instanceof FloatTypeNode){
+            return Visit((FloatTypeNode)node);
+        }else if(node instanceof StringTypeNode){
+            return Visit((StringTypeNode)node);
+        }else if(node instanceof PointTypeNode){
+            return Visit((PointTypeNode)node);
+        }else if(node instanceof LineTypeNode){
+            return Visit((LineTypeNode)node);
+        }else if(node instanceof TriangleTypeNode){
+            return Visit((TriangleTypeNode)node);
+        }else if(node instanceof SquareTypeNode){
+            return Visit((SquareTypeNode)node);
+        }else if(node instanceof CircleTypeNode){
+            return Visit((CircleTypeNode)node);
+        }else if(node instanceof AngleTypeNode){
+            return Visit((AngleTypeNode)node);
+        }else if(node instanceof ArrayModifierNode){
+            return Visit((ArrayModifierNode)node);
         }
         else
             throw new NotImplementedError();
