@@ -49,20 +49,6 @@ public abstract class AstVisitor<T> {
     public abstract T Visit(GreaterOrEqualsNode node);
     public abstract T Visit(AndNode node);
     public abstract T Visit(OrNode node);
-    public abstract T Visit(TypeNode node);
-    public abstract T Visit(ConstAccessModifierNode node);
-    public abstract T Visit(VoidTypeNode node);
-    public abstract T Visit(BoolTypeNode node);
-    public abstract T Visit(IntTypeNode node);
-    public abstract T Visit(FloatTypeNode node);
-    public abstract T Visit(StringTypeNode node);
-    public abstract T Visit(PointTypeNode node);
-    public abstract T Visit(LineTypeNode node);
-    public abstract T Visit(TriangleTypeNode node);
-    public abstract T Visit(SquareTypeNode node);
-    public abstract T Visit(CircleTypeNode node);
-    public abstract T Visit(AngleTypeNode node);
-    public abstract T Visit(ArrayModifierNode node);
 
     public T Visit(Node node) {
         if(node instanceof ProgramNode){
@@ -151,36 +137,8 @@ public abstract class AstVisitor<T> {
             return Visit((GreaterOrEqualsNode)node);
         }else if(node instanceof AndNode){
             return Visit((AndNode)node);
-        }else if(node instanceof OrNode){
-            return Visit((OrNode)node);
-        }else if(node instanceof TypeNode){
-            return Visit((TypeNode)node);
-        }else if(node instanceof ConstAccessModifierNode){
-            return Visit((ConstAccessModifierNode)node);
-        }else if(node instanceof VoidTypeNode){
-            return Visit((VoidTypeNode)node);
-        }else if(node instanceof BoolTypeNode){
-            return Visit((BoolTypeNode)node);
-        }else if(node instanceof IntTypeNode){
-            return Visit((IntTypeNode)node);
-        }else if(node instanceof FloatTypeNode){
-            return Visit((FloatTypeNode)node);
-        }else if(node instanceof StringTypeNode){
-            return Visit((StringTypeNode)node);
-        }else if(node instanceof PointTypeNode){
-            return Visit((PointTypeNode)node);
-        }else if(node instanceof LineTypeNode){
-            return Visit((LineTypeNode)node);
-        }else if(node instanceof TriangleTypeNode){
-            return Visit((TriangleTypeNode)node);
-        }else if(node instanceof SquareTypeNode){
-            return Visit((SquareTypeNode)node);
-        }else if(node instanceof CircleTypeNode){
-            return Visit((CircleTypeNode)node);
-        }else if(node instanceof AngleTypeNode){
-            return Visit((AngleTypeNode)node);
-        }else if(node instanceof ArrayModifierNode){
-            return Visit((ArrayModifierNode)node);
+        }else if(node instanceof OrNode) {
+            return Visit((OrNode) node);
         }
         else
             throw new NotImplementedError();
