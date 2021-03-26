@@ -16,7 +16,9 @@ public class Program
     public static void main(String[] args) {
         CharStream inputStream = null;
         try {
-            inputStream = CharStreams.fromFileName("C:\\Users\\Anders\\Documents\\GitHub\\p4_compiler\\P4_Compiler\\ANTLR\\src\\main\\java\\test.txt");
+            String path = new File("").getAbsolutePath();
+            path = path.concat("\\ANTLR\\src\\main\\java\\test.txt");
+            inputStream = CharStreams.fromFileName(path);
         } catch (IOException e) {
             e.printStackTrace();
         }

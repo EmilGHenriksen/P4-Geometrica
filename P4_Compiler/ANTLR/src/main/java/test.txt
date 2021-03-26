@@ -1,1 +1,1 @@
-void myfunc(){}
+int a IS 5;

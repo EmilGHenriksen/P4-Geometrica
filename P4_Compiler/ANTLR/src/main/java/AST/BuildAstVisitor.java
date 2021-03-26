@@ -17,11 +17,13 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public ContentNode visitContent(CFG_concreteParser.ContentContext context) {
         ContentNode content = new ContentNode();
-        for (int i = 0; i < context.children.size() ;i++) {
-            if (context.children.get(i) instanceof CFG_concreteParser.FunctionContext) {
-                content.functionNodes.add((FunctionNode) visit(context.function(0)));
-            } else if (context.children.get(i) instanceof CFG_concreteParser.StmtContext) {
-                content.stmtNodes.add((StmtNode) visit(context.stmt(0)));
+        if(context.children != null) {
+            for (int i = 0; i < context.children.size(); i++) {
+                if (context.children.get(i) instanceof CFG_concreteParser.FunctionContext) {
+                    content.functionNodes.add((FunctionNode) visit(context.function(0)));
+                } else if (context.children.get(i) instanceof CFG_concreteParser.StmtContext) {
+                    content.stmtNodes.add((StmtNode) visit(context.stmt(0)));
+                }
             }
         }
         return content;
@@ -63,19 +65,27 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public ReturnStmtNode visitReturn_(CFG_concreteParser.Return_Context context) {
         ReturnStmtNode returnStmt = new ReturnStmtNode();
-        if(context.children.size() > 0) {
-            returnStmt.value = (ExprNode) visit(context.expr());
+        if(context.children != null) {
+            if (context.children.size() > 0) {
+                returnStmt.value = (ExprNode) visit(context.expr());
+            }
         }
         return returnStmt;
     }
     @Override
     public DeclareStmtNode visitDeclare(CFG_concreteParser.DeclareContext context) {
         DeclareStmtNode dcl = new DeclareStmtNode();
-        dcl.accessModifier = context.AccessModifier().getText();
+        if(context.AccessModifier() != null) {
+            dcl.accessModifier = context.AccessModifier().getText();
+        }
         dcl.type = context.Type().getText();
-        dcl.typeModifier = context.TypeModifier().getText();
+        if(context.TypeModifier() != null) {
+            dcl.typeModifier = context.TypeModifier().getText();
+        }
         dcl.id = (IdentifierNode) visit(context.identifier());
-        dcl.value = (ExprNode) visit(context.expr());
+        if(context.expr() != null) {
+            dcl.value = (ExprNode) visit(context.expr());
+        }
         return dcl;
     }
     @Override
@@ -104,8 +114,10 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public DefinedCaseListNode visitDefinedCaseList(CFG_concreteParser.DefinedCaseListContext context){
         DefinedCaseListNode caseList = new DefinedCaseListNode();
-        for(int i = 0 ; i < context.children.size() ; i++){
-            caseList.cases.add((DefinedCaseNode) visit(context.definedCase(i)));
+        if(context.children != null) {
+            for (int i = 0; i < context.children.size(); i++) {
+                caseList.cases.add((DefinedCaseNode) visit(context.definedCase(i)));
+            }
         }
         return caseList;
     }
