@@ -73,14 +73,14 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         dcl.accessModifier = context.AccessModifier().getText();
         dcl.type = context.Type().getText();
         dcl.typeModifier = context.TypeModifier().getText();
-        dcl.id = Visit(context.Identifier());
+        dcl.id = Visit(context.identifier());
         dcl.value = Visit(context.expr());
         return dcl;
     }
     @Override
     public AssignNode visitAssign(CFG_concreteParser.AssignContext context){
         AssignNode assign = new AssignNode();
-        assign.id = Visit(context.Identifier());
+        assign.id = Visit(context.identifier());
         assign.value = Visit(context.expr());
         return assign;
     }
@@ -124,8 +124,8 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public ForeachNode visitForeachIterate(CFG_concreteParser.ForeachIterateContext context){
         ForeachNode foreachNode = new ForeachNode();
-        foreachNode.elementID = Visit(context.Identifier(0));
-        foreachNode.collectionID = Visit(context.Identifier(1));
+        foreachNode.elementID = Visit(context.identifier(0));
+        foreachNode.collectionID = Visit(context.identifier(1));
         foreachNode.stmtNodes = Visit(context.stmtList());
         return foreachNode;
     }
