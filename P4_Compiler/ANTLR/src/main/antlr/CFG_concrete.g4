@@ -152,4 +152,4 @@ IdToken : ([a-zA-Z_])([a-zA-Z_0-9])* ;
 
 
 //ignore whitespace
-WS: (' '|'\t'|'\n')+ -> channel(HIDDEN);
+WS: (' '|'\t'|'\n'|'\r')+ -> channel(HIDDEN);
