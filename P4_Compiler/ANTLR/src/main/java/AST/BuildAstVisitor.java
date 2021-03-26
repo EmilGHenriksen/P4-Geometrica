@@ -9,26 +9,19 @@ import java.util.List;
 
 public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
-    public ProgramNode visitProgram(CFG_concreteParser.ProgramContext context) throws InvalidNodeException {
-        if (context.children.size() > 0  &&  context.children.get(0) != context.EOF()) {
-            ProgramNode program = new ProgramNode();
-            program.content = (ContentNode) visit(context.content());
-            return program;
-        }
-        else {
-            throw new InvalidNodeException();
-        }
+    public ProgramNode visitProgram(CFG_concreteParser.ProgramContext context) {
+        ProgramNode program = new ProgramNode();
+        program.content = (ContentNode) visit(context.content());
+        return program;
     }
     @Override
-    public ContentNode visitContent(CFG_concreteParser.ContentContext context) throws InvalidNodeException {
+    public ContentNode visitContent(CFG_concreteParser.ContentContext context) {
         ContentNode content = new ContentNode();
         for (int i = 0; i < context.children.size() ;i++) {
             if (context.children.get(i) == context.function()) {
                 content.functionNodes.add((FunctionNode) visit((ParseTree) context.function()));
             } else if (context.children.get(i) == context.stmt()) {
                 content.stmtNodes.add((StmtNode) visit((ParseTree) context.stmt()));
-            } else {
-                throw new InvalidNodeException();
             }
         }
         return content;

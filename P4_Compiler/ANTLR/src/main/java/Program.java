@@ -28,8 +28,8 @@ public class Program
 
         try
         {
-            ParseTree t = parser.expr();
-            ParseTreePattern p = parser.compileParseTreePattern("<ID>+0", CFG_concreteParser.RULE_program);
+            ParseTree t = parser.program();
+            ParseTreePattern p = parser.compileParseTreePattern("<ID>+0", CFG_concreteParser.RULE_identifier);
             ParseTreeMatch m = p.match(t);
 
             Node ast = new BuildAstVisitor().visit(t);

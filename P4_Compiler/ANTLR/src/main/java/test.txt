@@ -1,1 +1,1 @@
-int a;
+void myfunc(){}

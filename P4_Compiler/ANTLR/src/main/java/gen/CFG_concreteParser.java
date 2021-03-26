@@ -1,13 +1,9 @@
 package gen; // Generated from C:/Users/Anders/Documents/GitHub/p4_compiler/P4_Compiler/ANTLR/src/main/antlr\CFG_concrete.g4 by ANTLR 4.9.1
-import AST.InvalidNodeException;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class CFG_concreteParser extends Parser {
@@ -140,12 +136,7 @@ public class CFG_concreteParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof CFG_concreteVisitor ) {
-				try {
-					return ((CFG_concreteVisitor<? extends T>)visitor).visitProgram(this);
-				} catch (InvalidNodeException e) {
-					e.printStackTrace();
-					return visitor.visitChildren(this);
-				}
+				return ((CFG_concreteVisitor<? extends T>)visitor).visitProgram(this);
 			}
 			else return visitor.visitChildren(this);
 		}
@@ -202,12 +193,7 @@ public class CFG_concreteParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof CFG_concreteVisitor ) {
-				try {
-					return ((CFG_concreteVisitor<? extends T>)visitor).visitContent(this);
-				} catch (InvalidNodeException e) {
-					e.printStackTrace();
-					return visitor.visitChildren(this);
-				}
+				return ((CFG_concreteVisitor<? extends T>)visitor).visitContent(this);
 			}
 			else return visitor.visitChildren(this);
 		}
