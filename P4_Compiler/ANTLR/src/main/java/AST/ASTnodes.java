@@ -2,8 +2,6 @@ package AST;
 
 import java.util.List;
 
-abstract class Node{}
-
 class ProgramNode extends Node {
     public ContentNode content;
 }

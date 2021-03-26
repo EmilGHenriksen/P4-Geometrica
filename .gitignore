@@ -13,6 +13,8 @@
 .idea/**/dictionaries
 .idea/**/shelf
 P4_Compiler/ANTLR/src/main/gen
+P4_Compiler/ANTLR/build
+P4_Compiler/ANTLR/.gradle
 
 # Generated files
 .idea/**/contentModel.xml
@@ -484,3 +486,8 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
+*.bin
+*.lock
+*.lock
+*.lock
+*.lock
