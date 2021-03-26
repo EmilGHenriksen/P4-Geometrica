@@ -491,3 +491,6 @@ FodyWeavers.xsd
 *.lock
 *.lock
 *.lock
+P4_Compiler/ANTLR/.gradle/6.3/executionHistory/executionHistory.lock
+P4_Compiler/ANTLR/.gradle/6.3/fileHashes/fileHashes.lock
+P4_Compiler/ANTLR/.gradle/buildOutputCleanup/buildOutputCleanup.lock
