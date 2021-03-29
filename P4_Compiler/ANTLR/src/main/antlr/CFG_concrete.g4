@@ -104,7 +104,7 @@ literal  : IntLiteral
 		 | arrayLiteral
 		 //the other types have no literals
 		 ;
-arrayLiteral : '[' (literal (',' literal)*)? ']' ;
+arrayLiteral : '[' (expr (',' expr)*)? ']' ;
 
 
 
