@@ -29,6 +29,12 @@ class DeclareStmtListNode extends Node {
         declarations = new ArrayList<DeclareStmtNode>();
     }
 }
+
+class ValueListNode extends Node {
+    List<ExprNode> exprNodes;
+    public ValueListNode(){ exprNodes = new ArrayList<ExprNode>(); }
+}
+
 class StmtListNode extends Node {
     List<StmtNode> statements;
     public StmtListNode(){
@@ -92,10 +98,7 @@ class LoopNode extends StmtNode {
 }
 class WhileNode extends StmtNode {
     ExprNode conditionExpression;
-    List<StmtNode> stmtNodes;
-    public WhileNode(){
-        stmtNodes = new ArrayList<StmtNode>();
-    }
+    StmtListNode stmtNodes;
 }
 
 //----------------expressions-----------------
@@ -142,18 +145,12 @@ class IdentifierNode extends Node {
 
 class FunctionCallNode extends ExprNode {
     IdentifierNode id;
-    List<ExprNode> parameters;
-    public FunctionCallNode(){
-        parameters = new ArrayList<ExprNode>();
-    }
+    ValueListNode parameters;
 }
 class MethodCallNode extends ExprNode {
     IdentifierNode valueID;
     IdentifierNode methodID;
-    List<ExprNode> parameters;
-    public MethodCallNode(){
-        parameters = new ArrayList<ExprNode>();
-    }
+    ValueListNode parameters;
 }
 class PropertyCallNode extends ExprNode {
     IdentifierNode valueID;
