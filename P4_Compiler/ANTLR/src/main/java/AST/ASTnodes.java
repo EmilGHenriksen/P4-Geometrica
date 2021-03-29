@@ -11,8 +11,8 @@ class ContentNode extends Node {
     public List<StmtNode> stmtNodes;
     public List<FunctionNode> functionNodes;
     public ContentNode(){
-        stmtNodes = new ArrayList<StmtNode>();
-        functionNodes = new ArrayList<FunctionNode>();
+        stmtNodes = new ArrayList<>();
+        functionNodes = new ArrayList<>();
     }
 }
 
@@ -26,19 +26,19 @@ class FunctionNode extends Node {
 class DeclareStmtListNode extends Node {
     List<DeclareStmtNode> declarations;
     public DeclareStmtListNode(){
-        declarations = new ArrayList<DeclareStmtNode>();
+        declarations = new ArrayList<>();
     }
 }
 
 class ValueListNode extends Node {
     List<ExprNode> exprNodes;
-    public ValueListNode(){ exprNodes = new ArrayList<ExprNode>(); }
+    public ValueListNode(){ exprNodes = new ArrayList<>(); }
 }
 
 class StmtListNode extends Node {
     List<StmtNode> statements;
     public StmtListNode(){
-        statements = new ArrayList<StmtNode>();
+        statements = new ArrayList<>();
     }
 }
 
@@ -105,7 +105,35 @@ class WhileNode extends StmtNode {
 abstract class ExprNode extends StmtNode{
 }
 
-abstract class LiteralNode extends ExprNode {
+abstract class OrExprNode extends ExprNode{
+}
+
+abstract class AndExprNode extends OrExprNode{
+}
+
+abstract class EqualityExprNode extends AndExprNode{
+}
+
+abstract class RelationExprNode extends EqualityExprNode{
+}
+
+abstract class AdditiveExprNode extends RelationExprNode{
+}
+
+abstract class MultiplicativeExprNode extends AdditiveExprNode{
+}
+
+abstract class PowerExprNode extends MultiplicativeExprNode{
+}
+
+abstract class UnaryExprNode extends PowerExprNode{
+    ExprNode expr;
+}
+
+abstract class AtomExprNode extends UnaryExprNode{
+}
+
+abstract class LiteralNode extends AtomExprNode {
 }
 
 class IntLiteralNode extends LiteralNode{
@@ -133,36 +161,42 @@ class AngleLiteralNode extends LiteralNode{
 }
 
 class ArrayLiteralNode extends LiteralNode{
-    List<LiteralNode> elements;
+    List<ExprNode> elements;
     public ArrayLiteralNode(){
-        elements = new ArrayList<LiteralNode>();
+        elements = new ArrayList<>();
     }
+}
+
+class VariableExprNode extends AtomExprNode{
+    IdentifierNode identifier;
+    TypeModAccessNode accessMod;
+}
+
+class TypeModAccessNode extends Node{
+    List<ExprNode> exprNodes;
+    public TypeModAccessNode(){ exprNodes = new ArrayList<>(); }
 }
 
 class IdentifierNode extends Node {
     String id;
 }
 
-class FunctionCallNode extends ExprNode {
+class FunctionCallNode extends AtomExprNode {
     IdentifierNode id;
     ValueListNode parameters;
 }
-class MethodCallNode extends ExprNode {
+class MethodCallNode extends AtomExprNode {
     IdentifierNode valueID;
     IdentifierNode methodID;
     ValueListNode parameters;
 }
-class PropertyCallNode extends ExprNode {
+class PropertyCallNode extends AtomExprNode {
     IdentifierNode valueID;
     IdentifierNode propertyID;
 }
 
-class ParenthesisedExprNode extends ExprNode {
+class ParenthesisedExprNode extends AtomExprNode {
     ExprNode innerExpr;
-}
-
-abstract class UnaryExprNode extends ExprNode{
-    ExprNode expr;
 }
 
 class UnaryMinusNode extends UnaryExprNode{
@@ -177,63 +211,72 @@ class UnaryNegationNode extends UnaryExprNode{
 
 }
 
-abstract class BinaryExprNode extends ExprNode{
+class SubtractionNode extends AdditiveExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class SubtractionNode extends BinaryExprNode{
-
+class AdditionNode extends AdditiveExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class AdditionNode extends BinaryExprNode{
-
+class MultiplicationNode extends MultiplicativeExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class MultiplicationNode extends BinaryExprNode{
-
+class DivisionNode extends MultiplicativeExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class DivisionNode extends BinaryExprNode{
-
+class PowerNode extends PowerExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class PowerNode extends BinaryExprNode{
-
+class ModuloNode extends MultiplicativeExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class ModuloNode extends BinaryExprNode{
-
+class EqualsNode extends EqualityExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class EqualsNode extends BinaryExprNode{
-
+class NotEqualsNode extends EqualityExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class NotEqualsNode extends BinaryExprNode{
-
+class LesserThanNode extends RelationExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class LesserThanNode extends BinaryExprNode{
-
+class GreaterThanNode extends RelationExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class GreaterThanNode extends BinaryExprNode{
-
+class LesserOrEqualsNode extends RelationExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class LesserOrEqualsNode extends BinaryExprNode{
-
+class GreaterOrEqualsNode extends RelationExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class GreaterOrEqualsNode extends BinaryExprNode{
-
+class AndNode extends AndExprNode{
+    ExprNode left;
+    ExprNode right;
 }
 
-class AndNode extends BinaryExprNode{
-
-}
-
-class OrNode extends BinaryExprNode{
-
+class OrNode extends OrExprNode{
+    ExprNode left;
+    ExprNode right;
 }
