@@ -2,7 +2,9 @@ package AST;
 
 import gen.CFG_concreteBaseVisitor;
 import gen.CFG_concreteParser;
-import org.antlr.v4.runtime.tree.ParseTree;
+
+import static java.lang.Double.parseDouble;
+import static java.lang.Long.parseLong;
 
 public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
@@ -155,39 +157,43 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     }
     @Override
     public LiteralNode visitLiteral(CFG_concreteParser.LiteralContext context){
-        LiteralNode literalNode = (LiteralNode) visit((ParseTree) context.children);
+        LiteralNode literalNode;
 
-        if(literalNode instanceof IntLiteralNode){
+        if(context.getChild(0) instanceof IntLiteralNode){
             IntLiteralNode intLiteralNode = new IntLiteralNode();
-            intLiteralNode.value = ((IntLiteralNode) literalNode).value;
+            intLiteralNode.value = parseLong(context.getChild(0).getText());
             literalNode = intLiteralNode;
         }
-        else if(literalNode instanceof FloatLiteralNode){
+        else if(context.getChild(0) instanceof FloatLiteralNode){
             FloatLiteralNode floatLiteralNode = new FloatLiteralNode();
-            floatLiteralNode.value = ((FloatLiteralNode) literalNode).value;
+            floatLiteralNode.value = parseDouble(context.getChild(0).getText());
             literalNode = floatLiteralNode;
         }
-        else if(literalNode instanceof PiLiteralNode){
+        else if(context.getChild(0) instanceof PiLiteralNode){
             literalNode = new PiLiteralNode();
         }
-        else if(literalNode instanceof StringLiteralNode){
+        else if(context.getChild(0) instanceof StringLiteralNode){
             StringLiteralNode stringLiteralNode = new StringLiteralNode();
-            stringLiteralNode.value = ((StringLiteralNode) literalNode).value;
+            String temp = context.getChild(0).getText();
+            stringLiteralNode.value = temp.substring(1, temp.length() -1);
             literalNode = stringLiteralNode;
         }
-        else if(literalNode instanceof BoolLiteralNode){
+        else if(context.getChild(0) instanceof BoolLiteralNode){
             BoolLiteralNode boolLiteralNode = new BoolLiteralNode();
-            boolLiteralNode.value = ((BoolLiteralNode) literalNode).value;
+            boolLiteralNode.value = Boolean.parseBoolean(context.getChild(0).getText());
             literalNode = boolLiteralNode;
         }
-        else if(literalNode instanceof AngleLiteralNode){
+        else if(context.getChild(0) instanceof AngleLiteralNode){
             AngleLiteralNode angleLiteralNode = new AngleLiteralNode();
-            angleLiteralNode.value = ((AngleLiteralNode) literalNode).value;
+            String temp = context.getChild(0).getText();
+            angleLiteralNode.value = parseDouble(temp.substring(0, temp.length() - 3));
             literalNode = angleLiteralNode;
         }
-        else if(literalNode instanceof ArrayLiteralNode){
+        else{
             ArrayLiteralNode arrayLiteralNode = new ArrayLiteralNode();
-            arrayLiteralNode.elements = ((ArrayLiteralNode) literalNode).elements;
+            for(int i = 1; i < context.children.size(); i += 2 ){
+                arrayLiteralNode.elements.add((ExprNode)context.getChild(i));
+            }
             literalNode = arrayLiteralNode;
         }
         return literalNode;
@@ -228,8 +234,22 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     }
     @Override
     public UnaryExprNode visitUnaryExpr(CFG_concreteParser.UnaryExprContext context){
-        UnaryExprNode unaryExprNode = (UnaryExprNode) visit((ParseTree) context.children);
-        unaryExprNode.expr = (ExprNode) visit(context.atomExpr());
+        UnaryExprNode unaryExprNode;
+        if(context.children.size() > 1){
+            if(context.getChild(0).getText().equals("-")){
+                unaryExprNode = new UnaryMinusNode();
+            }
+            else if(context.getChild(0).getText().equals("+")){
+                unaryExprNode = new UnaryPlusNode();
+            }
+            else {
+                unaryExprNode = new UnaryNegationNode();
+            }
+            unaryExprNode.expr = (ExprNode) visit(context.atomExpr());
+        }
+        else{
+            unaryExprNode = (UnaryExprNode) visit(context.getChild(0));
+        }
         return unaryExprNode;
     }
     @Override
@@ -246,45 +266,110 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         return binaryExprNode;
     }
     @Override
-    public BinaryExprNode visitAndExpr(CFG_concreteParser.AndExprContext context){
-        BinaryExprNode binaryExprNode = (BinaryExprNode) visit((ParseTree) context.children);
-        binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(1));
-        return binaryExprNode;
+    public AndExprNode visitAndExpr(CFG_concreteParser.AndExprContext context){
+        AndExprNode binaryExprNode;
+        if(context.children.size() > 1){
+            binaryExprNode = new AndNode();
+            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
+            binaryExprNode.right = (ExprNode) visit(context.getChild(2));
+        }
+        else{
+            binaryExprNode = (AndExprNode) visit(context.getChild(0));
+        }
+        return AndExprNode;
     }
     @Override
     public BinaryExprNode visitEqualityExpr(CFG_concreteParser.EqualityExprContext context){
-        BinaryExprNode binaryExprNode = (BinaryExprNode) visit((ParseTree) context.children);
-        binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        BinaryExprNode binaryExprNode;
+        if(context.children.size() > 1){
+            if(context.getChild(1).getText().equals("==")){
+                binaryExprNode = new EqualsNode();
+            }
+            else{
+                binaryExprNode = new NotEqualsNode();
+            }
+            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
+            binaryExprNode.right = (ExprNode) visit(context.getChild(2));
+        }
+        else{
+            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+        }
         return binaryExprNode;
     }
     @Override
     public BinaryExprNode visitRelationExpr(CFG_concreteParser.RelationExprContext context){
-        BinaryExprNode binaryExprNode = (BinaryExprNode) visit((ParseTree) context.children);
-        binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        BinaryExprNode binaryExprNode;
+        if(context.children.size() > 1){
+            if(context.getChild(1).getText().equals("<")){
+                binaryExprNode = new LesserThanNode();
+            }
+            else if(context.getChild(1).getText().equals(">")){
+                binaryExprNode = new GreaterThanNode();
+            }
+            else if(context.getChild(1).getText().equals("<=")){
+                binaryExprNode = new LesserOrEqualsNode();
+            }
+            else{
+                binaryExprNode = new GreaterOrEqualsNode();
+            }
+            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
+            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        }
+        else{
+            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+        }
         return binaryExprNode;
     }
     @Override
     public BinaryExprNode visitAdditiveExpr(CFG_concreteParser.AdditiveExprContext context){
-        BinaryExprNode binaryExprNode = (BinaryExprNode) visit((ParseTree) context.children);
-        binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        BinaryExprNode binaryExprNode;
+        if(context.children.size() > 1){
+            if(context.getChild(1).getText().equals("+")){
+                binaryExprNode = new AdditionNode();
+            }
+            else{
+                binaryExprNode = new SubtractionNode();
+            }
+            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
+            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        }
+        else{
+            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+        }
         return binaryExprNode;
     }
     @Override
     public BinaryExprNode visitMultiplicativeExpr(CFG_concreteParser.MultiplicativeExprContext context){
-        BinaryExprNode binaryExprNode = (BinaryExprNode) visit((ParseTree) context.children);
-        binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        BinaryExprNode binaryExprNode;
+        if(context.children.size() > 1){
+            if(context.getChild(1).getText().equals("*")){
+                binaryExprNode = new MultiplicationNode();
+            }
+            else if(context.getChild(1).getText().equals("/")){
+                binaryExprNode = new DivisionNode();
+            }
+            else{
+                binaryExprNode = new ModuloNode();
+            }
+            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
+            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        }
+        else{
+            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+        }
         return binaryExprNode;
     }
     @Override
     public BinaryExprNode visitPowerExpr(CFG_concreteParser.PowerExprContext context){
-        BinaryExprNode binaryExprNode = (BinaryExprNode) visit((ParseTree) context.children);
-        binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        BinaryExprNode binaryExprNode;
+        if(context.children.size() > 1){
+            binaryExprNode = new PowerNode();
+            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
+            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        }
+        else{
+            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+        }
         return binaryExprNode;
     }
 }
