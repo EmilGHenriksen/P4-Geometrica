@@ -4,9 +4,6 @@ import gen.CFG_concreteBaseVisitor;
 import gen.CFG_concreteParser;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public ProgramNode visitProgram(CFG_concreteParser.ProgramContext context) {
@@ -153,7 +150,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public WhileNode visitWhileIterate(CFG_concreteParser.WhileIterateContext context){
         WhileNode whileNode = new WhileNode();
         whileNode.conditionExpression = (ExprNode) visit(context.expr());
-        whileNode.stmtNodes = (List<StmtNode>) visit(context.stmtList());
+        whileNode.stmtNodes = (StmtListNode) visit(context.stmtList());
         return whileNode;
     }
     @Override
@@ -205,7 +202,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public FunctionCallNode visitFunctionCall(CFG_concreteParser.FunctionCallContext context){
         FunctionCallNode functionCallNode = new FunctionCallNode();
         functionCallNode.id = (IdentifierNode) visit(context.identifier());
-        functionCallNode.parameters = (List<ExprNode>) visit(context.parameterValueList());
+        functionCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
         return functionCallNode;
     }
     @Override
@@ -213,7 +210,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         MethodCallNode methodCallNode = new MethodCallNode();
         methodCallNode.valueID = (IdentifierNode) visit(context.identifier(0));
         methodCallNode.methodID = (IdentifierNode) visit(context.identifier(1));
-        methodCallNode.parameters = (List<ExprNode>) visit(context.parameterValueList());
+        methodCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
         return methodCallNode;
     }
     @Override
@@ -237,9 +234,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     }
     @Override
     public BinaryExprNode visitOrExpr(CFG_concreteParser.OrExprContext context){
-        BinaryExprNode binaryExprNode = (BinaryExprNode) visit((ParseTree) context.children);
+        BinaryExprNode binaryExprNode = new OrNode();
         binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+        binaryExprNode.right = (ExprNode) visit(context.getChild(2));
         return binaryExprNode;
     }
     @Override
