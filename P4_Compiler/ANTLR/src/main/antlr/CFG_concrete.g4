@@ -76,13 +76,13 @@ propertyCall : identifier '.' identifier ;
 //--------------expressions--------------
 expr : orExpr ;
 
-orExpr : andExpr (('OR') andExpr)* ;
-andExpr : equalityExpr (('AND') equalityExpr)* ;
-equalityExpr : relationExpr (('=='|'!=') relationExpr)* ;
-relationExpr : additiveExpr (('<'|'>'|'<='|'>=') additiveExpr)* ;
-additiveExpr : multiplicativeExpr (('-'|'+') multiplicativeExpr)* ;
-multiplicativeExpr : powerExpr (('*'|'/'|'%') powerExpr)* ;
-powerExpr : unaryExpr ('^' unaryExpr)* ;
+orExpr : andExpr (('OR') orExpr)? ;
+andExpr : equalityExpr (('AND') andExpr)? ;
+equalityExpr : relationExpr (('=='|'!=') equalityExpr)? ;
+relationExpr : additiveExpr (('<'|'>'|'<='|'>=') relationExpr)? ;
+additiveExpr : multiplicativeExpr (('-'|'+') additiveExpr)? ;
+multiplicativeExpr : powerExpr (('*'|'/'|'%') multiplicativeExpr)? ;
+powerExpr : unaryExpr ('^' powerExpr)? ;
 unaryExpr : ('-'|'+'|'!')? atomExpr ;
 atomExpr : parenthesisedExpr
          | literal
