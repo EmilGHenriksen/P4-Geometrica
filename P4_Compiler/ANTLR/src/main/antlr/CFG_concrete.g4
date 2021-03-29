@@ -86,12 +86,13 @@ powerExpr : unaryExpr ('^' powerExpr)? ;
 unaryExpr : ('-'|'+'|'!')? atomExpr ;
 atomExpr : parenthesisedExpr
          | literal
-         | identifier typeModAccess?
+         | variableExpr
          | functionCall
          | methodCall
          | propertyCall
          ;
 parenthesisedExpr : '(' orExpr ')' ;
+variableExpr : identifier typeModAccess? ;
 
 
 //----literals----
