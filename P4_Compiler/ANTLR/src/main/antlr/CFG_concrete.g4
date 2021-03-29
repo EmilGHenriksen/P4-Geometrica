@@ -31,7 +31,7 @@ stmt  : return_ ';'
 
 
 
-function      : Type TypeModifier? identifier '(' parameterDeclareList ')' '{' stmtList '}' ;
+function      : (Type TypeModifier? | 'void') identifier '(' parameterDeclareList ')' '{' stmtList '}' ;
 parameterDeclareList : (declare (',' declare)*)? ;
 stmtList : stmt* ;
 
@@ -127,8 +127,7 @@ AngleLiteral  : ('0'|([1-9][0-9]*))('.'[0-9]+)?'deg'
 
 //----types----
 AccessModifier : 'const' ;
-Type : 'void'
-	  | 'bool'
+Type :  'bool'
 	  | 'int'    //actually longs
 	  | 'float'  //actually doubles
 	  | 'string' //char is single-letter string
