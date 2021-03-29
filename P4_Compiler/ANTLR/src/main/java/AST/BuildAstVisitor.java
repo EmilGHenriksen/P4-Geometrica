@@ -234,9 +234,15 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     }
     @Override
     public BinaryExprNode visitOrExpr(CFG_concreteParser.OrExprContext context){
-        BinaryExprNode binaryExprNode = new OrNode();
-        binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-        binaryExprNode.right = (ExprNode) visit(context.getChild(2));
+        BinaryExprNode binaryExprNode;
+        if(context.children.size() > 1){
+            binaryExprNode = new OrNode();
+            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
+            binaryExprNode.right = (ExprNode) visit(context.getChild(2));
+        }
+        else{
+            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+        }
         return binaryExprNode;
     }
     @Override
