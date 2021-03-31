@@ -158,5 +158,9 @@ IdToken : ([a-zA-Z_])([a-zA-Z_0-9])* ;
 
 
 
+//ignore comments
+EOLcomment : ('//'(~[\n\r]+))+ -> channel(HIDDEN);
+BlockComment : ('/*'(.*?)'*/')+ -> channel(HIDDEN);
+
 //ignore whitespace
 WS: (' '|'\t'|'\n'|'\r')+ -> channel(HIDDEN);

@@ -1,12 +1,32 @@
-int x IS 10;
 
-int p(){
-    return x;
+//opgave: givet 2 vilkårlige cirkler:
+//-find ud af hvilken er har størst overfladeareal
+//-placer den største i (0,0)
+//-placer den mindste i (10,0)
+
+//(evt. liste af test scenarier i stedet for 1 scenarie)
+circle c1 IS circle(point(36, 4), 5);
+circle c2 IS circle(point(7, 2), 3);
+
+
+//---løsning---
+point Big IS point(0, 0);
+point Small IS point(10, 0);
+
+float area1 IS PI*c1.radius^2
+float area2 IS PI*c2.radius^2
+
+if(area1 > area2){
+	c1.x IS 0;
+	c1.y IS 0;
+
+	c2.x IS 10;
+	c2.y IS 0;
 }
+else{
+	c2.x IS 0;
+	c2.y IS 0;
 
-int q(){
-    int x IS 15;
-    return p();
+	c1.x IS 10;
+	c1.y IS 0;
 }
-
-q();

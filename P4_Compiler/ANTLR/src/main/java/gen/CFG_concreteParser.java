@@ -22,7 +22,8 @@ public class CFG_concreteParser extends Parser {
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
 		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, T__37=38, 
 		IntLiteral=39, FloatLiteral=40, StringLiteral=41, BoolLiteral=42, AngleLiteral=43, 
-		AccessModifier=44, Type=45, TypeModifier=46, IdToken=47, WS=48;
+		AccessModifier=44, Type=45, TypeModifier=46, IdToken=47, EOLcomment=48, 
+		BlockComment=49, WS=50;
 	public static final int
 		RULE_program = 0, RULE_content = 1, RULE_stmt = 2, RULE_function = 3, 
 		RULE_parameterDeclareList = 4, RULE_stmtList = 5, RULE_return_ = 6, RULE_declare = 7, 
@@ -70,7 +71,7 @@ public class CFG_concreteParser extends Parser {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, "IntLiteral", "FloatLiteral", "StringLiteral", "BoolLiteral", 
 			"AngleLiteral", "AccessModifier", "Type", "TypeModifier", "IdToken", 
-			"WS"
+			"EOLcomment", "BlockComment", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -3014,7 +3015,7 @@ public class CFG_concreteParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\62\u0178\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\64\u0178\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
