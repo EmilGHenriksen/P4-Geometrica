@@ -24,8 +24,8 @@ stmt  : return_
 	  | assign
 	  | select
 	  | iterate
-	  | '{' stmtList '}'
-	  | expr ';'
+	  | stmtList
+	  | exprStmt
 	  ;
 
 
@@ -33,7 +33,7 @@ stmt  : return_
 
 function      : (Type TypeModifier? | 'void') identifier '(' parameterDeclareList ')' '{' stmtList '}' ;
 parameterDeclareList : (declare (',' declare)*)? ;
-stmtList : stmt* ;
+stmtList : '{' stmt*  '}';
 
 //--------------statements--------------
 return_ : 'return' expr? ';' ;
@@ -69,7 +69,8 @@ parameterValueList   : (expr (',' expr)*)? ;
 methodCall   : identifier '.' identifier '(' parameterValueList ')' ;
 propertyCall : identifier '.' identifier ;
 
-
+//----expr stmt----
+exprStmt : expr ';' ;
 
 
 
