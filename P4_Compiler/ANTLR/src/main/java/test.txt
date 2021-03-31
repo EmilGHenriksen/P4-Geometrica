@@ -5,13 +5,13 @@
 //-placer den mindste i (10,0)
 
 //(evt. liste af test scenarier i stedet for 1 scenarie)
-circle c1 IS circle(point(36, 4), 5);
-circle c2 IS circle(point(7, 2), 3);
+circle c1 IS newcircle(newpoint(36, 4), 5);
+circle c2 IS newcircle(newpoint(7, 2), 3);
 
 
 //---løsning---
-point Big IS point(0, 0);
-point Small IS point(10, 0);
+point Big IS newpoint(0, 0);
+point Small IS newpoint(10, 0);
 
 float area1 IS PI*c1.radius^2
 float area2 IS PI*c2.radius^2

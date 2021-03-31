@@ -53,6 +53,16 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         }
         return dcls;
     }
+    @Override
+    public ValueListNode visitParameterValueList(CFG_concreteParser.ParameterValueListContext context){
+        ValueListNode valueListNode = new ValueListNode();
+        if(context.children != null){
+            for(int i = 0; i < context.children.size(); i++){
+                valueListNode.exprNodes.add((ExprNode) visit(context.getChild(i)));
+            }
+        }
+        return valueListNode;
+    }
 
     @Override
     public StmtListNode visitStmtList(CFG_concreteParser.StmtListContext context) {
@@ -329,25 +339,25 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             if(context.getChild(1).getText().equals("<")){
                 LesserThanNode lesserThanNode = new LesserThanNode();
                 lesserThanNode.left = (ExprNode) visit(context.getChild(0));
-                lesserThanNode.right = (ExprNode) visit(context.getChild(1));
+                lesserThanNode.right = (ExprNode) visit(context.getChild(2));
                 relationExprNode = lesserThanNode;
             }
             else if(context.getChild(1).getText().equals(">")){
                 GreaterThanNode greaterThanNode = new GreaterThanNode();
                 greaterThanNode.left = (ExprNode) visit(context.getChild(0));
-                greaterThanNode.right = (ExprNode) visit(context.getChild(1));
+                greaterThanNode.right = (ExprNode) visit(context.getChild(2));
                 relationExprNode = greaterThanNode;
             }
             else if(context.getChild(1).getText().equals("<=")){
                 LesserOrEqualsNode lesserOrEqualsNode = new LesserOrEqualsNode();
                 lesserOrEqualsNode.left = (ExprNode) visit(context.getChild(0));
-                lesserOrEqualsNode.right = (ExprNode) visit(context.getChild(1));
+                lesserOrEqualsNode.right = (ExprNode) visit(context.getChild(2));
                 relationExprNode = lesserOrEqualsNode;
             }
             else{
                 GreaterOrEqualsNode greaterOrEqualsNode = new GreaterOrEqualsNode();
                 greaterOrEqualsNode.left = (ExprNode) visit(context.getChild(0));
-                greaterOrEqualsNode.right = (ExprNode) visit(context.getChild(1));
+                greaterOrEqualsNode.right = (ExprNode) visit(context.getChild(2));
                 relationExprNode = greaterOrEqualsNode;
             }
         }
@@ -363,13 +373,13 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             if(context.getChild(1).getText().equals("+")){
                 AdditionNode additionNode = new AdditionNode();
                 additionNode.left = (ExprNode) visit(context.getChild(0));
-                additionNode.right = (ExprNode) visit(context.getChild(1));
+                additionNode.right = (ExprNode) visit(context.getChild(2));
                 additiveExprNode = additionNode;
             }
             else{
                 SubtractionNode subtractionNode = new SubtractionNode();
                 subtractionNode.left = (ExprNode) visit(context.getChild(0));
-                subtractionNode.right = (ExprNode) visit(context.getChild(1));
+                subtractionNode.right = (ExprNode) visit(context.getChild(2));
                 additiveExprNode = subtractionNode;
             }
         }
@@ -385,19 +395,19 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             if(context.getChild(1).getText().equals("*")){
                 MultiplicationNode multiplicationNode = new MultiplicationNode();
                 multiplicationNode.left = (ExprNode) visit(context.getChild(0));
-                multiplicationNode.right = (ExprNode) visit(context.getChild(1));
+                multiplicationNode.right = (ExprNode) visit(context.getChild(2));
                 multiplicativeExprNode = multiplicationNode;
             }
             else if(context.getChild(1).getText().equals("/")){
                 DivisionNode divisionNode = new DivisionNode();
                 divisionNode.left = (ExprNode) visit(context.getChild(0));
-                divisionNode.right = (ExprNode) visit(context.getChild(1));
+                divisionNode.right = (ExprNode) visit(context.getChild(2));
                 multiplicativeExprNode = divisionNode;
             }
             else{
                 ModuloNode moduloNode = new ModuloNode();
                 moduloNode.left = (ExprNode) visit(context.getChild(0));
-                moduloNode.right = (ExprNode) visit(context.getChild(1));
+                moduloNode.right = (ExprNode) visit(context.getChild(2));
                 multiplicativeExprNode = moduloNode;
             }
         }
@@ -412,7 +422,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         if(context.children.size() > 1){
             PowerNode powerNode = new PowerNode();
             powerNode.left = (ExprNode) visit(context.getChild(0));
-            powerNode.right = (ExprNode) visit(context.getChild(1));
+            powerNode.right = (ExprNode) visit(context.getChild(2));
             powerExprNode = powerNode;
         }
         else{
