@@ -38,8 +38,17 @@ stmtList : '{' stmt*  '}';
 //--------------statements--------------
 return_ : 'return' expr? ';' ;
 declare : AccessModifier? Type TypeModifier? identifier ('IS' expr)? ';' ;
-assign  :                      identifier typeModAccess?  'IS' expr ';' ;
-typeModAccess : ('[' expr ']')+ ;
+assign  :                                 variableAccess 'IS' expr ';' ;
+
+//--variable access--
+variableAccess : variablePropertyAccess ;
+variablePropertyAccess : variablePropertyAccess '.' variableModifierAccess
+                       | variableModifierAccess
+                       ;
+variableModifierAccess : variableModifierAccess '[' expr ']'
+                       | identifier
+                       ;
+
 
 //----selection----
 select  : ifSelect
@@ -66,8 +75,8 @@ whileIterate   : 'while' '(' expr ')' '{' stmtList '}' ;
 functionCall       : identifier '(' parameterValueList ')' ;
 parameterValueList   : (expr (',' expr)*)? ;
 
-methodCall   : identifier '.' identifier '(' parameterValueList ')' ;
-propertyCall : identifier '.' identifier ;
+methodCall   : identifier ('.' identifier)+ '(' parameterValueList ')' ;
+propertyCall : identifier ('.' identifier)+ ;
 
 //----expr stmt----
 exprStmt : expr ';' ;
@@ -87,13 +96,12 @@ powerExpr : unaryExpr ('^' powerExpr)? ;
 unaryExpr : ('-'|'+'|'!')? atomExpr ;
 atomExpr : parenthesisedExpr
          | literal
-         | variableExpr
+         | variableAccess
          | functionCall
          | methodCall
          | propertyCall
          ;
 parenthesisedExpr : '(' orExpr ')' ;
-variableExpr : identifier typeModAccess? ;
 
 
 //----literals----
