@@ -97,15 +97,35 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 */
 	void exitAssign(CFG_concreteParser.AssignContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CFG_concreteParser#typeModAccess}.
+	 * Enter a parse tree produced by {@link CFG_concreteParser#variableAccess}.
 	 * @param ctx the parse tree
 	 */
-	void enterTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx);
+	void enterVariableAccess(CFG_concreteParser.VariableAccessContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link CFG_concreteParser#typeModAccess}.
+	 * Exit a parse tree produced by {@link CFG_concreteParser#variableAccess}.
 	 * @param ctx the parse tree
 	 */
-	void exitTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx);
+	void exitVariableAccess(CFG_concreteParser.VariableAccessContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#variablePropertyAccess}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#variablePropertyAccess}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#variableModifierAccess}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#variableModifierAccess}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#select}.
 	 * @param ctx the parse tree
@@ -366,16 +386,6 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CFG_concreteParser#variableExpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterVariableExpr(CFG_concreteParser.VariableExprContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CFG_concreteParser#variableExpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitVariableExpr(CFG_concreteParser.VariableExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#literal}.
 	 * @param ctx the parse tree

@@ -123,13 +123,37 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx) { }
+	@Override public void enterVariableAccess(CFG_concreteParser.VariableAccessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx) { }
+	@Override public void exitVariableAccess(CFG_concreteParser.VariableAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -442,18 +466,6 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVariableExpr(CFG_concreteParser.VariableExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVariableExpr(CFG_concreteParser.VariableExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

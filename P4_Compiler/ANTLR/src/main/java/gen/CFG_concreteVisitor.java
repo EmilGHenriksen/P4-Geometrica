@@ -64,11 +64,23 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssign(CFG_concreteParser.AssignContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CFG_concreteParser#typeModAccess}.
+	 * Visit a parse tree produced by {@link CFG_concreteParser#variableAccess}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTypeModAccess(CFG_concreteParser.TypeModAccessContext ctx);
+	T visitVariableAccess(CFG_concreteParser.VariableAccessContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#variablePropertyAccess}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#variableModifierAccess}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#select}.
 	 * @param ctx the parse tree
@@ -225,12 +237,6 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CFG_concreteParser#variableExpr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariableExpr(CFG_concreteParser.VariableExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#literal}.
 	 * @param ctx the parse tree
