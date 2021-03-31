@@ -156,6 +156,13 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         return whileNode;
     }
     @Override
+    public ExprStmtNode visitExprStmt(CFG_concreteParser.ExprStmtContext context){
+        ExprStmtNode exprStmtNode = new ExprStmtNode();
+        exprStmtNode.expr = (ExprNode) visit(context.expr());
+        return exprStmtNode;
+    }
+
+    @Override
     public LiteralNode visitLiteral(CFG_concreteParser.LiteralContext context){
         LiteralNode literalNode;
 
@@ -164,26 +171,26 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             intLiteralNode.value = parseLong(context.getChild(0).getText());
             literalNode = intLiteralNode;
         }
-        else if(context.getChild(0) instanceof FloatLiteralNode){
+        else if(context.getChild(0) instanceof CFG_concreteParser.FloatLiteralContext){
             FloatLiteralNode floatLiteralNode = new FloatLiteralNode();
             floatLiteralNode.value = parseDouble(context.getChild(0).getText());
             literalNode = floatLiteralNode;
         }
-        else if(context.getChild(0) instanceof PiLiteralNode){
+        else if(context.getChild(0) instanceof CFG_concreteParser.PiLiteralContext){
             literalNode = new PiLiteralNode();
         }
-        else if(context.getChild(0) instanceof StringLiteralNode){
+        else if(context.getChild(0) instanceof CFG_concreteParser.StringLiteralContext){
             StringLiteralNode stringLiteralNode = new StringLiteralNode();
             String temp = context.getChild(0).getText();
             stringLiteralNode.value = temp.substring(1, temp.length() -1);
             literalNode = stringLiteralNode;
         }
-        else if(context.getChild(0) instanceof BoolLiteralNode){
+        else if(context.getChild(0) instanceof CFG_concreteParser.BoolLiteralContext){
             BoolLiteralNode boolLiteralNode = new BoolLiteralNode();
             boolLiteralNode.value = Boolean.parseBoolean(context.getChild(0).getText());
             literalNode = boolLiteralNode;
         }
-        else if(context.getChild(0) instanceof AngleLiteralNode){
+        else if(context.getChild(0) instanceof CFG_concreteParser.AngleLiteralContext){
             AngleLiteralNode angleLiteralNode = new AngleLiteralNode();
             String temp = context.getChild(0).getText();
             angleLiteralNode.value = parseDouble(temp.substring(0, temp.length() - 3));

@@ -1,1 +1,3 @@
-func();
+int foo(float c){
+    string a IS "b";
+}

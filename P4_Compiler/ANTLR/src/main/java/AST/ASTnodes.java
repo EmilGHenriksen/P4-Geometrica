@@ -101,6 +101,11 @@ class WhileNode extends StmtNode {
     StmtListNode stmtNodes;
 }
 
+//----expr stmt----
+class ExprStmtNode extends ExprNode{
+    ExprNode expr;
+}
+
 //----------------expressions-----------------
 abstract class ExprNode extends StmtNode{
 }
