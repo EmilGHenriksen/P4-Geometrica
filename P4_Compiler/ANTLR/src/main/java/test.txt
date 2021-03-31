@@ -1,9 +1,12 @@
-{
-    int a IS 2;
-    {
-        int a IS 10;
-        {
-            int b IS a;
-        }
-    }
+int x IS 10;
+
+int p(){
+    return x;
 }
+
+int q(){
+    int x IS 15;
+    return p();
+}
+
+q();

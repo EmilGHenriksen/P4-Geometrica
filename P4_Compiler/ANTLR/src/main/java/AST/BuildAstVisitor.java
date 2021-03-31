@@ -17,11 +17,15 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public ContentNode visitContent(CFG_concreteParser.ContentContext context) {
         ContentNode content = new ContentNode();
         if(context.children != null) {
+            int nFunctions = 0;
+            int nStatements = 0;
             for (int i = 0; i < context.children.size(); i++) {
                 if (context.children.get(i) instanceof CFG_concreteParser.FunctionContext) {
-                    content.functionNodes.add((FunctionNode) visit(context.function(0)));
+                    content.functionNodes.add((FunctionNode) visit(context.function(nFunctions)));
+                    nFunctions++;
                 } else if (context.children.get(i) instanceof CFG_concreteParser.StmtContext) {
-                    content.stmtNodes.add((StmtNode) visit(context.stmt(0)));
+                    content.stmtNodes.add((StmtNode) visit(context.stmt(nStatements)));
+                    nStatements++;
                 }
             }
         }
