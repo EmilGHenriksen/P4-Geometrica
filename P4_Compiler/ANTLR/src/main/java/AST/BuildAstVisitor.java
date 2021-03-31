@@ -159,7 +159,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public LiteralNode visitLiteral(CFG_concreteParser.LiteralContext context){
         LiteralNode literalNode;
 
-        if(context.getChild(0) instanceof IntLiteralNode){
+        if(context.getChild(0) instanceof CFG_concreteParser.IntLiteralContext){
             IntLiteralNode intLiteralNode = new IntLiteralNode();
             intLiteralNode.value = parseLong(context.getChild(0).getText());
             literalNode = intLiteralNode;
@@ -253,124 +253,152 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         return unaryExprNode;
     }
     @Override
-    public BinaryExprNode visitOrExpr(CFG_concreteParser.OrExprContext context){
-        BinaryExprNode binaryExprNode;
+    public OrExprNode visitOrExpr(CFG_concreteParser.OrExprContext context){
+        OrExprNode orExprNode;
         if(context.children.size() > 1){
-            binaryExprNode = new OrNode();
-            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-            binaryExprNode.right = (ExprNode) visit(context.getChild(2));
+            OrNode orNode = new OrNode();
+            orNode.left = (ExprNode) visit(context.getChild(0));
+            orNode.right = (ExprNode) visit(context.getChild(2));
+            orExprNode = orNode;
         }
         else{
-            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+            orExprNode = (OrExprNode) visit(context.getChild(0));
         }
-        return binaryExprNode;
+        return orExprNode;
     }
     @Override
     public AndExprNode visitAndExpr(CFG_concreteParser.AndExprContext context){
-        AndExprNode binaryExprNode;
+        AndExprNode andExprNode;
         if(context.children.size() > 1){
-            binaryExprNode = new AndNode();
-            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-            binaryExprNode.right = (ExprNode) visit(context.getChild(2));
+            AndNode andNode = new AndNode();
+            andNode.left = (ExprNode) visit(context.getChild(0));
+            andNode.right = (ExprNode) visit(context.getChild(2));
+            andExprNode = andNode;
         }
         else{
-            binaryExprNode = (AndExprNode) visit(context.getChild(0));
+            andExprNode = (AndExprNode) visit(context.getChild(0));
         }
-        return AndExprNode;
+        return andExprNode;
     }
     @Override
-    public BinaryExprNode visitEqualityExpr(CFG_concreteParser.EqualityExprContext context){
-        BinaryExprNode binaryExprNode;
+    public EqualityExprNode visitEqualityExpr(CFG_concreteParser.EqualityExprContext context){
+        EqualityExprNode equalityExprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("==")){
-                binaryExprNode = new EqualsNode();
+                EqualsNode equalsNode = new EqualsNode();
+                equalsNode.left = (ExprNode) visit(context.getChild(0));
+                equalsNode.right = (ExprNode) visit(context.getChild(2));
+                equalityExprNode = equalsNode;
             }
             else{
-                binaryExprNode = new NotEqualsNode();
+                NotEqualsNode notEqualsNode = new NotEqualsNode();
+                notEqualsNode.left = (ExprNode) visit(context.getChild(0));
+                notEqualsNode.right = (ExprNode) visit(context.getChild(2));
+                equalityExprNode = notEqualsNode;
             }
-            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-            binaryExprNode.right = (ExprNode) visit(context.getChild(2));
         }
         else{
-            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+            equalityExprNode = (EqualityExprNode) visit(context.getChild(0));
         }
-        return binaryExprNode;
+        return equalityExprNode;
     }
     @Override
-    public BinaryExprNode visitRelationExpr(CFG_concreteParser.RelationExprContext context){
-        BinaryExprNode binaryExprNode;
+    public RelationExprNode visitRelationExpr(CFG_concreteParser.RelationExprContext context){
+        RelationExprNode relationExprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("<")){
-                binaryExprNode = new LesserThanNode();
+                LesserThanNode lesserThanNode = new LesserThanNode();
+                lesserThanNode.left = (ExprNode) visit(context.getChild(0));
+                lesserThanNode.right = (ExprNode) visit(context.getChild(1));
+                relationExprNode = lesserThanNode;
             }
             else if(context.getChild(1).getText().equals(">")){
-                binaryExprNode = new GreaterThanNode();
+                GreaterThanNode greaterThanNode = new GreaterThanNode();
+                greaterThanNode.left = (ExprNode) visit(context.getChild(0));
+                greaterThanNode.right = (ExprNode) visit(context.getChild(1));
+                relationExprNode = greaterThanNode;
             }
             else if(context.getChild(1).getText().equals("<=")){
-                binaryExprNode = new LesserOrEqualsNode();
+                LesserOrEqualsNode lesserOrEqualsNode = new LesserOrEqualsNode();
+                lesserOrEqualsNode.left = (ExprNode) visit(context.getChild(0));
+                lesserOrEqualsNode.right = (ExprNode) visit(context.getChild(1));
+                relationExprNode = lesserOrEqualsNode;
             }
             else{
-                binaryExprNode = new GreaterOrEqualsNode();
+                GreaterOrEqualsNode greaterOrEqualsNode = new GreaterOrEqualsNode();
+                greaterOrEqualsNode.left = (ExprNode) visit(context.getChild(0));
+                greaterOrEqualsNode.right = (ExprNode) visit(context.getChild(1));
+                relationExprNode = greaterOrEqualsNode;
             }
-            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
         }
         else{
-            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+            relationExprNode = (RelationExprNode) visit(context.getChild(0));
         }
-        return binaryExprNode;
+        return relationExprNode;
     }
     @Override
-    public BinaryExprNode visitAdditiveExpr(CFG_concreteParser.AdditiveExprContext context){
-        BinaryExprNode binaryExprNode;
+    public AdditiveExprNode visitAdditiveExpr(CFG_concreteParser.AdditiveExprContext context){
+        AdditiveExprNode additiveExprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("+")){
-                binaryExprNode = new AdditionNode();
+                AdditionNode additionNode = new AdditionNode();
+                additionNode.left = (ExprNode) visit(context.getChild(0));
+                additionNode.right = (ExprNode) visit(context.getChild(1));
+                additiveExprNode = additionNode;
             }
             else{
-                binaryExprNode = new SubtractionNode();
+                SubtractionNode subtractionNode = new SubtractionNode();
+                subtractionNode.left = (ExprNode) visit(context.getChild(0));
+                subtractionNode.right = (ExprNode) visit(context.getChild(1));
+                additiveExprNode = subtractionNode;
             }
-            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
         }
         else{
-            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+            additiveExprNode = (AdditiveExprNode) visit(context.getChild(0));
         }
-        return binaryExprNode;
+        return additiveExprNode;
     }
     @Override
-    public BinaryExprNode visitMultiplicativeExpr(CFG_concreteParser.MultiplicativeExprContext context){
-        BinaryExprNode binaryExprNode;
+    public MultiplicativeExprNode visitMultiplicativeExpr(CFG_concreteParser.MultiplicativeExprContext context){
+        MultiplicativeExprNode multiplicativeExprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("*")){
-                binaryExprNode = new MultiplicationNode();
+                MultiplicationNode multiplicationNode = new MultiplicationNode();
+                multiplicationNode.left = (ExprNode) visit(context.getChild(0));
+                multiplicationNode.right = (ExprNode) visit(context.getChild(1));
+                multiplicativeExprNode = multiplicationNode;
             }
             else if(context.getChild(1).getText().equals("/")){
-                binaryExprNode = new DivisionNode();
+                DivisionNode divisionNode = new DivisionNode();
+                divisionNode.left = (ExprNode) visit(context.getChild(0));
+                divisionNode.right = (ExprNode) visit(context.getChild(1));
+                multiplicativeExprNode = divisionNode;
             }
             else{
-                binaryExprNode = new ModuloNode();
+                ModuloNode moduloNode = new ModuloNode();
+                moduloNode.left = (ExprNode) visit(context.getChild(0));
+                moduloNode.right = (ExprNode) visit(context.getChild(1));
+                multiplicativeExprNode = moduloNode;
             }
-            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
         }
         else{
-            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+            multiplicativeExprNode = (MultiplicativeExprNode) visit(context.getChild(0));
         }
-        return binaryExprNode;
+        return multiplicativeExprNode;
     }
     @Override
-    public BinaryExprNode visitPowerExpr(CFG_concreteParser.PowerExprContext context){
-        BinaryExprNode binaryExprNode;
+    public PowerExprNode visitPowerExpr(CFG_concreteParser.PowerExprContext context){
+        PowerExprNode powerExprNode;
         if(context.children.size() > 1){
-            binaryExprNode = new PowerNode();
-            binaryExprNode.left = (ExprNode) visit(context.getChild(0));
-            binaryExprNode.right = (ExprNode) visit(context.getChild(1));
+            PowerNode powerNode = new PowerNode();
+            powerNode.left = (ExprNode) visit(context.getChild(0));
+            powerNode.right = (ExprNode) visit(context.getChild(1));
+            powerExprNode = powerNode;
         }
         else{
-            binaryExprNode = (BinaryExprNode) visit(context.getChild(0));
+            powerExprNode = (PowerExprNode) visit(context.getChild(0));
         }
-        return binaryExprNode;
+        return powerExprNode;
     }
 }
 

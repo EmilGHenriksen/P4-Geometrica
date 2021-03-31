@@ -19,9 +19,9 @@ the CFG is made with EBNF using this notation:
 
 program : content EOF;
 content : (stmt | function)+ ;
-stmt  : return_ ';'
-	  | declare ';'
-	  | assign ';'
+stmt  : return_
+	  | declare
+	  | assign
 	  | select
 	  | iterate
 	  | '{' stmtList '}'
@@ -36,9 +36,9 @@ parameterDeclareList : (declare (',' declare)*)? ;
 stmtList : stmt* ;
 
 //--------------statements--------------
-return_ : 'return' expr? ;
-declare : AccessModifier? Type TypeModifier? identifier ('IS' expr)? ;
-assign  :                      identifier typeModAccess?  'IS' expr ;
+return_ : 'return' expr? ';' ;
+declare : AccessModifier? Type TypeModifier? identifier ('IS' expr)? ';' ;
+assign  :                      identifier typeModAccess?  'IS' expr ';' ;
 typeModAccess : ('[' expr ']')+ ;
 
 //----selection----
@@ -96,17 +96,17 @@ variableExpr : identifier typeModAccess? ;
 
 
 //----literals----
-literal  : IntLiteral
-		 | FloatLiteral
-		 | 'PI' //converts to float number for pi
-		 | StringLiteral
-		 | BoolLiteral
-		 | AngleLiteral
+literal  : intLiteral
+		 | floatLiteral
+		 | piLiteral //converts to float number for pi
+		 | stringLiteral
+		 | boolLiteral
+		 | angleLiteral
 		 | arrayLiteral
 		 //the other types have no literals
 		 ;
 arrayLiteral : '[' (expr (',' expr)*)? ']' ;
-
+piLiteral : 'PI' ;
 
 
 
@@ -115,12 +115,18 @@ arrayLiteral : '[' (expr (',' expr)*)? ']' ;
 
 
 //----literal tokens----
+//double definition so they have names instead of only being terminals
+intLiteral : IntLiteral ;
 IntLiteral    : '0'|([1-9][0-9]*) ;               //negative numbers are expressions with unary '-'
+floatLiteral : FloatLiteral ;
 FloatLiteral  : ('0'|([1-9][0-9]*))'.'([0-9]+) ;  //int literals are implicitly converted to float (to avoid ambiguity)
+stringLiteral : StringLiteral ;
 StringLiteral : '"'(~[\n"])*'"' ;                 //contains anything but literal newline or quote-sign, but notably can contain '\n' (as 2 characters)
+boolLiteral : BoolLiteral ;
 BoolLiteral : 'TRUE'
 			| 'FALSE'
 			;
+angleLiteral : AngleLiteral ;
 AngleLiteral  : ('0'|([1-9][0-9]*))('.'[0-9]+)?'deg'
 			  | ('0'|([1-9][0-9]*))('.'[0-9]+)?'rad' //radians
 			  ;

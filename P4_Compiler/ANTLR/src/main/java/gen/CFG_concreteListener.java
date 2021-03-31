@@ -387,6 +387,66 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 */
 	void exitArrayLiteral(CFG_concreteParser.ArrayLiteralContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#piLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterPiLiteral(CFG_concreteParser.PiLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#piLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitPiLiteral(CFG_concreteParser.PiLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#intLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntLiteral(CFG_concreteParser.IntLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#intLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntLiteral(CFG_concreteParser.IntLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#floatLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloatLiteral(CFG_concreteParser.FloatLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#floatLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloatLiteral(CFG_concreteParser.FloatLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#stringLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringLiteral(CFG_concreteParser.StringLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#stringLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringLiteral(CFG_concreteParser.StringLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#boolLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolLiteral(CFG_concreteParser.BoolLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#boolLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolLiteral(CFG_concreteParser.BoolLiteralContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#angleLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterAngleLiteral(CFG_concreteParser.AngleLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#angleLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitAngleLiteral(CFG_concreteParser.AngleLiteralContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#identifier}.
 	 * @param ctx the parse tree
 	 */

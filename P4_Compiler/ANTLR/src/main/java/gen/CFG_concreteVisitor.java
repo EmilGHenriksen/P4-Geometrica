@@ -238,6 +238,42 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArrayLiteral(CFG_concreteParser.ArrayLiteralContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#piLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPiLiteral(CFG_concreteParser.PiLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#intLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntLiteral(CFG_concreteParser.IntLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#floatLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatLiteral(CFG_concreteParser.FloatLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#stringLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringLiteral(CFG_concreteParser.StringLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#boolLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolLiteral(CFG_concreteParser.BoolLiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#angleLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAngleLiteral(CFG_concreteParser.AngleLiteralContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#identifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

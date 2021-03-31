@@ -231,12 +231,12 @@ class DivisionNode extends MultiplicativeExprNode{
     ExprNode right;
 }
 
-class PowerNode extends PowerExprNode{
+class ModuloNode extends MultiplicativeExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class ModuloNode extends MultiplicativeExprNode{
+class PowerNode extends PowerExprNode{
     ExprNode left;
     ExprNode right;
 }
