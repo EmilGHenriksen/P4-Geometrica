@@ -35,7 +35,7 @@ class ValueListNode extends Node {
     public ValueListNode(){ exprNodes = new ArrayList<>(); }
 }
 
-class StmtListNode extends Node {
+class StmtListNode extends StmtNode {
     List<StmtNode> statements;
     public StmtListNode(){
         statements = new ArrayList<>();

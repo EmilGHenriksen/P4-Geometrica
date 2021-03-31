@@ -206,6 +206,15 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         return literalNode;
     }
     @Override
+    public VariableExprNode visitVariableExpr(CFG_concreteParser.VariableExprContext context){
+        VariableExprNode variableExprNode = new VariableExprNode();
+        variableExprNode.identifier = (IdentifierNode) visit(context.identifier());
+        if(context.typeModAccess() != null){
+            variableExprNode.accessMod = (TypeModAccessNode) visit(context.typeModAccess());
+        }
+        return variableExprNode;
+    }
+    @Override
     public IdentifierNode visitIdentifier(CFG_concreteParser.IdentifierContext context){
         IdentifierNode identifierNode = new IdentifierNode();
         identifierNode.id = context.getText();

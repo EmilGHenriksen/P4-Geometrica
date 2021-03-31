@@ -1,3 +1,9 @@
-int foo(float c){
-    string a IS "b";
+{
+    int a IS 2;
+    {
+        int a IS 10;
+        {
+            int b IS a;
+        }
+    }
 }
