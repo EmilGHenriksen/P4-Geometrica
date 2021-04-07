@@ -51,16 +51,30 @@ class ReturnStmtNode extends StmtNode {
     ExprNode value;
 }
 class DeclareStmtNode extends StmtNode {
-    String accessModifier;
-    String type;
-    String typeModifier;
+    VariableAccessNode variable;
     IdentifierNode id;
     ExprNode value;
 }
 class AssignNode extends StmtNode {
-    IdentifierNode id;
+    VariableAccessNode variable;
     ExprNode value;
 }
+
+//--variable access--
+abstract class VariableAccessNode extends AtomExprNode {
+}
+class IdentifierNode extends VariableAccessNode{
+    String id;
+}
+class VariableModifierAccessNode extends VariableAccessNode {
+    VariableAccessNode variable;
+    List<ExprNode> modifierAccessExpressions;
+}
+class VariablePropertyAccess extends VariableAccessNode {
+    VariableAccessNode parent;
+    VariableAccessNode child;
+}
+
 
 //----selection----
 class IfNode extends StmtNode {
@@ -180,10 +194,6 @@ class VariableExprNode extends AtomExprNode{
 class TypeModAccessNode extends Node{
     List<ExprNode> exprNodes;
     public TypeModAccessNode(){ exprNodes = new ArrayList<>(); }
-}
-
-class IdentifierNode extends Node {
-    String id;
 }
 
 class FunctionCallNode extends AtomExprNode {
