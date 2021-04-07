@@ -147,6 +147,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTemp(CFG_concreteParser.TempContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTemp(CFG_concreteParser.TempContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -154,6 +166,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTemp2(CFG_concreteParser.Temp2Context ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTemp2(CFG_concreteParser.Temp2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
