@@ -42,13 +42,13 @@ assign  :                                 variableAccess 'IS' expr ';' ;
 
 //--variable access--
 variableAccess : variablePropertyAccess ;
-//variablePropertyAccess : variablePropertyAccess '.' variableModifierAccess | variableModifierAccess ;
-variablePropertyAccess : variableModifierAccess propAccessList ;
-propAccessList : ('.' variableModifierAccess propAccessList)? ;
+variablePropertyAccess : variablePropertyAccess '.' variableModifierAccess | variableModifierAccess ;
+//variablePropertyAccess : variableModifierAccess propAccessList ;
+//propAccessList : ('.' variableModifierAccess propAccessList)? ;
 
-//variableModifierAccess : variableModifierAccess '[' expr ']' | identifier ;
-variableModifierAccess : identifier modAccessList ;
-modAccessList : ('[' expr ']' modAccessList)? ;
+variableModifierAccess : variableModifierAccess '[' expr ']' | identifier ;
+//variableModifierAccess : identifier modAccessList ;
+//modAccessList : ('[' expr ']' modAccessList)? ;
 
 
 //----selection----

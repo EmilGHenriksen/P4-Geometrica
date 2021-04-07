@@ -3,6 +3,8 @@ package AST;
 import gen.CFG_concreteBaseVisitor;
 import gen.CFG_concreteParser;
 
+import java.util.List;
+
 import static java.lang.Double.parseDouble;
 import static java.lang.Long.parseLong;
 
@@ -110,8 +112,42 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     }
     @Override
     public VariableAccessNode visitVariableAccess(CFG_concreteParser.VariableAccessContext context){
+        VariableAccessNode variableAccessNode = (VariableAccessNode) visit(context.variablePropertyAccess());
+        return variableAccessNode;
+    }
+    @Override
+    public VariableAccessNode visitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext context){
+        VariablePropertyAccessNode variablePropertyAccessNode = new VariablePropertyAccessNode();
+        variablePropertyAccessNode.parent = (VariableAccessNode) visit(context.variableModifierAccess());
+        variablePropertyAccessNode.child = (VariableAccessNode) visit(context.propAccessList());
+        return variablePropertyAccessNode;
+    }
+    @Override
+    public VariableAccessNode visitPropAccessList(CFG_concreteParser.PropAccessListContext context){
+        VariablePropertyAccessNode variablePropertyAccessNode = new VariablePropertyAccessNode();
+        variablePropertyAccessNode.parent = (VariableAccessNode) visit(context.variableModifierAccess());
+        variablePropertyAccessNode.child = (VariableAccessNode) visit(context.propAccessList());
+        return variablePropertyAccessNode;
+    }
+    @Override
+    public VariableAccessNode visitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext context){
         VariableAccessNode variableAccessNode;
-
+        if(context.modAccessList().getChildCount() == 0){
+            IdentifierNode id = (IdentifierNode) visit(context.identifier());
+            variableAccessNode = id;
+        }
+        else{
+            VariableModifierAccessNode variableModifierAccessNode = new VariableModifierAccessNode();
+            variableModifierAccessNode.variable = (VariableAccessNode) visit(context.identifier());
+            variableModifierAccessNode.modifierAccessExpressions = (ValueListNode) visit(context.modAccessList());
+            variableAccessNode = variableModifierAccessNode;
+        }
+        return variableAccessNode;
+    }
+    @Override
+    public ValueListNode visitModAccessList(CFG_concreteParser.ModAccessListContext context){
+        ValueListNode valueListNode = new ValueListNode();
+        
     }
 
 

@@ -68,9 +68,9 @@ class IdentifierNode extends VariableAccessNode{
 }
 class VariableModifierAccessNode extends VariableAccessNode {
     VariableAccessNode variable;
-    List<ExprNode> modifierAccessExpressions;
+    ValueListNode modifierAccessExpressions;
 }
-class VariablePropertyAccess extends VariableAccessNode {
+class VariablePropertyAccessNode extends VariableAccessNode {
     VariableAccessNode parent;
     VariableAccessNode child;
 }
