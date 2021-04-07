@@ -116,9 +116,9 @@ declare
 assign
 variableAccess
 variablePropertyAccess
-temp
+propAccessList
 variableModifierAccess
-temp2
+modAccessList
 select
 ifSelect
 switchSelect
