@@ -28,8 +28,8 @@ public class CFG_concreteParser extends Parser {
 		RULE_program = 0, RULE_content = 1, RULE_stmt = 2, RULE_function = 3, 
 		RULE_parameterDeclareList = 4, RULE_stmtList = 5, RULE_return_ = 6, RULE_declare = 7, 
 		RULE_assign = 8, RULE_variableAccess = 9, RULE_variablePropertyAccess = 10, 
-		RULE_temp = 11, RULE_variableModifierAccess = 12, RULE_temp2 = 13, RULE_select = 14, 
-		RULE_ifSelect = 15, RULE_switchSelect = 16, RULE_definedCaseList = 17, 
+		RULE_propAccessList = 11, RULE_variableModifierAccess = 12, RULE_modAccessList = 13, 
+		RULE_select = 14, RULE_ifSelect = 15, RULE_switchSelect = 16, RULE_definedCaseList = 17, 
 		RULE_definedCase = 18, RULE_defaultCase = 19, RULE_iterate = 20, RULE_foreachIterate = 21, 
 		RULE_loopIterate = 22, RULE_whileIterate = 23, RULE_functionCall = 24, 
 		RULE_parameterValueList = 25, RULE_methodCall = 26, RULE_propertyCall = 27, 
@@ -43,14 +43,14 @@ public class CFG_concreteParser extends Parser {
 		return new String[] {
 			"program", "content", "stmt", "function", "parameterDeclareList", "stmtList", 
 			"return_", "declare", "assign", "variableAccess", "variablePropertyAccess", 
-			"temp", "variableModifierAccess", "temp2", "select", "ifSelect", "switchSelect", 
-			"definedCaseList", "definedCase", "defaultCase", "iterate", "foreachIterate", 
-			"loopIterate", "whileIterate", "functionCall", "parameterValueList", 
-			"methodCall", "propertyCall", "exprStmt", "expr", "orExpr", "andExpr", 
-			"equalityExpr", "relationExpr", "additiveExpr", "multiplicativeExpr", 
-			"powerExpr", "unaryExpr", "atomExpr", "parenthesisedExpr", "literal", 
-			"arrayLiteral", "piLiteral", "intLiteral", "floatLiteral", "stringLiteral", 
-			"boolLiteral", "angleLiteral", "identifier"
+			"propAccessList", "variableModifierAccess", "modAccessList", "select", 
+			"ifSelect", "switchSelect", "definedCaseList", "definedCase", "defaultCase", 
+			"iterate", "foreachIterate", "loopIterate", "whileIterate", "functionCall", 
+			"parameterValueList", "methodCall", "propertyCall", "exprStmt", "expr", 
+			"orExpr", "andExpr", "equalityExpr", "relationExpr", "additiveExpr", 
+			"multiplicativeExpr", "powerExpr", "unaryExpr", "atomExpr", "parenthesisedExpr", 
+			"literal", "arrayLiteral", "piLiteral", "intLiteral", "floatLiteral", 
+			"stringLiteral", "boolLiteral", "angleLiteral", "identifier"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -836,8 +836,8 @@ public class CFG_concreteParser extends Parser {
 		public VariableModifierAccessContext variableModifierAccess() {
 			return getRuleContext(VariableModifierAccessContext.class,0);
 		}
-		public TempContext temp() {
-			return getRuleContext(TempContext.class,0);
+		public PropAccessListContext propAccessList() {
+			return getRuleContext(PropAccessListContext.class,0);
 		}
 		public VariablePropertyAccessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -867,7 +867,7 @@ public class CFG_concreteParser extends Parser {
 			setState(177);
 			variableModifierAccess();
 			setState(178);
-			temp();
+			propAccessList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -881,35 +881,35 @@ public class CFG_concreteParser extends Parser {
 		return _localctx;
 	}
 
-	public static class TempContext extends ParserRuleContext {
+	public static class PropAccessListContext extends ParserRuleContext {
 		public VariableModifierAccessContext variableModifierAccess() {
 			return getRuleContext(VariableModifierAccessContext.class,0);
 		}
-		public TempContext temp() {
-			return getRuleContext(TempContext.class,0);
+		public PropAccessListContext propAccessList() {
+			return getRuleContext(PropAccessListContext.class,0);
 		}
-		public TempContext(ParserRuleContext parent, int invokingState) {
+		public PropAccessListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_temp; }
+		@Override public int getRuleIndex() { return RULE_propAccessList; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).enterTemp(this);
+			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).enterPropAccessList(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).exitTemp(this);
+			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).exitPropAccessList(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitTemp(this);
+			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitPropAccessList(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final TempContext temp() throws RecognitionException {
-		TempContext _localctx = new TempContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_temp);
+	public final PropAccessListContext propAccessList() throws RecognitionException {
+		PropAccessListContext _localctx = new PropAccessListContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_propAccessList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -924,7 +924,7 @@ public class CFG_concreteParser extends Parser {
 				setState(181);
 				variableModifierAccess();
 				setState(182);
-				temp();
+				propAccessList();
 				}
 			}
 
@@ -945,8 +945,8 @@ public class CFG_concreteParser extends Parser {
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
-		public Temp2Context temp2() {
-			return getRuleContext(Temp2Context.class,0);
+		public ModAccessListContext modAccessList() {
+			return getRuleContext(ModAccessListContext.class,0);
 		}
 		public VariableModifierAccessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -976,7 +976,7 @@ public class CFG_concreteParser extends Parser {
 			setState(186);
 			identifier();
 			setState(187);
-			temp2();
+			modAccessList();
 			}
 		}
 		catch (RecognitionException re) {
@@ -990,35 +990,35 @@ public class CFG_concreteParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Temp2Context extends ParserRuleContext {
+	public static class ModAccessListContext extends ParserRuleContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public Temp2Context temp2() {
-			return getRuleContext(Temp2Context.class,0);
+		public ModAccessListContext modAccessList() {
+			return getRuleContext(ModAccessListContext.class,0);
 		}
-		public Temp2Context(ParserRuleContext parent, int invokingState) {
+		public ModAccessListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_temp2; }
+		@Override public int getRuleIndex() { return RULE_modAccessList; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).enterTemp2(this);
+			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).enterModAccessList(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).exitTemp2(this);
+			if ( listener instanceof CFG_concreteListener ) ((CFG_concreteListener)listener).exitModAccessList(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitTemp2(this);
+			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitModAccessList(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final Temp2Context temp2() throws RecognitionException {
-		Temp2Context _localctx = new Temp2Context(_ctx, getState());
-		enterRule(_localctx, 26, RULE_temp2);
+	public final ModAccessListContext modAccessList() throws RecognitionException {
+		ModAccessListContext _localctx = new ModAccessListContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_modAccessList);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -1035,7 +1035,7 @@ public class CFG_concreteParser extends Parser {
 				setState(191);
 				match(T__11);
 				setState(192);
-				temp2();
+				modAccessList();
 				}
 			}
 

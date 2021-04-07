@@ -43,12 +43,12 @@ assign  :                                 variableAccess 'IS' expr ';' ;
 //--variable access--
 variableAccess : variablePropertyAccess ;
 //variablePropertyAccess : variablePropertyAccess '.' variableModifierAccess | variableModifierAccess ;
-variablePropertyAccess : variableModifierAccess temp ;
-temp : ('.' variableModifierAccess temp)? ;
+variablePropertyAccess : variableModifierAccess propAccessList ;
+propAccessList : ('.' variableModifierAccess propAccessList)? ;
 
 //variableModifierAccess : variableModifierAccess '[' expr ']' | identifier ;
-variableModifierAccess : identifier temp2 ;
-temp2 : ('[' expr ']' temp2)? ;
+variableModifierAccess : identifier modAccessList ;
+modAccessList : ('[' expr ']' modAccessList)? ;
 
 
 //----selection----
