@@ -93,7 +93,7 @@ public class CFG_concreteBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPropAccessList(CFG_concreteParser.PropAccessListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTemp(CFG_concreteParser.TempContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -107,7 +107,7 @@ public class CFG_concreteBaseVisitor<T> extends AbstractParseTreeVisitor<T> impl
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitModAccessList(CFG_concreteParser.ModAccessListContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTemp2(CFG_concreteParser.Temp2Context ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
