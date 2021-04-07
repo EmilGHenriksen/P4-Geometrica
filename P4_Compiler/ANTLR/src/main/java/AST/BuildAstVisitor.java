@@ -109,13 +109,6 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         return assign;
     }
     @Override
-    public VariableAccessNode visitVariableAccess(CFG_concreteParser.VariableAccessContext context){
-        VariableAccessNode variableAccessNode;
-
-    }
-
-
-    @Override
     public IfNode visitIfSelect(CFG_concreteParser.IfSelectContext context){
         IfNode ifnode = new IfNode();
         ifnode.value = (ExprNode) visit(context.expr());
