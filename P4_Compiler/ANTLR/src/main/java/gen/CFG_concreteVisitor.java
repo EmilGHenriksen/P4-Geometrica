@@ -76,23 +76,11 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CFG_concreteParser#propAccessList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropAccessList(CFG_concreteParser.PropAccessListContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#variableModifierAccess}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CFG_concreteParser#modAccessList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitModAccessList(CFG_concreteParser.ModAccessListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#select}.
 	 * @param ctx the parse tree

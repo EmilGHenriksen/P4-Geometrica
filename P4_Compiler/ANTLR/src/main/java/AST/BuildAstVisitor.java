@@ -71,7 +71,10 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         StmtListNode stmtListNode = new StmtListNode();
         if(context.children != null) {
             for (int i = 0; i < context.children.size(); i++) {
-                stmtListNode.statements.add((StmtNode) visit(context.getChild(i)));
+                StmtNode nextStmt = (StmtNode) visit(context.getChild(i));
+                if(nextStmt != null){
+                    stmtListNode.statements.add(nextStmt);
+                }
             }
         }
         return stmtListNode;
@@ -106,7 +109,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public AssignNode visitAssign(CFG_concreteParser.AssignContext context){
         AssignNode assign = new AssignNode();
-        assign.id = (IdentifierNode) visit(context.identifier());
+        assign.variable = (VariableAccessNode) visit(context.variableAccess());
         assign.value = (ExprNode) visit(context.expr());
         return assign;
     }
@@ -117,39 +120,34 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     }
     @Override
     public VariableAccessNode visitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext context){
-        VariablePropertyAccessNode variablePropertyAccessNode = new VariablePropertyAccessNode();
-        variablePropertyAccessNode.parent = (VariableAccessNode) visit(context.variableModifierAccess());
-        variablePropertyAccessNode.child = (VariableAccessNode) visit(context.propAccessList());
-        return variablePropertyAccessNode;
-    }
-    @Override
-    public VariableAccessNode visitPropAccessList(CFG_concreteParser.PropAccessListContext context){
-        VariablePropertyAccessNode variablePropertyAccessNode = new VariablePropertyAccessNode();
-        variablePropertyAccessNode.parent = (VariableAccessNode) visit(context.variableModifierAccess());
-        variablePropertyAccessNode.child = (VariableAccessNode) visit(context.propAccessList());
-        return variablePropertyAccessNode;
+        VariableAccessNode variableAccessNode;
+        if(context.children.size() == 1){
+            VariableModifierAccessNode variableModifierAccessNode = (VariableModifierAccessNode) visit(context.variableModifierAccess());
+            variableAccessNode = variableModifierAccessNode;
+        }
+        else{
+            VariablePropertyAccessNode variablePropertyAccessNode = new VariablePropertyAccessNode();
+            variablePropertyAccessNode.parent = (VariableAccessNode) visit(context.variablePropertyAccess());
+            variablePropertyAccessNode.child = (VariableAccessNode) visit(context.variableModifierAccess());
+            variableAccessNode = variablePropertyAccessNode;
+        }
+        return variableAccessNode;
     }
     @Override
     public VariableAccessNode visitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext context){
         VariableAccessNode variableAccessNode;
-        if(context.modAccessList().getChildCount() == 0){
+        if(context.children.size() == 1){
             IdentifierNode id = (IdentifierNode) visit(context.identifier());
             variableAccessNode = id;
         }
         else{
             VariableModifierAccessNode variableModifierAccessNode = new VariableModifierAccessNode();
-            variableModifierAccessNode.variable = (VariableAccessNode) visit(context.identifier());
-            variableModifierAccessNode.modifierAccessExpressions = (ValueListNode) visit(context.modAccessList());
+            variableModifierAccessNode.variable = (VariableAccessNode) visit(context.variableModifierAccess());
+            variableModifierAccessNode.expr = (ExprNode) visit(context.expr());
             variableAccessNode = variableModifierAccessNode;
         }
         return variableAccessNode;
     }
-    @Override
-    public ValueListNode visitModAccessList(CFG_concreteParser.ModAccessListContext context){
-        ValueListNode valueListNode = new ValueListNode();
-        
-    }
-
 
     @Override
     public IfNode visitIfSelect(CFG_concreteParser.IfSelectContext context){
@@ -261,15 +259,6 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             literalNode = arrayLiteralNode;
         }
         return literalNode;
-    }
-    @Override
-    public VariableExprNode visitVariableExpr(CFG_concreteParser.VariableExprContext context){
-        VariableExprNode variableExprNode = new VariableExprNode();
-        variableExprNode.identifier = (IdentifierNode) visit(context.identifier());
-        if(context.typeModAccess() != null){
-            variableExprNode.accessMod = (TypeModAccessNode) visit(context.typeModAccess());
-        }
-        return variableExprNode;
     }
     @Override
     public IdentifierNode visitIdentifier(CFG_concreteParser.IdentifierContext context){

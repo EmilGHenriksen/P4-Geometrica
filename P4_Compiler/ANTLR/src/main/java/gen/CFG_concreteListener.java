@@ -117,16 +117,6 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 */
 	void exitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CFG_concreteParser#propAccessList}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropAccessList(CFG_concreteParser.PropAccessListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CFG_concreteParser#propAccessList}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropAccessList(CFG_concreteParser.PropAccessListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#variableModifierAccess}.
 	 * @param ctx the parse tree
 	 */
@@ -136,16 +126,6 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CFG_concreteParser#modAccessList}.
-	 * @param ctx the parse tree
-	 */
-	void enterModAccessList(CFG_concreteParser.ModAccessListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CFG_concreteParser#modAccessList}.
-	 * @param ctx the parse tree
-	 */
-	void exitModAccessList(CFG_concreteParser.ModAccessListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#select}.
 	 * @param ctx the parse tree

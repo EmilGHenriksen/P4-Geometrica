@@ -147,18 +147,6 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPropAccessList(CFG_concreteParser.PropAccessListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPropAccessList(CFG_concreteParser.PropAccessListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -166,18 +154,6 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariableModifierAccess(CFG_concreteParser.VariableModifierAccessContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterModAccessList(CFG_concreteParser.ModAccessListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitModAccessList(CFG_concreteParser.ModAccessListContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

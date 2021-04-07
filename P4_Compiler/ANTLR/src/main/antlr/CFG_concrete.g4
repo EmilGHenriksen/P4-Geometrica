@@ -55,7 +55,7 @@ variableModifierAccess : variableModifierAccess '[' expr ']' | identifier ;
 select  : ifSelect
 		| switchSelect
 		;
-ifSelect     : 'if' '(' expr ')'  '{' stmtList '}' ('else' stmt)? ;            //the last "statement" can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
+ifSelect     : 'if' '(' expr ')' stmtList ('else' stmt)? ;            //the last "statement" can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
 switchSelect : 'switch' '(' expr ')'  '{' definedCaseList defaultCase '}' ;
 definedCaseList : definedCase* ;
 definedCase     : 'case' expr ':' stmtList ; //always implicitly break after the statements
@@ -67,9 +67,9 @@ iterate  : foreachIterate
          | loopIterate
          | whileIterate
          ;
-foreachIterate : 'foreach' '(' identifier 'in' identifier ')' '{' stmtList '}' ;
-loopIterate    : 'loop' '(' expr ')' '{' stmtList '}' ;
-whileIterate   : 'while' '(' expr ')' '{' stmtList '}' ;
+foreachIterate : 'foreach' '(' identifier 'in' identifier ')' stmtList ;
+loopIterate    : 'loop' '(' expr ')' stmtList ;
+whileIterate   : 'while' '(' expr ')' stmtList ;
 
 
 //----calls----
