@@ -31,9 +31,11 @@ stmt  : return_
 
 
 
-function      : (Type TypeModifier? | 'void') identifier '(' parameterDeclareList ')' '{' stmtList '}' ;
-parameterDeclareList : (declare (',' declare)*)? ;
+function      : (Type TypeModifier? | 'void') identifier '(' parameterDeclareList ')' stmtList ;
+parameterDeclareList : (parameterDeclare (',' parameterDeclare)*)? ;
+parameterDeclare : Type TypeModifier? identifier ;
 stmtList : '{' stmt*  '}';
+stmtListNoBraces : stmt*  ;
 
 //--------------statements--------------
 return_ : 'return' expr? ';' ;
@@ -51,6 +53,7 @@ variableModifierAccess : variableModifierAccess '[' expr ']' | identifier ;
 //modAccessList : ('[' expr ']' modAccessList)? ;
 
 
+
 //----selection----
 select  : ifSelect
 		| switchSelect
@@ -58,8 +61,8 @@ select  : ifSelect
 ifSelect     : 'if' '(' expr ')' stmtList ('else' stmt)? ;            //the last "statement" can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
 switchSelect : 'switch' '(' expr ')'  '{' definedCaseList defaultCase '}' ;
 definedCaseList : definedCase* ;
-definedCase     : 'case' expr ':' stmtList ; //always implicitly break after the statements
-defaultCase     : 'default'    ':' stmtList ;
+definedCase     : 'case' expr ':' stmtListNoBraces ; //always implicitly break after the statements
+defaultCase     : 'default'    ':' stmtListNoBraces ;
 
 
 //----iteration----
@@ -76,8 +79,8 @@ whileIterate   : 'while' '(' expr ')' stmtList ;
 functionCall       : identifier '(' parameterValueList ')' ;
 parameterValueList   : (expr (',' expr)*)? ;
 
-methodCall   : identifier ('.' identifier)+ '(' parameterValueList ')' ;
-propertyCall : identifier ('.' identifier)+ ;
+methodCall   : variableAccess ('.' identifier)+ '(' parameterValueList ')' ;
+propertyCall : variableAccess ('.' identifier)+ ;
 
 //----expr stmt----
 exprStmt : expr ';' ;

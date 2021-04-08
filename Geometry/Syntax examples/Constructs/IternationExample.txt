@@ -1,13 +1,13 @@
 //for loops n stuff
 
-
-for(int i = 0; i < 17; i++)
+/* deprecated
+for(int i IS 0; i < 17; i IS i+1)
 {
 	//do stuff
 }
+*/
 
-
-int numbers[] IS [3, 3, 3, 4];
+int[] numbers IS [3, 3, 3, 4];
 foreach(x in numbers)
 {
 	//do stuff, probably with x
@@ -20,7 +20,7 @@ loop(50)
 }
 
 
-continue IS true;
+bool continue IS TRUE;
 while(continue)
 {
 	//do stuff

@@ -32,11 +32,14 @@ class DeclareStmtListNode extends Node {
 
 class ValueListNode extends Node {
     List<ExprNode> exprNodes;
-    public ValueListNode(){ exprNodes = new ArrayList<>(); }
+    public ValueListNode(){
+        exprNodes = new ArrayList<>();
+    }
 }
 
 class StmtListNode extends StmtNode {
     List<StmtNode> statements;
+    boolean hasBraces = true; //default
     public StmtListNode(){
         statements = new ArrayList<>();
     }
@@ -65,10 +68,13 @@ class AssignNode extends StmtNode {
 //--variable access--
 abstract class VariableAccessNode extends AtomExprNode {
 }
-class IdentifierNode extends VariableModifierAccessNode{
+abstract class VariableIdOrModifierAccessNode extends VariableAccessNode{
+}
+
+class IdentifierNode extends VariableIdOrModifierAccessNode{
     String id;
 }
-class VariableModifierAccessNode extends VariableAccessNode {
+class VariableModifierAccessNode extends VariableIdOrModifierAccessNode {
     VariableAccessNode variable;
     ExprNode expr;
 }
@@ -91,6 +97,9 @@ class SwitchNode extends StmtNode {
 }
 class DefinedCaseListNode extends Node {
     List<DefinedCaseNode> cases;
+    public DefinedCaseListNode(){
+        cases = new ArrayList<>();
+    }
 }
 class DefinedCaseNode extends Node {
     ExprNode value;
@@ -148,7 +157,6 @@ abstract class PowerExprNode extends MultiplicativeExprNode{
 }
 
 abstract class UnaryExprNode extends PowerExprNode{
-    ExprNode expr;
 }
 
 abstract class AtomExprNode extends UnaryExprNode{
@@ -190,7 +198,9 @@ class ArrayLiteralNode extends LiteralNode{
 
 class TypeModAccessNode extends Node{
     List<ExprNode> exprNodes;
-    public TypeModAccessNode(){ exprNodes = new ArrayList<>(); }
+    public TypeModAccessNode(){
+        exprNodes = new ArrayList<>();
+    }
 }
 
 class FunctionCallNode extends AtomExprNode {
@@ -198,12 +208,12 @@ class FunctionCallNode extends AtomExprNode {
     ValueListNode parameters;
 }
 class MethodCallNode extends AtomExprNode {
-    IdentifierNode valueID;
+    VariableAccessNode valueID;
     IdentifierNode methodID;
     ValueListNode parameters;
 }
 class PropertyCallNode extends AtomExprNode {
-    IdentifierNode valueID;
+    VariableAccessNode valueID;
     IdentifierNode propertyID;
 }
 
@@ -212,15 +222,15 @@ class ParenthesisedExprNode extends AtomExprNode {
 }
 
 class UnaryMinusNode extends UnaryExprNode{
-
+    ExprNode expr;
 }
 
 class UnaryPlusNode extends UnaryExprNode{
-
+    ExprNode expr;
 }
 
 class UnaryNegationNode extends UnaryExprNode{
-
+    ExprNode expr;
 }
 
 class SubtractionNode extends AdditiveExprNode{

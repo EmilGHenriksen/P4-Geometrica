@@ -5,10 +5,10 @@ float b IS 4;
 float c IS 5; 
 
 
-point p1 IS point(0, 0);
-point p2 IS point(0, a); //side a goes from p1 to p2 (up in y axis)
-point p3 IS point(b, 0); //since the 3,4,5 triangle is right-angle we can simply make the point
+point p1 IS newpoint(0, 0);
+point p2 IS newpoint(0, a); //side a goes from p1 to p2 (up in y axis)
+point p3 IS newpoint(b, 0); //since the 3,4,5 triangle is right-angle we can simply make the point
 
 
-triangle t IS triangle(p1, p2, p3);
+triangle t IS newtriangle(p1, p2, p3);
 draw(t);

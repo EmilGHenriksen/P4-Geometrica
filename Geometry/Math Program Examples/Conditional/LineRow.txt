@@ -18,9 +18,9 @@ loop(40){
 		length IS 5;
 	}
 
-	point p1 IS point(i, 0);
-	point p2 IS point(i, length);
-	line L IS line(p1, p2);
+	point p1 IS newpoint(i, 0);
+	point p2 IS newpoint(i, length);
+	line L IS newline(p1, p2);
 	draw(L);
 
 	i IS i+1;

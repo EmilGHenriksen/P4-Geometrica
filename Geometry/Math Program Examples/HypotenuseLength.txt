@@ -10,11 +10,11 @@ float c IS sqrt(a^2 + b^2);
 
 
 //version 1
-point p[] = [point(0,0), point(0,a), point(b,0)];
-line lines[];
-lines.add(line(p[0], p[1])); //should arrays start at 0 or 1? (currently: 0)
-lines.add(line(p[1], p[2]));
-lines.add(line(p[2], p[0]));
+point[] p = [newpoint(0,0), newpoint(0,a), newpoint(b,0)];
+line[] lines;
+lines.add(newline(p[0], p[1])); //should arrays start at 0 or 1? (currently: 0)
+lines.add(newline(p[1], p[2]));
+lines.add(newline(p[2], p[0]));
 
 lines[1].label IS c; //makes it draw the value of c at the line
 draw(lines);
@@ -22,7 +22,7 @@ draw(lines);
 
 //version 2
 /*
-triangle output IS triangle(point(0, 0), point(0, b), point(a, 0));
+triangle output IS newtriangle(newpoint(0, 0), newpoint(0, b), newpoint(a, 0));
 draw(output);
 draw(c); //prints the value of c in top-left (or somewhere defined)
 */

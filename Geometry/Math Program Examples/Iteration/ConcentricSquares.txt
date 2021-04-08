@@ -9,18 +9,22 @@
 //---solution---
 
 //make squares without rotation
-square S[];
-for(int i = 1; i<20; i IS i+1){
-	p1 IS point(-i, i);
-	p2 IS point(i, i);
-	p3 IS point(-i, -i);
-	p4 IS point(i, -i);
-	S[i] IS square(p1, p2, p3, p4);
+square[] S;
+int i IS 1;
+loop(20){
+	point p1 IS newpoint(-i, i);
+	point p2 IS newpoint(i, i);
+	point p3 IS newpoint(-i, -i);
+	point p4 IS newpoint(i, -i);
+	square S[i] IS newsquare(p1, p2, p3, p4);
+	i IS i+1;
 }
 
 //rotate them
-for(int i = 1; i<20, i IS i+1){
+int i IS 1;
+loop(20){
 	S[i].rotate(5deg*(i-1));    //i-1 since the 1st element should be rotated by 0deg
+	i IS i+1;
 }
 
 //draw them

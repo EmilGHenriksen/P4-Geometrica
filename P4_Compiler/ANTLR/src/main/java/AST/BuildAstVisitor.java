@@ -2,6 +2,8 @@ package AST;
 
 import gen.CFG_concreteBaseVisitor;
 import gen.CFG_concreteParser;
+import gen.CFG_concreteVisitor;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.List;
 
@@ -50,17 +52,33 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         DeclareStmtListNode dcls = new DeclareStmtListNode();
         if(context.children != null) {
             for (int i = 0; i < context.children.size(); i++) {
-                dcls.declarations.add((DeclareStmtNode) visit(context.getChild(i))); // maybe an alternative: Visit(context.declare())
+                DeclareStmtNode dcl = (DeclareStmtNode) visit(context.getChild(i)); // maybe an alternative: Visit(context.declare())
+                if(dcl != null){
+                    dcls.declarations.add(dcl);
+                }
             }
         }
         return dcls;
+    }
+    @Override
+    public DeclareStmtNode visitParameterDeclare(CFG_concreteParser.ParameterDeclareContext context){
+        DeclareStmtNode declareStmtNode = new DeclareStmtNode();
+        declareStmtNode.type = context.Type().getText();
+        if(context.TypeModifier() != null) {
+            declareStmtNode.typeModifier = context.TypeModifier().getText();
+        }
+        declareStmtNode.id = (IdentifierNode) visit(context.identifier());
+        return declareStmtNode;
     }
     @Override
     public ValueListNode visitParameterValueList(CFG_concreteParser.ParameterValueListContext context){
         ValueListNode valueListNode = new ValueListNode();
         if(context.children != null){
             for(int i = 0; i < context.children.size(); i++){
-                valueListNode.exprNodes.add((ExprNode) visit(context.getChild(i)));
+                ExprNode expr = (ExprNode) visit(context.getChild(i));
+                if(expr != null){
+                    valueListNode.exprNodes.add(expr);
+                }
             }
         }
         return valueListNode;
@@ -69,6 +87,20 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public StmtListNode visitStmtList(CFG_concreteParser.StmtListContext context) {
         StmtListNode stmtListNode = new StmtListNode();
+        if(context.children != null) {
+            for (int i = 0; i < context.children.size(); i++) {
+                StmtNode nextStmt = (StmtNode) visit(context.getChild(i));
+                if(nextStmt != null){
+                    stmtListNode.statements.add(nextStmt);
+                }
+            }
+        }
+        return stmtListNode;
+    }
+    @Override
+    public StmtListNode visitStmtListNoBraces(CFG_concreteParser.StmtListNoBracesContext context){
+        StmtListNode stmtListNode = new StmtListNode();
+        stmtListNode.hasBraces = false;
         if(context.children != null) {
             for (int i = 0; i < context.children.size(); i++) {
                 StmtNode nextStmt = (StmtNode) visit(context.getChild(i));
@@ -122,8 +154,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public VariableAccessNode visitVariablePropertyAccess(CFG_concreteParser.VariablePropertyAccessContext context){
         VariableAccessNode variableAccessNode;
         if(context.children.size() == 1){
-            VariableModifierAccessNode variableModifierAccessNode = (VariableModifierAccessNode) visit(context.variableModifierAccess());
-            variableAccessNode = variableModifierAccessNode;
+            variableAccessNode = (VariableAccessNode) visit(context.variableModifierAccess());
         }
         else{
             VariablePropertyAccessNode variablePropertyAccessNode = new VariablePropertyAccessNode();
@@ -170,7 +201,10 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         DefinedCaseListNode caseList = new DefinedCaseListNode();
         if(context.children != null) {
             for (int i = 0; i < context.children.size(); i++) {
-                caseList.cases.add((DefinedCaseNode) visit(context.definedCase(i)));
+                DefinedCaseNode defined = (DefinedCaseNode) visit(context.definedCase(i));
+                if(defined != null){
+                    caseList.cases.add(defined);
+                }
             }
         }
         return caseList;
@@ -179,13 +213,13 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public DefinedCaseNode visitDefinedCase(CFG_concreteParser.DefinedCaseContext context){
         DefinedCaseNode definedCaseNode = new DefinedCaseNode();
         definedCaseNode.value = (ExprNode) visit(context.expr());
-        definedCaseNode.stmtNodes = (StmtListNode) visit(context.stmtList());
+        definedCaseNode.stmtNodes = (StmtListNode) visit(context.stmtListNoBraces());
         return definedCaseNode;
     }
     @Override
     public DefaultCaseNode visitDefaultCase(CFG_concreteParser.DefaultCaseContext context){
         DefaultCaseNode defaultCaseNode = new DefaultCaseNode();
-        defaultCaseNode.stmtNodes = (StmtListNode) visit(context.stmtList());
+        defaultCaseNode.stmtNodes = (StmtListNode) visit(context.stmtListNoBraces());
         return defaultCaseNode;
     }
     @Override
@@ -253,8 +287,11 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         }
         else{
             ArrayLiteralNode arrayLiteralNode = new ArrayLiteralNode();
-            for(int i = 1; i < context.children.size(); i += 2 ){
-                arrayLiteralNode.elements.add((ExprNode)context.getChild(i));
+            for(int i = 1; i < context.getChild(0).getChildCount(); i += 2 ){
+                ExprNode expr = (ExprNode) visit(context.getChild(0).getChild(i));
+                if(expr != null){
+                    arrayLiteralNode.elements.add(expr);
+                }
             }
             literalNode = arrayLiteralNode;
         }
@@ -276,16 +313,16 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public MethodCallNode visitMethodCall(CFG_concreteParser.MethodCallContext context){
         MethodCallNode methodCallNode = new MethodCallNode();
-        methodCallNode.valueID = (IdentifierNode) visit(context.identifier(0));
-        methodCallNode.methodID = (IdentifierNode) visit(context.identifier(1));
+        methodCallNode.valueID = (VariableAccessNode) visit(context.variableAccess());
+        methodCallNode.methodID = (IdentifierNode) visit(context.identifier(0));
         methodCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
         return methodCallNode;
     }
     @Override
     public PropertyCallNode visitPropertyCall(CFG_concreteParser.PropertyCallContext context){
         PropertyCallNode propertyCallNode = new PropertyCallNode();
-        propertyCallNode.valueID = (IdentifierNode) visit(context.identifier(0));
-        propertyCallNode.propertyID = (IdentifierNode) visit(context.identifier(1));
+        propertyCallNode.valueID = (VariableAccessNode) visit(context.variableAccess());
+        propertyCallNode.propertyID = (IdentifierNode) visit(context.identifier(0));
         return propertyCallNode;
     }
     @Override
@@ -299,15 +336,20 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         UnaryExprNode unaryExprNode;
         if(context.children.size() > 1){
             if(context.getChild(0).getText().equals("-")){
-                unaryExprNode = new UnaryMinusNode();
+                UnaryMinusNode unaryMinusNode = new UnaryMinusNode();
+                unaryMinusNode.expr = (ExprNode) visit(context.atomExpr());
+                unaryExprNode = unaryMinusNode;
             }
             else if(context.getChild(0).getText().equals("+")){
-                unaryExprNode = new UnaryPlusNode();
+                UnaryPlusNode unaryPlusNode = new UnaryPlusNode();
+                unaryPlusNode.expr = (ExprNode) visit(context.atomExpr());
+                unaryExprNode = unaryPlusNode;
             }
             else {
-                unaryExprNode = new UnaryNegationNode();
+                UnaryNegationNode unaryNegationNode = new UnaryNegationNode();
+                unaryNegationNode.expr = (ExprNode) visit(context.atomExpr());
+                unaryExprNode = unaryNegationNode;
             }
-            unaryExprNode.expr = (ExprNode) visit(context.atomExpr());
         }
         else{
             unaryExprNode = (UnaryExprNode) visit(context.getChild(0));

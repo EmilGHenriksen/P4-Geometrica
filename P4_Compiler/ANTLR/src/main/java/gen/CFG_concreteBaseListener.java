@@ -75,6 +75,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterParameterDeclare(CFG_concreteParser.ParameterDeclareContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParameterDeclare(CFG_concreteParser.ParameterDeclareContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStmtList(CFG_concreteParser.StmtListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -82,6 +94,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStmtList(CFG_concreteParser.StmtListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStmtListNoBraces(CFG_concreteParser.StmtListNoBracesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStmtListNoBraces(CFG_concreteParser.StmtListNoBracesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

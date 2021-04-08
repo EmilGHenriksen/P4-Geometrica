@@ -57,6 +57,16 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 */
 	void exitParameterDeclareList(CFG_concreteParser.ParameterDeclareListContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#parameterDeclare}.
+	 * @param ctx the parse tree
+	 */
+	void enterParameterDeclare(CFG_concreteParser.ParameterDeclareContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#parameterDeclare}.
+	 * @param ctx the parse tree
+	 */
+	void exitParameterDeclare(CFG_concreteParser.ParameterDeclareContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#stmtList}.
 	 * @param ctx the parse tree
 	 */
@@ -66,6 +76,16 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStmtList(CFG_concreteParser.StmtListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CFG_concreteParser#stmtListNoBraces}.
+	 * @param ctx the parse tree
+	 */
+	void enterStmtListNoBraces(CFG_concreteParser.StmtListNoBracesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFG_concreteParser#stmtListNoBraces}.
+	 * @param ctx the parse tree
+	 */
+	void exitStmtListNoBraces(CFG_concreteParser.StmtListNoBracesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#return_}.
 	 * @param ctx the parse tree

@@ -1,4 +1,4 @@
 //make a circle
 
-circle c IS circle(point(0, 0), 1);
+circle c IS newcircle(newpoint(0, 0), 1);
 draw(c);

@@ -1,22 +1,22 @@
 
 //------angle stuff-------
-angle A = 60deg,
-      B = 100deg,
-      C = 20deg;
-//triangle ABC = new triangle(A, B, C); //what about size, coordinate and overall angle?
+angle A IS 60deg;
+angle B IS 100deg;
+angle C IS 20deg;
+//triangle ABC IS new triangle(A, B, C); //what about size, coordinate and overall angle?
 
 
-angle A2 = B2 = C2 = 60deg; //not allowed (B2 and C2 not declared)
-angle A = B = 60deg = C; //not allowed ("60deg = C" is not possible)
-angle A = B = C = 60deg; //allowed (A, B and C become 60deg)
+//angle A2 = B2 = C2 = 60deg; //not allowed (B2 and C2 not declared)
+//angle A = B = 60deg = C; //not allowed ("60deg = C" is not possible)
+//angle A = B = C = 60deg; //not allowed (assignment is not an operator but a statement)
 
 
 //Calculation example: making a line from a point, length and angle
-point a = point(1, 2);
-float length = 7.5;
-angle A = 0.9rad;
+point a IS newpoint(1, 2);
+float length IS 7.5;
+angle A IS 90deg;
 
-float xB = a.x + cos(A)*length; //"a.x" get the "a" point's x value
-float yB = a.y + sin(A)*length;
-point b = point(xB, yB);
-line line1 = line(a, b); //result
+float xB IS a.x + cos(A)*length; //"a.x" get the "a" point's x value
+float yB IS a.y + sin(A)*length;
+point b IS newpoint(xB, yB);
+line line1 IS newline(a, b); //result

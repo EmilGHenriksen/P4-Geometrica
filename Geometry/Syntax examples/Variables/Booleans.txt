@@ -1,13 +1,13 @@
-bool somethingTrue = true;
-bool somethingFalse = false;
+bool somethingTrue IS TRUE;
+bool somethingFalse IS FALSE;
 
-
+/*
 //old version
 int a = 2;
 int b = 1;
-bool isZero = a EQUALS 0;  
-bool notZero = a !EQUALS 0;   
-
+bool isZero IS a EQUALS 0;  
+bool notZero IS a !EQUALS 0;   
+*/
 
 //new version
 int a IS 2;
@@ -19,14 +19,14 @@ bool notZero IS a != 0; //idk
 
 
 
-bool aGreaterThanb = a > b;
+bool aGreaterThanb IS a > b;
 //other similar operators: <, >=, <=
 //other potential similar operators: !<, !>, !<=, !>=  //probaly don't implement these, since they could just increase confusion, although easy to implement
 
 
 //demonstration of some logic
-bool impossible = isZero AND notZero;  //a && !a
-bool alwaysTrue = isZero OR notZero;   //a || !a
+bool impossible IS isZero AND notZero;  //a && !a
+bool alwaysTrue IS isZero OR notZero;   //a || !a
 
 //other similar operators: XOR, XNOR
 //unary boolean operators: ! 

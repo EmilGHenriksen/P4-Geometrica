@@ -3,24 +3,24 @@
 //spejlvend en firkant / rektangel
 //spejlvend i både x og y
 
-square input IS square(point(0, 0), point(4, 0), point(4, 3), point(0, 3));
+square input IS newsquare(newpoint(0, 0), newpoint(4, 0), newpoint(4, 3), newpoint(0, 3));
 
 
 //Løsning 1: den manuelle måde
-square output IS square(point(0, 0), point(-4, 0), point(-4, -3), point(0, -3));
+square output IS newsquare(newpoint(0, 0), newpoint(-4, 0), newpoint(-4, -3), newpoint(0, -3));
 print(output);
 
 
 //løsning 2: den smarte måde (for større ting / hvis det var et array af squares)
-point outputPoints[];
-foreach p in input
+point[] outputPoints;
+foreach(p in input)
 {
-	outputPoints.add(point(-p.x, -p.y)); //works, because it's a list "behind the scenes"
+	outputPoints.add(newpoint(-p.x, -p.y)); //works, because it's a list "behind the scenes"
 }
 
 //square output IS connect(outputPoints); //doesn't work (wrong return type - square needs points but would get lines)
 
-square output IS square(outputPoints);
+square output IS newsquare(outputPoints);
 //square output IS square(outputPoints[0], outputPoints[1], outputPoints[2], outputPoints[3]);   //alternative version of the above line
 
 print(output);

@@ -40,11 +40,23 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParameterDeclareList(CFG_concreteParser.ParameterDeclareListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#parameterDeclare}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterDeclare(CFG_concreteParser.ParameterDeclareContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#stmtList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStmtList(CFG_concreteParser.StmtListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#stmtListNoBraces}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStmtListNoBraces(CFG_concreteParser.StmtListNoBracesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#return_}.
 	 * @param ctx the parse tree

@@ -28,11 +28,11 @@ float rSide IS b / 2;
 //midtpunkter for cirklerne
 float midTopX IS width / 2;
 float midTopY IS hGreen;
-point midTop IS point(midTopX, midTopY);
+point midTop IS newpoint(midTopX, midTopY);
 
 float leftX IS 0.5 * cos(A1) * b;
 float leftY IS a + (0.5 * sin(A1) * b);
-point left IS point(leftX, leftY);
+point left IS newpoint(leftX, leftY);
 
 float rightX IS 9 - leftX;
 float rightY IS leftY;
@@ -41,38 +41,40 @@ point right IS point(rightX, rightY);
 
 //de sidste 6 punkter (mellem linjer)
 //disse punkter er i rækkefølje fra left->right, top->bottom (ligesom tekst)
-p1 IS point(midTopX-rTop, hGreen);
-p2 IS point(midTopX+rTop, hGreen);
-p3 IS point(0, a);
-p4 IS point(width, a);
-p5 IS point(0, 0);
-p6 IS point(width, 0);
+point p1 IS newpoint(midTopX-rTop, hGreen);
+point p2 IS newpoint(midTopX+rTop, hGreen);
+point p3 IS newpoint(0, a);
+point p4 IS newpoint(width, a);
+point p5 IS newpoint(0, 0);
+point p6 IS newpoint(width, 0);
 
 
 
 //----making things to draw----
 //lines, again in reading order
-line l1 IS line(p1, p2);
-line l2 IS line(p3, p1);
-line l3 IS line(p2, p4);
-line l4 IS line(p3, p4);
-line l5 IS line(p3, p5);
-line l6 IS line(p4, p6);
-line l7 IS line(p5, p6); 
+line l1 IS newline(p1, p2);
+line l2 IS newline(p3, p1);
+line l3 IS newline(p2, p4);
+line l4 IS newline(p3, p4);
+line l5 IS newline(p3, p5);
+line l6 IS newline(p4, p6);
+line l7 IS newline(p5, p6); 
 
 //semicircles
-circle cTop IS circle(midTop, rTop, 180deg, 0deg); //3rd and 4th parameters are optional. 3rd is the amount of circle to draw, and 4th is angle offset.
-circle cLeft IS circle(left, rSide, 180deg, A1);
-circle cRight IS circle(right, rSide, 180deg, -A1);
+circle cTop IS newcircle(midTop, rTop, 180deg, 0deg); //3rd and 4th parameters are optional. 3rd is the amount of circle to draw, and 4th is angle offset.
+circle cLeft IS newcircle(left, rSide, 180deg, A1);
+circle cRight IS newcircle(right, rSide, 180deg, -A1);
 
 
 
 //----drawing----
+
+/* not possible currently
 drawAll(line);
 drawAll(circle);
+*/
 
 
-/*
 draw(l1);
 draw(l2);
 draw(l3);
@@ -84,4 +86,3 @@ draw(l7);
 draw(cTop);
 draw(cLeft);
 draw(cRight);
-*/

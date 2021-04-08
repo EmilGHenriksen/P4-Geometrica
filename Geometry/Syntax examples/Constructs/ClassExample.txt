@@ -1,3 +1,5 @@
+//not possible in current version
+
 class figure
 {
 	figure()
