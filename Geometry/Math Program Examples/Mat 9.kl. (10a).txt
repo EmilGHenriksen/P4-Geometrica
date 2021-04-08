@@ -36,7 +36,7 @@ point left IS newpoint(leftX, leftY);
 
 float rightX IS 9 - leftX;
 float rightY IS leftY;
-point right IS point(rightX, rightY);
+point right IS newpoint(rightX, rightY);
 
 
 //de sidste 6 punkter (mellem linjer)
