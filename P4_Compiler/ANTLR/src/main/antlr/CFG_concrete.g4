@@ -35,7 +35,7 @@ function      : (Type TypeModifier? | 'void') identifier '(' parameterDeclareLis
 parameterDeclareList : (parameterDeclare (',' parameterDeclare)*)? ;
 parameterDeclare : Type TypeModifier? identifier ;
 stmtList : '{' stmt*  '}';
-stmtListNoBraces : stmt*  ;
+stmtListNoBraces : stmt* ;
 
 //--------------statements--------------
 return_ : 'return' expr? ';' ;
@@ -62,7 +62,7 @@ ifSelect     : 'if' '(' expr ')' stmtList ('else' stmt)? ;            //the last
 switchSelect : 'switch' '(' expr ')'  '{' definedCaseList defaultCase '}' ;
 definedCaseList : definedCase* ;
 definedCase     : 'case' expr ':' stmtListNoBraces ; //always implicitly break after the statements
-defaultCase     : 'default'    ':' stmtListNoBraces ;
+defaultCase     : 'default'   ':' stmtListNoBraces ;
 
 
 //----iteration----
@@ -79,8 +79,7 @@ whileIterate   : 'while' '(' expr ')' stmtList ;
 functionCall       : identifier '(' parameterValueList ')' ;
 parameterValueList   : (expr (',' expr)*)? ;
 
-methodCall   : variableAccess ('.' identifier)+ '(' parameterValueList ')' ;
-propertyCall : variableAccess ('.' identifier)+ ;
+methodCall   : variableAccess '.' identifier '(' parameterValueList ')' ;
 
 //----expr stmt----
 exprStmt : expr ';' ;
@@ -103,7 +102,6 @@ atomExpr : parenthesisedExpr
          | variableAccess
          | functionCall
          | methodCall
-         | propertyCall
          ;
 parenthesisedExpr : '(' orExpr ')' ;
 

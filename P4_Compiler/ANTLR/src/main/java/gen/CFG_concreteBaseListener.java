@@ -339,18 +339,6 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPropertyCall(CFG_concreteParser.PropertyCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPropertyCall(CFG_concreteParser.PropertyCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExprStmt(CFG_concreteParser.ExprStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}

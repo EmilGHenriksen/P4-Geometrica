@@ -172,12 +172,6 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMethodCall(CFG_concreteParser.MethodCallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link CFG_concreteParser#propertyCall}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropertyCall(CFG_concreteParser.PropertyCallContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#exprStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -66,15 +66,13 @@ class AssignNode extends StmtNode {
 }
 
 //--variable access--
-abstract class VariableAccessNode extends AtomExprNode {
-}
-abstract class VariableIdOrModifierAccessNode extends VariableAccessNode{
+abstract class VariableAccessNode extends ExprNode {
 }
 
-class IdentifierNode extends VariableIdOrModifierAccessNode{
+class IdentifierNode extends VariableAccessNode{
     String id;
 }
-class VariableModifierAccessNode extends VariableIdOrModifierAccessNode {
+class VariableModifierAccessNode extends VariableAccessNode {
     VariableAccessNode variable;
     ExprNode expr;
 }
@@ -135,34 +133,7 @@ class ExprStmtNode extends ExprNode{
 abstract class ExprNode extends StmtNode{
 }
 
-abstract class OrExprNode extends ExprNode{
-}
-
-abstract class AndExprNode extends OrExprNode{
-}
-
-abstract class EqualityExprNode extends AndExprNode{
-}
-
-abstract class RelationExprNode extends EqualityExprNode{
-}
-
-abstract class AdditiveExprNode extends RelationExprNode{
-}
-
-abstract class MultiplicativeExprNode extends AdditiveExprNode{
-}
-
-abstract class PowerExprNode extends MultiplicativeExprNode{
-}
-
-abstract class UnaryExprNode extends PowerExprNode{
-}
-
-abstract class AtomExprNode extends UnaryExprNode{
-}
-
-abstract class LiteralNode extends AtomExprNode {
+abstract class LiteralNode extends ExprNode {
 }
 
 class IntLiteralNode extends LiteralNode{
@@ -203,102 +174,102 @@ class TypeModAccessNode extends Node{
     }
 }
 
-class FunctionCallNode extends AtomExprNode {
+class FunctionCallNode extends ExprNode {
     IdentifierNode id;
     ValueListNode parameters;
 }
-class MethodCallNode extends AtomExprNode {
+class MethodCallNode extends ExprNode {
     VariableAccessNode valueID;
     IdentifierNode methodID;
     ValueListNode parameters;
 }
-class PropertyCallNode extends AtomExprNode {
+class PropertyCallNode extends ExprNode {
     VariableAccessNode valueID;
     IdentifierNode propertyID;
 }
 
-class ParenthesisedExprNode extends AtomExprNode {
+class ParenthesisedExprNode extends ExprNode {
     ExprNode innerExpr;
 }
 
-class UnaryMinusNode extends UnaryExprNode{
+class UnaryMinusNode extends ExprNode{
     ExprNode expr;
 }
 
-class UnaryPlusNode extends UnaryExprNode{
+class UnaryPlusNode extends ExprNode{
     ExprNode expr;
 }
 
-class UnaryNegationNode extends UnaryExprNode{
+class UnaryNegationNode extends ExprNode{
     ExprNode expr;
 }
 
-class SubtractionNode extends AdditiveExprNode{
+class SubtractionNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class AdditionNode extends AdditiveExprNode{
+class AdditionNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class MultiplicationNode extends MultiplicativeExprNode{
+class MultiplicationNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class DivisionNode extends MultiplicativeExprNode{
+class DivisionNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class ModuloNode extends MultiplicativeExprNode{
+class ModuloNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class PowerNode extends PowerExprNode{
+class PowerNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class EqualsNode extends EqualityExprNode{
+class EqualsNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class NotEqualsNode extends EqualityExprNode{
+class NotEqualsNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class LesserThanNode extends RelationExprNode{
+class LesserThanNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class GreaterThanNode extends RelationExprNode{
+class GreaterThanNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class LesserOrEqualsNode extends RelationExprNode{
+class LesserOrEqualsNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class GreaterOrEqualsNode extends RelationExprNode{
+class GreaterOrEqualsNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class AndNode extends AndExprNode{
+class AndNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }
 
-class OrNode extends OrExprNode{
+class OrNode extends ExprNode{
     ExprNode left;
     ExprNode right;
 }

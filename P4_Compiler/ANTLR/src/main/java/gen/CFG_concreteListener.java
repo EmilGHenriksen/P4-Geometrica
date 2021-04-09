@@ -277,16 +277,6 @@ public interface CFG_concreteListener extends ParseTreeListener {
 	 */
 	void exitMethodCall(CFG_concreteParser.MethodCallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link CFG_concreteParser#propertyCall}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropertyCall(CFG_concreteParser.PropertyCallContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CFG_concreteParser#propertyCall}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropertyCall(CFG_concreteParser.PropertyCallContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link CFG_concreteParser#exprStmt}.
 	 * @param ctx the parse tree
 	 */

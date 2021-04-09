@@ -19,66 +19,75 @@
 //--------------PROGRAM-----------------------------------------------------------
 program -> content
 content -> (stmt | function)*
-function -> type typeModifier? identifier '(' parameterDeclareList ')' '{' stmtList '}'
 //--------------------------------------------------------------------------------
 
 
+//--------------FUNCTIONS---------------------------------------------------------
+function -> (type | 'void') typeModifier? identifier '(' paramDeclareList ')' '{' stmtList '}'
+paramDeclareList -> (declare (',' declare)*)?
+//--------------------------------------------------------------------------------
+//assignments not allowed in these declarations, but that's to-be in semantics
+
+
 //--------------STATEMENTS--------------------------------------------------------
-stmt -> return ';'
-	  | declare ';'
-	  | assign ';'
+stmt -> return
+	  | declare
+	  | assign
 	  | select
 	  | iterate
-	  | '{' stmtList '}'
+	  | stmtList
 	  | expr ';'
 
-stmtList -> stmt*
+stmtList -> '{' stmt* '}'
 
-return -> 'return' expr?
-declare    -> AccessModifier? type typeModifier? identifier ('IS' expr)?
-assign     ->           identifier typeModAccess  'IS' expr
-typeModAccess -> ('[' expr ']')* 
+return -> 'return' expr? ';'
+declare    -> AccessModifier? type typeModifier? identifier ('IS' expr)? ';'
+assign     ->                                     varAccess  'IS' expr ';'
+//--------------------------------------------------------------------------------
+
+
+//--------------VARIABLES---------------------------------------------------------
+varAccess -> identifier
+           | varAccess '.' identifier
+           | varAccess '[' expr ']'
 //--------------------------------------------------------------------------------
 
 
 //--------------SELECTION---------------------------------------------------------
 select -> ifSelect
 		| switchSelect
-ifSelect     -> 'if' '(' expr ')'  '{' stmtList '}' ('else' stmt)?
+ifSelect     -> 'if' '(' expr ')' stmtList ('else' stmt)?
 switchSelect -> 'switch' '(' expr ')'  '{' (definedCase)* defaultCase '}'
-definedCase     -> 'case' expr ':' stmtList
-defaultCase     -> 'default'    ':' stmtList
+definedCase     -> 'case' expr ':' stmt*
+defaultCase     -> 'default'   ':' stmt*
 //--------------------------------------------------------------------------------
 // the last "statement" in ifSelect can also include if statements, so "else if" is possible. The curly brackets in "{" statement "}" should eliminate the dangling else problem
 
 
 //--------------ITERATION---------------------------------------------------------
-iterate ->  foreachIterate
+iterate -> foreachIterate
          | loopIterate
          | whileIterate
-foreachIterate -> 'foreach' '(' identifier 'in' identifier ')' '{' stmtList '}'
-loopIterate    -> 'loop' '(' expr ')' '{' stmtList '}'
-whileIterate   -> 'while' '(' expr ')' '{' stmtList '}'
+foreachIterate -> 'foreach' '(' identifier 'in' identifier ')' stmtList
+loopIterate    -> 'loop' '(' expr ')' stmtList
+whileIterate   -> 'while' '(' expr ')' stmtList
 //--------------------------------------------------------------------------------
 
 
 //--------------CALLS-------------------------------------------------------------
-functionCall       ->               identifier '(' parameterValueList ')'
-parameterDeclareList -> (declare (',' declare)*)?
-parameterValueList   -> (expr (',' expr)*)?
+functionCall     -> identifier '(' paramValueList ')'
+paramValueList   -> (expr (',' expr)*)?
 
-methodCall   -> identifier '.' identifier '(' parameterValueList ')'
-propertyCall -> identifier '.' identifier
+methodCall   -> varAccess '.' identifier '(' paramValueList ')'
 //--------------------------------------------------------------------------------
 
 
 //--------------EXPRESSIONS-------------------------------------------------------
-expr -> literal
-	  | identifier typeModAccess?
+expr -> '(' expr ')'
+      | literal
+	  | varAccess
 	  | functionCall
 	  | methodCall		//example: x.func()
-	  | propertyCall    //example: x.name
-	  | '(' expr ')'
 	  | unaryExpr
 	  | binaryExpr
 unaryExpr -> unaryOp expr
@@ -95,7 +104,7 @@ literal -> intLiteral
 		 | angleLiteral
 		 | arrayLiteral
 		 //the other types have no literals
-arrayLiteral ->  '[' (literal (',' literal)*)? ']'
+arrayLiteral ->  '[' (expr (',' expr)*)? ']'
 //--------------------------------------------------------------------------------
 
 
@@ -120,8 +129,7 @@ angleLiteral  -> "(0|([1-9][0-9]*))([.][0-9]+)?deg"
 
 //--------------TYPES-------------------------------------------------------------
 AccessModifier : 'const' ;
-type -> 'void'
-	  | 'bool'
+type -> 'bool'
 	  | 'int'    //actually longs
 	  | 'float'  //actually doubles
 	  | 'string' //char is single-letter string

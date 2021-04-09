@@ -319,16 +319,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public MethodCallNode visitMethodCall(CFG_concreteParser.MethodCallContext context){
         MethodCallNode methodCallNode = new MethodCallNode();
         methodCallNode.valueID = (VariableAccessNode) visit(context.variableAccess());
-        methodCallNode.methodID = (IdentifierNode) visit(context.identifier(0));
+        methodCallNode.methodID = (IdentifierNode) visit(context.identifier());
         methodCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
         return methodCallNode;
-    }
-    @Override
-    public PropertyCallNode visitPropertyCall(CFG_concreteParser.PropertyCallContext context){
-        PropertyCallNode propertyCallNode = new PropertyCallNode();
-        propertyCallNode.valueID = (VariableAccessNode) visit(context.variableAccess());
-        propertyCallNode.propertyID = (IdentifierNode) visit(context.identifier(0));
-        return propertyCallNode;
     }
     @Override
     public ParenthesisedExprNode visitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext context){
@@ -337,177 +330,177 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         return parenthesisedExprNode;
     }
     @Override
-    public UnaryExprNode visitUnaryExpr(CFG_concreteParser.UnaryExprContext context){
-        UnaryExprNode unaryExprNode;
+    public ExprNode visitUnaryExpr(CFG_concreteParser.UnaryExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             if(context.getChild(0).getText().equals("-")){
                 UnaryMinusNode unaryMinusNode = new UnaryMinusNode();
                 unaryMinusNode.expr = (ExprNode) visit(context.atomExpr());
-                unaryExprNode = unaryMinusNode;
+                exprNode = unaryMinusNode;
             }
             else if(context.getChild(0).getText().equals("+")){
                 UnaryPlusNode unaryPlusNode = new UnaryPlusNode();
                 unaryPlusNode.expr = (ExprNode) visit(context.atomExpr());
-                unaryExprNode = unaryPlusNode;
+                exprNode = unaryPlusNode;
             }
             else {
                 UnaryNegationNode unaryNegationNode = new UnaryNegationNode();
                 unaryNegationNode.expr = (ExprNode) visit(context.atomExpr());
-                unaryExprNode = unaryNegationNode;
+                exprNode = unaryNegationNode;
             }
         }
         else{
-            unaryExprNode = (UnaryExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return unaryExprNode;
+        return exprNode;
     }
     @Override
-    public OrExprNode visitOrExpr(CFG_concreteParser.OrExprContext context){
-        OrExprNode orExprNode;
+    public ExprNode visitOrExpr(CFG_concreteParser.OrExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             OrNode orNode = new OrNode();
             orNode.left = (ExprNode) visit(context.getChild(0));
             orNode.right = (ExprNode) visit(context.getChild(2));
-            orExprNode = orNode;
+            exprNode = orNode;
         }
         else{
-            orExprNode = (OrExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return orExprNode;
+        return exprNode;
     }
     @Override
-    public AndExprNode visitAndExpr(CFG_concreteParser.AndExprContext context){
-        AndExprNode andExprNode;
+    public ExprNode visitAndExpr(CFG_concreteParser.AndExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             AndNode andNode = new AndNode();
             andNode.left = (ExprNode) visit(context.getChild(0));
             andNode.right = (ExprNode) visit(context.getChild(2));
-            andExprNode = andNode;
+            exprNode = andNode;
         }
         else{
-            andExprNode = (AndExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return andExprNode;
+        return exprNode;
     }
     @Override
-    public EqualityExprNode visitEqualityExpr(CFG_concreteParser.EqualityExprContext context){
-        EqualityExprNode equalityExprNode;
+    public ExprNode visitEqualityExpr(CFG_concreteParser.EqualityExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("==")){
                 EqualsNode equalsNode = new EqualsNode();
                 equalsNode.left = (ExprNode) visit(context.getChild(0));
                 equalsNode.right = (ExprNode) visit(context.getChild(2));
-                equalityExprNode = equalsNode;
+                exprNode = equalsNode;
             }
             else{
                 NotEqualsNode notEqualsNode = new NotEqualsNode();
                 notEqualsNode.left = (ExprNode) visit(context.getChild(0));
                 notEqualsNode.right = (ExprNode) visit(context.getChild(2));
-                equalityExprNode = notEqualsNode;
+                exprNode = notEqualsNode;
             }
         }
         else{
-            equalityExprNode = (EqualityExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return equalityExprNode;
+        return exprNode;
     }
     @Override
-    public RelationExprNode visitRelationExpr(CFG_concreteParser.RelationExprContext context){
-        RelationExprNode relationExprNode;
+    public ExprNode visitRelationExpr(CFG_concreteParser.RelationExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("<")){
                 LesserThanNode lesserThanNode = new LesserThanNode();
                 lesserThanNode.left = (ExprNode) visit(context.getChild(0));
                 lesserThanNode.right = (ExprNode) visit(context.getChild(2));
-                relationExprNode = lesserThanNode;
+                exprNode = lesserThanNode;
             }
             else if(context.getChild(1).getText().equals(">")){
                 GreaterThanNode greaterThanNode = new GreaterThanNode();
                 greaterThanNode.left = (ExprNode) visit(context.getChild(0));
                 greaterThanNode.right = (ExprNode) visit(context.getChild(2));
-                relationExprNode = greaterThanNode;
+                exprNode = greaterThanNode;
             }
             else if(context.getChild(1).getText().equals("<=")){
                 LesserOrEqualsNode lesserOrEqualsNode = new LesserOrEqualsNode();
                 lesserOrEqualsNode.left = (ExprNode) visit(context.getChild(0));
                 lesserOrEqualsNode.right = (ExprNode) visit(context.getChild(2));
-                relationExprNode = lesserOrEqualsNode;
+                exprNode = lesserOrEqualsNode;
             }
             else{
                 GreaterOrEqualsNode greaterOrEqualsNode = new GreaterOrEqualsNode();
                 greaterOrEqualsNode.left = (ExprNode) visit(context.getChild(0));
                 greaterOrEqualsNode.right = (ExprNode) visit(context.getChild(2));
-                relationExprNode = greaterOrEqualsNode;
+                exprNode = greaterOrEqualsNode;
             }
         }
         else{
-            relationExprNode = (RelationExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return relationExprNode;
+        return exprNode;
     }
     @Override
-    public AdditiveExprNode visitAdditiveExpr(CFG_concreteParser.AdditiveExprContext context){
-        AdditiveExprNode additiveExprNode;
+    public ExprNode visitAdditiveExpr(CFG_concreteParser.AdditiveExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("+")){
                 AdditionNode additionNode = new AdditionNode();
                 additionNode.left = (ExprNode) visit(context.getChild(0));
                 additionNode.right = (ExprNode) visit(context.getChild(2));
-                additiveExprNode = additionNode;
+                exprNode = additionNode;
             }
             else{
                 SubtractionNode subtractionNode = new SubtractionNode();
                 subtractionNode.left = (ExprNode) visit(context.getChild(0));
                 subtractionNode.right = (ExprNode) visit(context.getChild(2));
-                additiveExprNode = subtractionNode;
+                exprNode = subtractionNode;
             }
         }
         else{
-            additiveExprNode = (AdditiveExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return additiveExprNode;
+        return exprNode;
     }
     @Override
-    public MultiplicativeExprNode visitMultiplicativeExpr(CFG_concreteParser.MultiplicativeExprContext context){
-        MultiplicativeExprNode multiplicativeExprNode;
+    public ExprNode visitMultiplicativeExpr(CFG_concreteParser.MultiplicativeExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             if(context.getChild(1).getText().equals("*")){
                 MultiplicationNode multiplicationNode = new MultiplicationNode();
                 multiplicationNode.left = (ExprNode) visit(context.getChild(0));
                 multiplicationNode.right = (ExprNode) visit(context.getChild(2));
-                multiplicativeExprNode = multiplicationNode;
+                exprNode = multiplicationNode;
             }
             else if(context.getChild(1).getText().equals("/")){
                 DivisionNode divisionNode = new DivisionNode();
                 divisionNode.left = (ExprNode) visit(context.getChild(0));
                 divisionNode.right = (ExprNode) visit(context.getChild(2));
-                multiplicativeExprNode = divisionNode;
+                exprNode = divisionNode;
             }
             else{
                 ModuloNode moduloNode = new ModuloNode();
                 moduloNode.left = (ExprNode) visit(context.getChild(0));
                 moduloNode.right = (ExprNode) visit(context.getChild(2));
-                multiplicativeExprNode = moduloNode;
+                exprNode = moduloNode;
             }
         }
         else{
-            multiplicativeExprNode = (MultiplicativeExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return multiplicativeExprNode;
+        return exprNode;
     }
     @Override
-    public PowerExprNode visitPowerExpr(CFG_concreteParser.PowerExprContext context){
-        PowerExprNode powerExprNode;
+    public ExprNode visitPowerExpr(CFG_concreteParser.PowerExprContext context){
+        ExprNode exprNode;
         if(context.children.size() > 1){
             PowerNode powerNode = new PowerNode();
             powerNode.left = (ExprNode) visit(context.getChild(0));
             powerNode.right = (ExprNode) visit(context.getChild(2));
-            powerExprNode = powerNode;
+            exprNode = powerNode;
         }
         else{
-            powerExprNode = (PowerExprNode) visit(context.getChild(0));
+            exprNode = (ExprNode) visit(context.getChild(0));
         }
-        return powerExprNode;
+        return exprNode;
     }
 }
 
