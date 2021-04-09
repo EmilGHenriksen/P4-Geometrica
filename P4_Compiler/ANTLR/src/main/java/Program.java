@@ -29,6 +29,7 @@ public class Program
         try
         {
             var cst = parser.program();
+            checkCstExceptions(cst);
             var ast = new BuildAstVisitor().visitProgram(cst);
             System.out.println(ast);
         }
@@ -37,5 +38,24 @@ public class Program
             System.out.print(ex.toString());
         }
 
+    }
+
+    static void checkCstExceptions(CFG_concreteParser.ProgramContext cst) throws Exception {
+        int iStmt = 0;
+        int iFunc = 0;
+        for(int i = 0; i < cst.content().children.size(); i++){
+            if(cst.content().getChild(i) instanceof CFG_concreteParser.StmtContext){
+                if(cst.content().stmt(iStmt).exception != null){
+                    throw new Exception("Null statement in CST");
+                }
+                iStmt++;
+            }
+            else{
+                if(cst.content().function(iFunc).exception != null){
+                    throw new Exception("Null function in CST");
+                }
+                iFunc++;
+            }
+        }
     }
 }

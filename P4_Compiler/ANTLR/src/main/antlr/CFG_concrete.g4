@@ -90,12 +90,12 @@ exprStmt : expr ';' ;
 //--------------expressions--------------
 expr : orExpr ;
 
-orExpr : andExpr (('OR') orExpr)? ;
-andExpr : equalityExpr (('AND') andExpr)? ;
-equalityExpr : relationExpr (('=='|'!=') equalityExpr)? ;
-relationExpr : additiveExpr (('<'|'>'|'<='|'>=') relationExpr)? ;
-additiveExpr : multiplicativeExpr (('-'|'+') additiveExpr)? ;
-multiplicativeExpr : powerExpr (('*'|'/'|'%') multiplicativeExpr)? ;
+orExpr : orExpr ('OR') andExpr                                  | andExpr ;
+andExpr : andExpr ('AND') equalityExpr                          | equalityExpr ;
+equalityExpr : equalityExpr ('=='|'!=') relationExpr            | relationExpr ;
+relationExpr : relationExpr ('<'|'>'|'<='|'>=') additiveExpr    | additiveExpr ;
+additiveExpr : additiveExpr ('-'|'+') multiplicativeExpr        | multiplicativeExpr ;
+multiplicativeExpr : multiplicativeExpr ('*'|'/'|'%') powerExpr | powerExpr ;
 powerExpr : unaryExpr ('^' powerExpr)? ;
 unaryExpr : ('-'|'+'|'!')? atomExpr ;
 atomExpr : parenthesisedExpr

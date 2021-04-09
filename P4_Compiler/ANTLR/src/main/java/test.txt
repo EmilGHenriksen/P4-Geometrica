@@ -1,5 +1,1 @@
-//maybe also make this as sortof an alternative to sqrt
-
-float sqrt(float value, float power){ //maybe int power instead, depending on implementation difficulty
-	//take the square root and return it
-}
+sun func(){}

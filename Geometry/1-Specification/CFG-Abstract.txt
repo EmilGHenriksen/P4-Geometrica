@@ -17,7 +17,9 @@
 
 
 //--------------PROGRAM-----------------------------------------------------------
-program   -> (stmt | function)*
+program -> content
+content -> (stmt | function)*
+function -> type typeModifier? identifier '(' parameterDeclareList ')' '{' stmtList '}'
 //--------------------------------------------------------------------------------
 
 
@@ -61,7 +63,6 @@ whileIterate   -> 'while' '(' expr ')' '{' stmtList '}'
 
 
 //--------------CALLS-------------------------------------------------------------
-function      -> type typeModifier? identifier '(' parameterDeclareList ')' '{' stmtList '}'
 functionCall       ->               identifier '(' parameterValueList ')'
 parameterDeclareList -> (declare (',' declare)*)?
 parameterValueList   -> (expr (',' expr)*)?

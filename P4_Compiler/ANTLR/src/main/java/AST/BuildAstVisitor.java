@@ -38,7 +38,12 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public FunctionNode visitFunction(CFG_concreteParser.FunctionContext context) {
         FunctionNode function = new FunctionNode();
-        function.type = context.Type().getText();
+        if(context.Type() != null){
+            function.type = context.Type().getText();
+        }
+        else{
+            function.type = "void";
+        }
         if(context.TypeModifier() != null) {
             function.typeModifier = context.TypeModifier().getText();
         }
