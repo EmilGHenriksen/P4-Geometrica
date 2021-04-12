@@ -78,7 +78,7 @@ whileIterate   -> 'while' '(' expr ')' stmtList
 functionCall     -> identifier '(' paramValueList ')'
 paramValueList   -> (expr (',' expr)*)?
 
-methodCall   -> varAccess '.' identifier '(' paramValueList ')'
+methodCall -> varAccess '.' identifier '(' paramValueList ')'
 //--------------------------------------------------------------------------------
 
 
