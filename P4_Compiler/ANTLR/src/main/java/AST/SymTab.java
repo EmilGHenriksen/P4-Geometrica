@@ -1,6 +1,7 @@
 package AST;
 
 import Exceptions.FunctionAlreadyDeclaredException;
+import Exceptions.FunctionOverloadingTypeException;
 import Exceptions.SymbolAlreadyDeclaredException;
 import Exceptions.VarNotFoundException;
 
@@ -35,16 +36,7 @@ public class SymTab {
                 Func func = (Func)symbol;
                 List<DeclareStmtNode> func1Params = func.parameters.declarations;
                 List<DeclareStmtNode> func2Params = node.parameters.declarations;
-                boolean sameType;
                 boolean sameParams = true;
-
-                //check if they have the same return type
-                if(func.type.equals(node.type) && func.typeModifier.equals(node.typeModifier)){
-                    sameType = true;
-                }
-                else{
-                    sameType = false;
-                }
 
                 //check if the parameters have the same types
                 if(func1Params.size() != func2Params.size()){
@@ -68,12 +60,23 @@ public class SymTab {
                 }
 
                 //at this point, it is known with sameParams whether they have the same parameters.
-                if(sameParams && sameType){
+                if(sameParams){
                     throw new FunctionAlreadyDeclaredException("Function already declared with name: " + node.id.id + " with type: " + node.type + " and parameters: " + node.parameters.declarations.toString());
                 }
                 else{
-                    //found, but with different types -> doing function overloading
-                    functions.add(new Func(node.type, node.typeModifier, node.id, node.parameters));
+                    //found, but with different parameters -> doing function overloading
+                    //needs same return type
+                    boolean sameType;
+
+                    //check if they have the same return type
+                    sameType = func.type.equals(node.type) && func.typeModifier.equals(node.typeModifier);
+
+                    if(sameType){
+                        functions.add(new Func(node.type, node.typeModifier, node.id, node.parameters));
+                    }
+                    else{
+                        throw new FunctionOverloadingTypeException("Function overloading with inconsistent return types. ID: " + node.id.id + " type1: " + node.type + " type2: " + func.type);
+                    }
                 }
 
 
