@@ -8,29 +8,26 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public ProgramNode Visit(ProgramNode node) throws Exception {
         //global scope
         SymTab.OpenScope();
-        Visit(node.content);
+        node.content = Visit(node.content);
         SymTab.CloseScope();
-        return null;
-    }
-
+        return node;
+    };
     public ContentNode Visit(ContentNode node) throws Exception {
         //load all functions
         for(int i = 0; i < node.functionNodes.size(); i++){
-            Visit(node.functionNodes.get(i));
+            node.functionNodes.set(i, Visit(node.functionNodes.get(i)));
         }
         //go through all statements
         for(int i = 0; i < node.stmtNodes.size(); i++){
-            Visit(node.stmtNodes.get(i));
+            node.stmtNodes.set(i, (StmtNode) Visit(node.stmtNodes.get(i)));
         }
-        return null;
-    }
-
-
+        return node;
+    };
     public FunctionNode Visit(FunctionNode node) throws Exception {
         //scope is opened by the StmtListNode
         SymTab.EnterSymbol(node);
-        Visit(node.stmtFuncNodes);
-        return null;
+        node.stmtFuncNodes = Visit(node.stmtFuncNodes);
+        return node;
     };
     public DeclareStmtListNode Visit(DeclareStmtListNode node){
         return null;
