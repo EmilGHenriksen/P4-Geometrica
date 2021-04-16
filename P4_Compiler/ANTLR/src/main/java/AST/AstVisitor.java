@@ -1,5 +1,6 @@
 package AST;
 
+import Exceptions.SymbolAlreadyDeclaredException;
 import kotlin.NotImplementedError;
 
 
@@ -8,6 +9,7 @@ public abstract class AstVisitor<T> {
         //open global scope
         SymTab.OpenScope();
         return null;
+        //scope to be closed by caller
     }
 
     public T Visit(ContentNode node) throws Exception {
@@ -18,196 +20,158 @@ public abstract class AstVisitor<T> {
         return null;
     };
     public T Visit(FunctionNode node){
-        //open scope for the function
-        SymTab.OpenScope();
+        //scope is opened by the StmtListNode
         return null;
     };
     public T Visit(DeclareStmtListNode node){
-
         return null;
     };
     public T Visit(ValueListNode node){
-
         return null;
     };
     public T Visit(StmtListNode node){
-
+        SymTab.OpenScope();
         return null;
+        //scope to be closed by caller
     };
     public T Visit(ReturnStmtNode node){
-
         return null;
     };
-    public T Visit(DeclareStmtNode node){
-
+    public T Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
+        SymTab.EnterSymbol(node);
         return null;
     };
     public T Visit(AssignNode node){
-
         return null;
     };
     public T Visit(IdentifierNode node){
-
         return null;
     };
     public T Visit(VariableModifierAccessNode node){
-
         return null;
     };
     public T Visit(VariablePropertyAccessNode node){
-
         return null;
     };
     public T Visit(IfNode node){
-
+        //scope is opened by the StmtListNode
         return null;
     };
     public T Visit(SwitchNode node){
-
+        //cases open their own scopes
         return null;
     };
     public T Visit(DefinedCaseListNode node){
-
         return null;
     };
     public T Visit(DefinedCaseNode node){
-
+        //scope is opened by the StmtListNode
         return null;
     };
     public T Visit(DefaultCaseNode node){
-
+        //scope is opened by the StmtListNode
         return null;
     };
     public T Visit(ForeachNode node){
-
+        //scope is opened by the StmtListNode
         return null;
     };
     public T Visit(LoopNode node){
-
+        //scope is opened by the StmtListNode
         return null;
     };
     public T Visit(WhileNode node){
-
+        //scope is opened by the StmtListNode
         return null;
     };
     public T Visit(ExprStmtNode node){
-
         return null;
     };
     public T Visit(IntLiteralNode node){
-
         return null;
     };
     public T Visit(FloatLiteralNode node){
-
         return null;
     };
     public T Visit(PiLiteralNode node){
-
         return null;
     };
     public T Visit(StringLiteralNode node){
-
         return null;
     };
     public T Visit(BoolLiteralNode node){
-
         return null;
     };
     public T Visit(AngleLiteralNode node){
-
         return null;
     };
     public T Visit(ArrayLiteralNode node){
-
         return null;
     };
     public T Visit(TypeModAccessNode node){
-
         return null;
     };
     public T Visit(FunctionCallNode node){
-
         return null;
     };
     public T Visit(MethodCallNode node){
-
         return null;
     };
     public T Visit(PropertyCallNode node){
-
         return null;
     };
     public T Visit(ParenthesisedExprNode node){
-
         return null;
     };
     public T Visit(UnaryMinusNode node){
-
         return null;
     };
     public T Visit(UnaryPlusNode node){
-
         return null;
     };
     public T Visit(UnaryNegationNode node){
-
         return null;
     };
     public T Visit(SubtractionNode node){
-
         return null;
     };
     public T Visit(AdditionNode node){
-
         return null;
     };
     public T Visit(MultiplicationNode node){
-
         return null;
     };
     public T Visit(DivisionNode node){
-
         return null;
     };
     public T Visit(ModuloNode node){
-
         return null;
     };
     public T Visit(PowerNode node){
-
         return null;
     };
     public T Visit(EqualsNode node){
-
         return null;
     };
     public T Visit(NotEqualsNode node){
-
         return null;
     };
     public T Visit(LesserThanNode node){
-
         return null;
     };
     public T Visit(GreaterThanNode node){
-
         return null;
     };
     public T Visit(LesserOrEqualsNode node){
-
         return null;
     };
     public T Visit(GreaterOrEqualsNode node){
-
         return null;
     };
     public T Visit(AndNode node){
-
         return null;
     };
     public T Visit(OrNode node){
-
         return null;
     };
 

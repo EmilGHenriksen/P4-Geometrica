@@ -54,6 +54,7 @@ public class SymTab {
             }
         }
 
+        //check if the overloading is valid
         if(AllValidOverload(sameFuncs, node)){
             functions.add(new FuncSymbol(node.type, node.typeModifier, node.id, node.parameters));
         }
@@ -79,12 +80,9 @@ public class SymTab {
             return false;
         }
         else{
-            //found, but with different parameters -> doing function overloading
+            //found, and with different parameters -> doing function overloading
             //needs same return type
-            boolean sameType;
-
-            //check if they have the same return type
-            sameType = currentFunc.type.equals(node.type) && currentFunc.typeModifier.equals(node.typeModifier);
+            boolean sameType = currentFunc.type.equals(node.type) && currentFunc.typeModifier.equals(node.typeModifier);
             if(sameType){
                 return true;
             }
@@ -95,6 +93,7 @@ public class SymTab {
     }
     private static boolean SameParams(List<DeclareStmtNode> func1Params, List<DeclareStmtNode> func2Params){
         //check if the parameters have the same types
+
         if(func1Params.size() != func2Params.size()){
             return false;
         }
