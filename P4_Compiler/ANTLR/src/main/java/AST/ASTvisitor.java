@@ -4,176 +4,57 @@ import Exceptions.SymbolAlreadyDeclaredException;
 import kotlin.NotImplementedError;
 
 
-public abstract class TopDeclVisitor<T> {
-    public T Visit(ProgramNode node) {
-        //open global scope
-        SymTab.OpenScope();
-        return null;
-        //scope to be closed by caller
-    }
-
-    public T Visit(ContentNode node) throws Exception {
-        //load all functions
-        for(int i = 0; i < node.functionNodes.size(); i++){
-            SymTab.EnterSymbol(node.functionNodes.get(i));
-        }
-        return null;
-    };
-    public T Visit(FunctionNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public T Visit(DeclareStmtListNode node){
-        return null;
-    };
-    public T Visit(ValueListNode node){
-        return null;
-    };
-    public T Visit(StmtListNode node){
-        SymTab.OpenScope();
-        return null;
-        //scope to be closed by caller
-    };
-    public T Visit(ReturnStmtNode node){
-        return null;
-    };
-    public T Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
-        SymTab.EnterSymbol(node);
-        return null;
-    };
-    public T Visit(AssignNode node){
-        return null;
-    };
-    public T Visit(IdentifierNode node){
-        return null;
-    };
-    public T Visit(VariableModifierAccessNode node){
-        return null;
-    };
-    public T Visit(VariablePropertyAccessNode node){
-        return null;
-    };
-    public T Visit(IfNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public T Visit(SwitchNode node){
-        //cases open their own scopes
-        return null;
-    };
-    public T Visit(DefinedCaseListNode node){
-        return null;
-    };
-    public T Visit(DefinedCaseNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public T Visit(DefaultCaseNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public T Visit(ForeachNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public T Visit(LoopNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public T Visit(WhileNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public T Visit(ExprStmtNode node){
-        return null;
-    };
-    public T Visit(IntLiteralNode node){
-        return null;
-    };
-    public T Visit(FloatLiteralNode node){
-        return null;
-    };
-    public T Visit(PiLiteralNode node){
-        return null;
-    };
-    public T Visit(StringLiteralNode node){
-        return null;
-    };
-    public T Visit(BoolLiteralNode node){
-        return null;
-    };
-    public T Visit(AngleLiteralNode node){
-        return null;
-    };
-    public T Visit(ArrayLiteralNode node){
-        return null;
-    };
-    public T Visit(TypeModAccessNode node){
-        return null;
-    };
-    public T Visit(FunctionCallNode node){
-        return null;
-    };
-    public T Visit(MethodCallNode node){
-        return null;
-    };
-    public T Visit(PropertyCallNode node){
-        return null;
-    };
-    public T Visit(ParenthesisedExprNode node){
-        return null;
-    };
-    public T Visit(UnaryMinusNode node){
-        return null;
-    };
-    public T Visit(UnaryPlusNode node){
-        return null;
-    };
-    public T Visit(UnaryNegationNode node){
-        return null;
-    };
-    public T Visit(SubtractionNode node){
-        return null;
-    };
-    public T Visit(AdditionNode node){
-        return null;
-    };
-    public T Visit(MultiplicationNode node){
-        return null;
-    };
-    public T Visit(DivisionNode node){
-        return null;
-    };
-    public T Visit(ModuloNode node){
-        return null;
-    };
-    public T Visit(PowerNode node){
-        return null;
-    };
-    public T Visit(EqualsNode node){
-        return null;
-    };
-    public T Visit(NotEqualsNode node){
-        return null;
-    };
-    public T Visit(LesserThanNode node){
-        return null;
-    };
-    public T Visit(GreaterThanNode node){
-        return null;
-    };
-    public T Visit(LesserOrEqualsNode node){
-        return null;
-    };
-    public T Visit(GreaterOrEqualsNode node){
-        return null;
-    };
-    public T Visit(AndNode node){
-        return null;
-    };
-    public T Visit(OrNode node){
-        return null;
-    };
+public abstract class ASTvisitor<T> {
+    public abstract T Visit(ProgramNode node) throws Exception;
+    public abstract T Visit(ContentNode node) throws Exception;
+    public abstract T Visit(FunctionNode node) throws Exception;
+    public abstract T Visit(DeclareStmtListNode node);
+    public abstract T Visit(ValueListNode node);
+    public abstract T Visit(StmtListNode node);
+    public abstract T Visit(ReturnStmtNode node);
+    public abstract T Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException;
+    public abstract T Visit(AssignNode node);
+    public abstract T Visit(IdentifierNode node);
+    public abstract T Visit(VariableModifierAccessNode node);
+    public abstract T Visit(VariablePropertyAccessNode node);
+    public abstract T Visit(IfNode node);
+    public abstract T Visit(SwitchNode node);
+    public abstract T Visit(DefinedCaseListNode node);
+    public abstract T Visit(DefinedCaseNode node);
+    public abstract T Visit(DefaultCaseNode node);
+    public abstract T Visit(ForeachNode node);
+    public abstract T Visit(LoopNode node);
+    public abstract T Visit(WhileNode node);
+    public abstract T Visit(ExprStmtNode node);
+    public abstract T Visit(IntLiteralNode node);
+    public abstract T Visit(FloatLiteralNode node);
+    public abstract T Visit(PiLiteralNode node);
+    public abstract T Visit(StringLiteralNode node);
+    public abstract T Visit(BoolLiteralNode node);
+    public abstract T Visit(AngleLiteralNode node);
+    public abstract T Visit(ArrayLiteralNode node);
+    public abstract T Visit(TypeModAccessNode node);
+    public abstract T Visit(FunctionCallNode node);
+    public abstract T Visit(MethodCallNode node);
+    public abstract T Visit(PropertyCallNode node);
+    public abstract T Visit(ParenthesisedExprNode node);
+    public abstract T Visit(UnaryMinusNode node);
+    public abstract T Visit(UnaryPlusNode node);
+    public abstract T Visit(UnaryNegationNode node);
+    public abstract T Visit(SubtractionNode node);
+    public abstract T Visit(AdditionNode node);
+    public abstract T Visit(MultiplicationNode node);
+    public abstract T Visit(DivisionNode node);
+    public abstract T Visit(ModuloNode node);
+    public abstract T Visit(PowerNode node);
+    public abstract T Visit(EqualsNode node);
+    public abstract T Visit(NotEqualsNode node);
+    public abstract T Visit(LesserThanNode node);
+    public abstract T Visit(GreaterThanNode node);
+    public abstract T Visit(LesserOrEqualsNode node);
+    public abstract T Visit(GreaterOrEqualsNode node);
+    public abstract T Visit(AndNode node);
+    public abstract T Visit(OrNode node);
 
 
     public T Visit(Node node) throws Exception {

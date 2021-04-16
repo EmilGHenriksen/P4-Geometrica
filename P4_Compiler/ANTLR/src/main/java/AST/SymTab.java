@@ -25,7 +25,8 @@ public class SymTab {
             throw new SymbolAlreadyDeclaredException("Variable already declared in current scope with name: " + node.id.id);
         }
         else{
-            scopes.get(scopes.size()-1).symbols.add(new Variable(node.accessModifier, node.type, node.typeModifier, node.id));
+            SymList currentScope = scopes.get(scopes.size()-1);
+            currentScope.symbols.add(new Variable(node.accessModifier, node.type, node.typeModifier, node.id));
         }
     }
 

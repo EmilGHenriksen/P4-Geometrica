@@ -22,6 +22,8 @@ class FunctionNode extends Node {
     IdentifierNode id;
     DeclareStmtListNode parameters;
     StmtListNode stmtFuncNodes;
+    //decoration
+    TypeDecoration typeDecoration;
 }
 class DeclareStmtListNode extends Node {
     List<DeclareStmtNode> declarations;
@@ -52,6 +54,8 @@ abstract class StmtNode extends Node {
 
 class ReturnStmtNode extends StmtNode {
     ExprNode value;
+    //decoration
+    TypeDecoration typeDecoration;
 }
 class DeclareStmtNode extends StmtNode {
     String accessModifier;
@@ -71,6 +75,8 @@ abstract class VariableAccessNode extends ExprNode {
 
 class IdentifierNode extends VariableAccessNode{
     String id;
+    //decoration
+    Symbol symbol;
 }
 class VariableModifierAccessNode extends VariableAccessNode {
     VariableAccessNode variable;
@@ -126,6 +132,8 @@ class WhileNode extends StmtNode {
 
 //----expr stmt----
 abstract class ExprNode extends StmtNode {
+    //decoration
+    TypeDecoration typeDecoration;
 }
 
 class ExprStmtNode extends ExprNode{
