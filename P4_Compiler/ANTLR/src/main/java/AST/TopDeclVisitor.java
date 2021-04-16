@@ -4,7 +4,7 @@ import Exceptions.SymbolAlreadyDeclaredException;
 import kotlin.NotImplementedError;
 
 
-public abstract class AstVisitor<T> {
+public abstract class TopDeclVisitor<T> {
     public T Visit(ProgramNode node) {
         //open global scope
         SymTab.OpenScope();
