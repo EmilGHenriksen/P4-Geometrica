@@ -4,23 +4,24 @@ import Exceptions.FunctionAlreadyDeclaredException;
 import Exceptions.FunctionOverloadingTypeException;
 import Exceptions.SymbolAlreadyDeclaredException;
 import Exceptions.VarNotFoundException;
+import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SymTab {
-    static List<FuncSymbol> functions = new ArrayList<>(); //unordered list of functions
-    static List<SymList> scopes = new ArrayList<>(); //these scopes are used as a stack
-    static String currentFunc = null;
+    public List<FuncSymbol> functions = new ArrayList<>(); //unordered list of functions
+    public List<SymList> scopes = new ArrayList<>(); //these scopes are used as a stack
+    public String currentFunc = null;
 
-    public static void OpenScope(){
+    public void OpenScope(){
         scopes.add(new SymList());
     }
-    public static void CloseScope(){
+    public void CloseScope(){
         scopes.remove(scopes.size()-1);
     }
 
-    public static void EnterSymbol(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
+    public void EnterSymbol(DeclareStmtNode node, SymTab symTab) throws SymbolAlreadyDeclaredException {
         //check if the symbol is already in the table
         if(DeclaredLocally(node.id.id)){
             throw new SymbolAlreadyDeclaredException("Variable already declared in current scope with name: " + node.id.id);
@@ -36,7 +37,7 @@ public class SymTab {
     //OR
     //  -it has a non-unique name, with the same type as previously declared function of that name, and unique parameters*
     //      *ordering of parameters does not change uniqueness
-    public static void EnterSymbol(FunctionNode node) throws Exception {
+    public void EnterSymbol(FunctionNode node) throws Exception {
         //check if the symbol is already in the table
         if(DeclaredLocally(node.id.id)){
             EnterOverloadedFunc(node);
@@ -46,7 +47,7 @@ public class SymTab {
             functions.add(new FuncSymbol(node.type, node.typeModifier, node.id.id, node.parameters));
         }
     }
-    private static void EnterOverloadedFunc(FunctionNode node) throws Exception {
+    private void EnterOverloadedFunc(FunctionNode node) throws Exception {
         //go through all declared functions, and find the ones with the same name
         List<FuncSymbol> sameFuncs = new ArrayList<>();
         for(int i = 0; i < functions.size(); i++){
@@ -64,7 +65,7 @@ public class SymTab {
             throw new FunctionAlreadyDeclaredException("Function already declared with name: " + node.id.id + " with type: " + node.type + " and parameters: " + node.parameters.declarations.toString());
         }
     }
-    private static boolean AllValidOverload(List<FuncSymbol> sameFuncs, FunctionNode node){
+    private boolean AllValidOverload(List<FuncSymbol> sameFuncs, FunctionNode node){
         //go through the overloaded versions, and check if it's valid for each of them
         for(int funcCount = 0; funcCount < sameFuncs.size(); funcCount++){
             FuncSymbol currentFunc = sameFuncs.get(funcCount);
@@ -74,7 +75,7 @@ public class SymTab {
         }
         return true;
     }
-    private static boolean ValidOverload(FuncSymbol currentFunc, FunctionNode node){
+    private boolean ValidOverload(FuncSymbol currentFunc, FunctionNode node){
         List<DeclareStmtNode> func1Params = currentFunc.parameters.declarations;
         List<DeclareStmtNode> func2Params = node.parameters.declarations;
 
@@ -94,7 +95,7 @@ public class SymTab {
             }
         }
     }
-    private static boolean SameParams(List<DeclareStmtNode> func1Params, List<DeclareStmtNode> func2Params){
+    private boolean SameParams(List<DeclareStmtNode> func1Params, List<DeclareStmtNode> func2Params){
         //check if the parameters have the same types
 
         if(func1Params.size() != func2Params.size()){
@@ -120,23 +121,22 @@ public class SymTab {
         return true;
     }
 
-
     //retrieves either a variable or a function
-    public static Symbol RetrieveSymbol(String id) throws VarNotFoundException {
+    public Symbol RetrieveSymbol(String id, SymTab _symTab) throws VarNotFoundException {
         Symbol symbol = null;
         //try to find a variable
-        for(int scopeCount = scopes.size()-1; scopeCount >= 0; scopeCount--){
-            for(int symbolCount = scopes.get(scopeCount).symbols.size()-1; symbolCount >= 0; symbolCount--){
+        for(int scopeCount = _symTab.scopes.size()-1; scopeCount >= 0; scopeCount--){
+            for(int symbolCount = _symTab.scopes.get(scopeCount).symbols.size()-1; symbolCount >= 0; symbolCount--){
                 //looping through all symbols in all scopes, in reverse order
-                Symbol current = scopes.get(scopeCount).symbols.get(symbolCount);
+                Symbol current = _symTab.scopes.get(scopeCount).symbols.get(symbolCount);
                 if(current.id.equals(id) && symbol == null){
                     symbol = current;
                 }
             }
         }
         //try to find a function
-        for(int i = functions.size()-1; i >= 0; i--){
-            FuncSymbol current = functions.get(i);
+        for(int i = _symTab.functions.size()-1; i >= 0; i--){
+            FuncSymbol current = _symTab.functions.get(i);
             if(current.id.equals(id) && symbol == null){
                 symbol = current;
             }
@@ -149,7 +149,7 @@ public class SymTab {
 
     //auxiliary function for determining if a symbol is already declared in current scope
     //also checks if a function with that name exists (globally)
-    private static boolean DeclaredLocally(String id){
+    private boolean DeclaredLocally(String id){
         boolean found = false;
         //check local variables
         int scopeCount = scopes.size()-1;
@@ -198,6 +198,7 @@ class VarSymbol extends Symbol {
     String accessModifier;
     String type;
     String typeModifier;
+    SymTab fields;
 }
 
 class FuncSymbol extends Symbol {

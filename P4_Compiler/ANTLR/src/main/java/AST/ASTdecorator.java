@@ -6,11 +6,13 @@ import kotlin.NotImplementedError;
 
 
 public class ASTdecorator extends ASTvisitor<Node> {
+    SymTab symTab;
     public ProgramNode Visit(ProgramNode node) throws Exception {
+        symTab = new SymTab();
         //global scope
-        SymTab.OpenScope();
+        symTab.OpenScope();
         node.content = Visit(node.content);
-        SymTab.CloseScope();
+        symTab.CloseScope();
         return node;
     };
     public ContentNode Visit(ContentNode node) throws Exception {
@@ -28,10 +30,10 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //scope is opened by the StmtListNode
         node.typeDecoration.type = node.type;
         node.typeDecoration.typeModifier = node.typeModifier;
-        SymTab.EnterSymbol(node);
-        SymTab.currentFunc = node.id.id;
+        symTab.EnterSymbol(node);
+        symTab.currentFunc = node.id.id;
         node.stmtFuncNodes = Visit(node.stmtFuncNodes);
-        SymTab.currentFunc = null;
+        symTab.currentFunc = null;
         return node;
     };
     public DeclareStmtListNode Visit(DeclareStmtListNode node) throws SymbolAlreadyDeclaredException {
@@ -49,19 +51,19 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public StmtListNode Visit(StmtListNode node) throws Exception {
-        SymTab.OpenScope();
+        symTab.OpenScope();
         for(int i = 0; i < node.statements.size(); i++){
             StmtNode stmtNode = (StmtNode) Visit(node.statements.get(i));
             node.statements.set(i, stmtNode);
         }
-        SymTab.CloseScope();
+        symTab.CloseScope();
         return node;
     };
     public ReturnStmtNode Visit(ReturnStmtNode node) throws Exception {
         node.value = (ExprNode) Visit(node.value);
         node.typeDecoration = node.value.typeDecoration;
         //type checking
-        FuncSymbol currentFunc = (FuncSymbol) SymTab.RetrieveSymbol(SymTab.currentFunc);
+        FuncSymbol currentFunc = (FuncSymbol) symTab.RetrieveSymbol(symTab.currentFunc, symTab);
         if(!node.typeDecoration.type.equals(currentFunc.type)
                     || !node.typeDecoration.typeModifier.equals(currentFunc.typeModifier)){
             throw new TypeException("Function: " + currentFunc.id + " does not match type for return statement: " + node.toString());
@@ -69,19 +71,36 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public DeclareStmtNode Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
-        SymTab.EnterSymbol(node);
+        symTab.EnterSymbol(node, symTab);
         return node;
     };
     public AssignNode Visit(AssignNode node) throws Exception {
         node.variable = (VariableAccessNode) Visit(node.variable);
         node.value = (ExprNode) Visit(node.value);
-        //type checking
-        VarSymbol variable = (VarSymbol) SymTab.RetrieveSymbol(node.variable.SymbolString());
-        TypeDecoration varType = new TypeDecoration(variable.type, variable.typeModifier);
-        if(!varType.equals(node.typeDecoration)){
-            throw new TypeException("Variable: " + node.variable.toString() + " does not have type derived from expression: " + node.value.toString());
+        //---type checking---
+        //copy the node
+        VariableAccessNode nodeCurrent = node.variable;
+        //find the variable in SymTab
+        VarSymbol symCurrent = (VarSymbol) symTab.RetrieveSymbol(nodeCurrent.GetID(), symTab);
+        //for every access node, check if it exists in the symbol table
+        while(!(nodeCurrent instanceof IdentifierNode)){
+            if(nodeCurrent instanceof VariableModifierAccessNode){
+                //array access
+                if(symCurrent.typeModifier.length() >= nodeCurrent.GetTypeModifier().length()){
+                    nodeCurrent = ((VariableModifierAccessNode) nodeCurrent).variable;
+                }
+                else{
+                    throw new TypeException("Assign error: variable " + node.variable.GetID() + " has fewer list dimensions than value: " + node.value);
+                }
+            }
+            else{
+                //property access
+                symCurrent = (VarSymbol) symTab.RetrieveSymbol(nodeCurrent.GetID(), symCurrent.fields);
+                nodeCurrent = ((VariablePropertyAccessNode) nodeCurrent).child;
+            }
         }
-        return null;
+        //if no exceptions have been thrown, it can be returned
+        return node;
     };
     public IdentifierNode Visit(IdentifierNode node){
 
