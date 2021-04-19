@@ -1,6 +1,7 @@
 package AST;
 
 import Exceptions.SymbolAlreadyDeclaredException;
+import Exceptions.TypeException;
 import kotlin.NotImplementedError;
 
 
@@ -25,37 +26,73 @@ public class ASTdecorator extends ASTvisitor<Node> {
     };
     public FunctionNode Visit(FunctionNode node) throws Exception {
         //scope is opened by the StmtListNode
+        node.typeDecoration.type = node.type;
+        node.typeDecoration.typeModifier = node.typeModifier;
         SymTab.EnterSymbol(node);
+        SymTab.currentFunc = node.id.id;
         node.stmtFuncNodes = Visit(node.stmtFuncNodes);
+        SymTab.currentFunc = null;
         return node;
     };
-    public DeclareStmtListNode Visit(DeclareStmtListNode node){
-        return null;
+    public DeclareStmtListNode Visit(DeclareStmtListNode node) throws SymbolAlreadyDeclaredException {
+        for(int i = 0; i < node.declarations.size(); i++){
+            DeclareStmtNode declareStmtNode =  Visit(node.declarations.get(i));
+            node.declarations.set(i, declareStmtNode);
+        }
+        return node;
     };
-    public ValueListNode Visit(ValueListNode node){
-        return null;
+    public ValueListNode Visit(ValueListNode node) throws Exception {
+        for(int i = 0; i < node.exprNodes.size(); i++){
+            ExprNode exprNode = (ExprNode) Visit(node.exprNodes.get(i));
+            node.exprNodes.set(i, exprNode);
+        }
+        return node;
     };
-    public StmtListNode Visit(StmtListNode node){
+    public StmtListNode Visit(StmtListNode node) throws Exception {
         SymTab.OpenScope();
-        return null;
+        for(int i = 0; i < node.statements.size(); i++){
+            StmtNode stmtNode = (StmtNode) Visit(node.statements.get(i));
+            node.statements.set(i, stmtNode);
+        }
+        SymTab.CloseScope();
+        return node;
     };
-    public ReturnStmtNode Visit(ReturnStmtNode node){
-        return null;
+    public ReturnStmtNode Visit(ReturnStmtNode node) throws Exception {
+        node.value = (ExprNode) Visit(node.value);
+        node.typeDecoration = node.value.typeDecoration;
+        //type checking
+        FuncSymbol currentFunc = (FuncSymbol) SymTab.RetrieveSymbol(SymTab.currentFunc);
+        if(!node.typeDecoration.type.equals(currentFunc.type)
+                    || !node.typeDecoration.typeModifier.equals(currentFunc.typeModifier)){
+            throw new TypeException("Function: " + currentFunc.id + " does not match type for return statement: " + node.toString());
+        }
+        return node;
     };
     public DeclareStmtNode Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
         SymTab.EnterSymbol(node);
-        return null;
+        return node;
     };
-    public AssignNode Visit(AssignNode node){
+    public AssignNode Visit(AssignNode node) throws Exception {
+        node.variable = (VariableAccessNode) Visit(node.variable);
+        node.value = (ExprNode) Visit(node.value);
+        //type checking
+        VarSymbol variable = (VarSymbol) SymTab.RetrieveSymbol(node.variable.SymbolString());
+        TypeDecoration varType = new TypeDecoration(variable.type, variable.typeModifier);
+        if(!varType.equals(node.typeDecoration)){
+            throw new TypeException("Variable: " + node.variable.toString() + " does not have type derived from expression: " + node.value.toString());
+        }
         return null;
     };
     public IdentifierNode Visit(IdentifierNode node){
+
         return null;
     };
     public VariableModifierAccessNode Visit(VariableModifierAccessNode node){
+
         return null;
     };
     public VariablePropertyAccessNode Visit(VariablePropertyAccessNode node){
+
         return null;
     };
     public IfNode Visit(IfNode node){
@@ -67,6 +104,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return null;
     };
     public DefinedCaseListNode Visit(DefinedCaseListNode node){
+
         return null;
     };
     public DefinedCaseNode Visit(DefinedCaseNode node){

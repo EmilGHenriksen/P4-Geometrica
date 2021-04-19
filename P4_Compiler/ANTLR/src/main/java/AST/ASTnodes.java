@@ -58,33 +58,56 @@ class ReturnStmtNode extends StmtNode {
     TypeDecoration typeDecoration;
 }
 class DeclareStmtNode extends StmtNode {
-    String accessModifier;
+    String accessModifier; //const or not
     String type;
     String typeModifier;
     IdentifierNode id;
     ExprNode value;
+    //symbol table stuff
+    public String SymbolString(){
+        return id.id + typeModifier;
+    }
 }
 class AssignNode extends StmtNode {
     VariableAccessNode variable;
     ExprNode value;
+    //decoration
+    TypeDecoration typeDecoration;
 }
 
 //--variable access--
 abstract class VariableAccessNode extends ExprNode {
+    //symbol table stuff
+     abstract String SymbolString();
 }
 
 class IdentifierNode extends VariableAccessNode{
+    //x
     String id;
     //decoration
     Symbol symbol;
+    //symbol table stuff
+    public String SymbolString(){
+        return id;
+    }
 }
 class VariableModifierAccessNode extends VariableAccessNode {
+    //x[e]
     VariableAccessNode variable;
     ExprNode expr;
+    //symbol table stuff
+    public String SymbolString(){
+        return variable.SymbolString() + "[]";
+    }
 }
 class VariablePropertyAccessNode extends VariableAccessNode {
+    //x.x
     VariableAccessNode parent;
     VariableAccessNode child;
+    //symbol table stuff
+    public String SymbolString(){
+        return parent.SymbolString() + "." + child.SymbolString();
+    }
 }
 
 
