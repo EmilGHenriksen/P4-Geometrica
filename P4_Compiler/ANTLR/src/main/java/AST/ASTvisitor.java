@@ -1,6 +1,7 @@
 package AST;
 
 import Exceptions.SymbolAlreadyDeclaredException;
+import Exceptions.TypeException;
 import kotlin.NotImplementedError;
 
 
@@ -15,17 +16,17 @@ public abstract class ASTvisitor<T> {
     public abstract T Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException;
     public abstract T Visit(AssignNode node) throws Exception;
     public abstract T Visit(IdentifierNode node);
-    public abstract T Visit(VariableModifierAccessNode node);
-    public abstract T Visit(VariablePropertyAccessNode node);
-    public abstract T Visit(IfNode node);
-    public abstract T Visit(SwitchNode node);
-    public abstract T Visit(DefinedCaseListNode node);
-    public abstract T Visit(DefinedCaseNode node);
-    public abstract T Visit(DefaultCaseNode node);
-    public abstract T Visit(ForeachNode node);
-    public abstract T Visit(LoopNode node);
-    public abstract T Visit(WhileNode node);
-    public abstract T Visit(ExprStmtNode node);
+    public abstract T Visit(VariableModifierAccessNode node) throws Exception;
+    public abstract T Visit(VariablePropertyAccessNode node) throws Exception;
+    public abstract T Visit(IfNode node) throws Exception;
+    public abstract T Visit(SwitchNode node) throws Exception;
+    public abstract T Visit(DefinedCaseListNode node) throws Exception;
+    public abstract T Visit(DefinedCaseNode node) throws Exception;
+    public abstract T Visit(DefaultCaseNode node) throws Exception;
+    public abstract T Visit(ForeachNode node) throws Exception;
+    public abstract T Visit(LoopNode node) throws Exception;
+    public abstract T Visit(WhileNode node) throws Exception;
+    public abstract T Visit(ExprStmtNode node) throws Exception;
     public abstract T Visit(IntLiteralNode node);
     public abstract T Visit(FloatLiteralNode node);
     public abstract T Visit(PiLiteralNode node);

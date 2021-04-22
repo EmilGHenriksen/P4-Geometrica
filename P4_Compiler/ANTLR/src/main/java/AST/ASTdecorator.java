@@ -1,5 +1,6 @@
 package AST;
 
+import Exceptions.InvalidStatementException;
 import Exceptions.SymbolAlreadyDeclaredException;
 import Exceptions.TypeException;
 import kotlin.NotImplementedError;
@@ -88,6 +89,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
                 //list access
                 VariableModifierAccessNode nodeCurrentList = (VariableModifierAccessNode) nodeCurrent;
                 //check that the number of list dimensions on LHS + RHS totals to the amount in the variable
+                nodeCurrentList.expr = (ExprNode) Visit(nodeCurrentList.expr);
                 int LHS = nodeCurrentList.GetTypeModifier().length()/2;
                 int RHS = nodeCurrentList.expr.typeDecoration.typeModifier.length()/2;
                 int total = LHS + RHS;
@@ -114,52 +116,110 @@ public class ASTdecorator extends ASTvisitor<Node> {
                 nodeCurrent = ((VariablePropertyAccessNode) nodeCurrent).child;
             }
         }
+        Visit(nodeCurrent);
         //if no exceptions have been thrown, it can be returned
         return node;
     };
     public IdentifierNode Visit(IdentifierNode node){
         return node;
     };
-    public VariableModifierAccessNode Visit(VariableModifierAccessNode node){
+    public VariableModifierAccessNode Visit(VariableModifierAccessNode node) throws Exception {
+        node.expr = (ExprNode) Visit(node.expr);
+        node.variable = (VariableAccessNode) Visit(node.variable);
         return node;
     };
-    public VariablePropertyAccessNode Visit(VariablePropertyAccessNode node){
+    public VariablePropertyAccessNode Visit(VariablePropertyAccessNode node) throws Exception {
+        node.child = (VariableAccessNode) Visit(node.child);
+        node.parent = (VariableAccessNode) Visit(node.parent);
         return node;
     };
-    public IfNode Visit(IfNode node){
+    public IfNode Visit(IfNode node) throws Exception {
         //scope is opened by the StmtListNode
-        return null;
+        node.value = (ExprNode) Visit(node.value);
+        if(!node.value.typeDecoration.type.equals("bool") || !node.value.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("if node's value: " + node.value.toString() + " needs to be boolean");
+        }
+        node.elseStmtNode = (StmtNode) Visit(node.elseStmtNode);
+        node.ifStmtNodes = Visit(node.ifStmtNodes);
+        return node;
     };
-    public SwitchNode Visit(SwitchNode node){
+    public SwitchNode Visit(SwitchNode node) throws Exception {
         //cases open their own scopes
-        return null;
+        node.value = (ExprNode) Visit(node.value);
+        if(node.value.typeDecoration == null){
+            throw new TypeException("Null value in switch node's switching value: " + node.toString());
+        }
+        node.cases = Visit(node.cases);
+        for(int i = 0; i < node.cases.cases.size(); i++){
+            if(node.cases.cases.get(i).value.typeDecoration != node.value.typeDecoration){
+                throw new TypeException("case: " + node.cases.cases.get(i).toString() + " does not have same type as its switching value");
+            }
+        }
+        node.defaultCase = Visit(node.defaultCase);
+        return node;
     };
-    public DefinedCaseListNode Visit(DefinedCaseListNode node){
+    public DefinedCaseListNode Visit(DefinedCaseListNode node) throws Exception {
+        for(int i = 0; i < node.cases.size(); i++){
+            node.cases.set(i, Visit(node.cases.get(i)));
+        }
+        return node;
+    };
+    public DefinedCaseNode Visit(DefinedCaseNode node) throws Exception {
+        //scope is opened by the StmtListNode
+        //type checking is done by the switch node
+        node.value = (ExprNode) Visit(node.value);
+        node.stmtNodes = Visit(node.stmtNodes);
+        return node;
+    };
+    public DefaultCaseNode Visit(DefaultCaseNode node) throws Exception {
+        //scope is opened by the StmtListNode
+        node.stmtNodes = Visit(node.stmtNodes);
+        return node;
+    };
+    public ForeachNode Visit(ForeachNode node) throws Exception {
+        //scope is opened by the StmtListNode
+        node.elementID = Visit(node.elementID);
+        node.collectionID = Visit(node.collectionID);
+        //check that the collection is a list
+        if(node.collectionID.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("collection in foreach node needs to be a list (in: " + node.toString() + ")");
+        }
+        //insert element in symTab
+        node.elementID.typeDecoration.type = node.collectionID.typeDecoration.type;
+        String oldModifier = node.collectionID.typeDecoration.typeModifier;
+        String newModifier = oldModifier.substring(0, oldModifier.length()-2); //new type modifier (1 dimension lower) - remove "[]" from end
+        node.elementID.typeDecoration.typeModifier = newModifier;
+        DeclareStmtNode declElement = new DeclareStmtNode(node.collectionID.typeDecoration.type, newModifier, node.elementID.id);
+        symTab.EnterSymbol(declElement, symTab);
 
-        return null;
+        node.stmtNodes = Visit(node.stmtNodes);
+        return node;
     };
-    public DefinedCaseNode Visit(DefinedCaseNode node){
+    public LoopNode Visit(LoopNode node) throws Exception {
         //scope is opened by the StmtListNode
-        return null;
+        node.loopcount = (ExprNode) Visit(node.loopcount);
+        if(!node.loopcount.typeDecoration.type.equals("int") || !node.loopcount.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("loop needs int as type (in: " + node.toString() + ")");
+        }
+        node.stmtNodes = Visit(node.stmtNodes);
+        return node;
     };
-    public DefaultCaseNode Visit(DefaultCaseNode node){
+    public WhileNode Visit(WhileNode node) throws Exception {
         //scope is opened by the StmtListNode
-        return null;
+        node.conditionExpression = (ExprNode) Visit(node.conditionExpression);
+        if(!node.conditionExpression.typeDecoration.type.equals("bool") || !node.conditionExpression.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("while needs boolean as type (in: " + node.toString() + ")");
+        }
+        node.stmtNodes = Visit(node.stmtNodes);
+        return node;
     };
-    public ForeachNode Visit(ForeachNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public LoopNode Visit(LoopNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public WhileNode Visit(WhileNode node){
-        //scope is opened by the StmtListNode
-        return null;
-    };
-    public ExprStmtNode Visit(ExprStmtNode node){
-        return null;
+    public ExprStmtNode Visit(ExprStmtNode node) throws Exception {
+        node.expr = (ExprNode) Visit(node.expr);
+        ExprNode expr = node.expr;
+        if(!(expr instanceof FunctionCallNode) && !(expr instanceof  MethodCallNode)){
+            throw new InvalidStatementException("Invalid statement: " + node.toString());
+        }
+        return node;
     };
     public IntLiteralNode Visit(IntLiteralNode node){
         return null;
