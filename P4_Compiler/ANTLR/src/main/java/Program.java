@@ -1,3 +1,4 @@
+import AST.ASTdecorator;
 import AST.BuildAstVisitor;
 import AST.Node;
 import gen.CFG_concreteLexer;
@@ -29,12 +30,14 @@ public class Program
         CFG_concreteLexer lexer = new CFG_concreteLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         CFG_concreteParser parser = new CFG_concreteParser(tokenStream);
+        ASTdecorator decorator = new ASTdecorator();
 
         try
         {
             var cst = parser.program();
             var ast = new BuildAstVisitor().visitProgram(cst);
-            System.out.println(ast);
+            var ASTdecorated = decorator.Visit(ast);
+            System.out.println(ASTdecorated);
         }
         catch (Exception ex)
         {

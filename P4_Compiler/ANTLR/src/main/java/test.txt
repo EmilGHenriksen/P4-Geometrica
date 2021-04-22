@@ -1,2 +1,7 @@
 int a IS -5 + 2 * 6 ^ 7 + (6-4);
-a[1][2].b[3];
+float foo(int asda){
+    a IS a + 1;
+}
+if(a == 4){
+    a IS 0;
+}
