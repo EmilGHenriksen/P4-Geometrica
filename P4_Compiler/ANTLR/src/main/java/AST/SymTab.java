@@ -13,7 +13,7 @@ public class SymTab {
     public SymTab(boolean e) throws Exception {
         //scope constructor (includes all default variables/functions)
 
-        //PI
+        //PI - this symbol might not be necessary
         DeclareStmtNode declPI = new DeclareStmtNode("float", "", "PI");
         EnterSymbol(declPI, this);
 
@@ -87,7 +87,7 @@ public class SymTab {
 
     public List<FuncSymbol> functions = new ArrayList<>(); //unordered list of functions
     public List<SymList> scopes = new ArrayList<>(); //these scopes are used as a stack
-    public String currentFunc = null;
+    public FuncSymbol currentFunc = null;
 
     public void OpenScope(){
         scopes.add(new SymList());
@@ -196,8 +196,8 @@ public class SymTab {
         return true;
     }
 
-    //retrieves either a variable or a function
-    public Symbol RetrieveSymbol(String id, SymTab _symTab) throws VarNotFoundException {
+
+    public VarSymbol RetrieveSymbol(String id, SymTab _symTab) throws VarNotFoundException {
         Symbol symbol = null;
         //try to find a variable
         for(int scopeCount = _symTab.scopes.size()-1; scopeCount >= 0; scopeCount--){
@@ -209,17 +209,40 @@ public class SymTab {
                 }
             }
         }
+        if(symbol == null){
+            throw new VarNotFoundException("Undeclared symbol: " + id);
+        }
+        return (VarSymbol) symbol;
+    }
+    public FuncSymbol RetrieveSymbol(String id, SymTab _symTab, DeclareStmtListNode parameters) throws VarNotFoundException {
+        Symbol symbol = null;
         //try to find a function
         for(int i = _symTab.functions.size()-1; i >= 0; i--){
             FuncSymbol current = _symTab.functions.get(i);
             if(current.id.equals(id) && symbol == null){
-                symbol = current;
+                //check parameters
+                if(SameParams(parameters.declarations, current.parameters.declarations)){
+                    symbol = current;
+                }
             }
         }
         if(symbol == null){
             throw new VarNotFoundException("Undeclared symbol: " + id);
         }
-        return symbol;
+        return (FuncSymbol) symbol;
+    }
+    public FuncSymbol RetrieveSymbol(String id, SymTab _symTab, ValueListNode parameters) throws VarNotFoundException {
+        //uses the other FuncSymbol RetrieveSymbol function
+        //convert ValueListNode to DeclareStmtListNode
+        DeclareStmtListNode declParams = new DeclareStmtListNode();
+        for(int i = 0; i < parameters.exprNodes.size(); i++){
+            ExprNode value = parameters.exprNodes.get(i);
+            //since the parameter IDs are not checked, it can be anything (in this case empty)
+            DeclareStmtNode decl = new DeclareStmtNode(value.typeDecoration.type, value.typeDecoration.typeModifier, "");
+            declParams.declarations.add(decl);
+        }
+        //retrieve
+        return RetrieveSymbol(id, _symTab, declParams);
     }
 
     //auxiliary function for determining if a symbol is already declared in current scope

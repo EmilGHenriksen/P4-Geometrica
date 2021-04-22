@@ -32,7 +32,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.typeDecoration.type = node.type;
         node.typeDecoration.typeModifier = node.typeModifier;
         symTab.EnterSymbol(node);
-        symTab.currentFunc = node.id.id;
+        symTab.currentFunc = (FuncSymbol) symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
         node.stmtFuncNodes = Visit(node.stmtFuncNodes);
         symTab.currentFunc = null;
         return node;
@@ -64,7 +64,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.value = (ExprNode) Visit(node.value);
         node.typeDecoration = node.value.typeDecoration;
         //type checking
-        FuncSymbol currentFunc = (FuncSymbol) symTab.RetrieveSymbol(symTab.currentFunc, symTab);
+        FuncSymbol currentFunc = symTab.currentFunc;
         if(!node.typeDecoration.type.equals(currentFunc.type)
                     || !node.typeDecoration.typeModifier.equals(currentFunc.typeModifier)){
             throw new TypeException("Function: " + currentFunc.id + " does not match type for return statement: " + node.toString());
@@ -222,92 +222,404 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public IntLiteralNode Visit(IntLiteralNode node){
-        return null;
+        node.typeDecoration.type = "int";
+        return node;
     };
     public FloatLiteralNode Visit(FloatLiteralNode node){
-        return null;
+        node.typeDecoration.type = "float";
+        return node;
     };
     public PiLiteralNode Visit(PiLiteralNode node){
-        return null;
+        node.typeDecoration.type = "float";
+        return node;
     };
     public StringLiteralNode Visit(StringLiteralNode node){
-        return null;
+        node.typeDecoration.type = "string";
+        return node;
     };
     public BoolLiteralNode Visit(BoolLiteralNode node){
-        return null;
+        node.typeDecoration.type = "bool";
+        return node;
     };
     public AngleLiteralNode Visit(AngleLiteralNode node){
-        return null;
+        node.typeDecoration.type = "angle";
+        return node;
     };
-    public ArrayLiteralNode Visit(ArrayLiteralNode node){
-        return null;
+    public ArrayLiteralNode Visit(ArrayLiteralNode node) throws Exception {
+        if(node.elements != null){
+            //visit
+            for(int i = 0; i < node.elements.size(); i++){
+                node.elements.set(i, (ExprNode) Visit(node.elements.get(i)));
+            }
+            //type check
+            for(int i = 0; i < node.elements.size()-1; i++){
+                if(node.elements.get(i).typeDecoration != node.elements.get(i+1).typeDecoration){
+                    throw new TypeException("Elements of different types not allowed in lists (in: " + node.toString() + ")");
+                }
+            }
+            //decorate
+            node.typeDecoration = node.elements.get(0).typeDecoration;
+            node.typeDecoration.typeModifier += "[]"; //add another list dimension (e.g. int -> int[])
+        }
+        return node;
     };
-    public TypeModAccessNode Visit(TypeModAccessNode node){
-        return null;
+    public FunctionCallNode Visit(FunctionCallNode node) throws Exception {
+        node.id = Visit(node.id);
+        node.parameters = Visit(node.parameters);
+        //retrieval also checks types of parameters
+        FuncSymbol funcSym = symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
+        node.typeDecoration.type = funcSym.type;
+        node.typeDecoration.typeModifier = funcSym.typeModifier;
+        return node;
     };
-    public FunctionCallNode Visit(FunctionCallNode node){
-        return null;
+    public MethodCallNode Visit(MethodCallNode node) throws Exception {
+        node.valueID = (VariableAccessNode) Visit(node.valueID);
+        node.methodID = Visit(node.methodID);
+        node.parameters = Visit(node.parameters);
+        VarSymbol variable = symTab.RetrieveSymbol(node.valueID.GetID(), symTab);
+        //retrieve also checks types of parameters
+        FuncSymbol method = variable.fields.RetrieveSymbol(node.methodID.id, variable.fields, node.parameters);
+        node.typeDecoration.type = method.type;
+        node.typeDecoration.typeModifier = method.typeModifier;
+        return node;
     };
-    public MethodCallNode Visit(MethodCallNode node){
-        return null;
+    public PropertyCallNode Visit(PropertyCallNode node) throws Exception {
+        node.valueID = (VariableAccessNode) Visit(node.valueID);
+        node.propertyID = Visit(node.propertyID);
+        VarSymbol value = symTab.RetrieveSymbol(node.valueID.GetID(), symTab);
+        VarSymbol property = symTab.RetrieveSymbol(node.propertyID.GetID(), value.fields);
+        node.typeDecoration.type = property.type;
+        node.typeDecoration.typeModifier = property.typeModifier;
+        node.typeDecoration.fields = property.fields;
+        return node;
     };
-    public PropertyCallNode Visit(PropertyCallNode node){
-        return null;
+    public ParenthesisedExprNode Visit(ParenthesisedExprNode node) throws Exception {
+        node.innerExpr = (ExprNode) Visit(node.innerExpr);
+        node.typeDecoration = node.innerExpr.typeDecoration;
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("bool") && !type.equals("angle")){
+            throw new TypeException("disallowed type in parenthesized expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in parenthesized expression: " + node.toString());
+        }
+        return node;
     };
-    public ParenthesisedExprNode Visit(ParenthesisedExprNode node){
-        return null;
+    public UnaryMinusNode Visit(UnaryMinusNode node) throws Exception {
+        node.expr = (ExprNode) Visit(node.expr);
+        node.typeDecoration = node.expr.typeDecoration;
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in unary minus expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in unary minus expression: " + node.toString());
+        }
+        return node;
     };
-    public UnaryMinusNode Visit(UnaryMinusNode node){
-        return null;
+    public UnaryPlusNode Visit(UnaryPlusNode node) throws Exception {
+        node.expr = (ExprNode) Visit(node.expr);
+        node.typeDecoration = node.expr.typeDecoration;
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in unary plus expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in unary plus expression: " + node.toString());
+        }
+        return node;
     };
-    public UnaryPlusNode Visit(UnaryPlusNode node){
-        return null;
+    public UnaryNegationNode Visit(UnaryNegationNode node) throws Exception {
+        node.expr = (ExprNode) Visit(node.expr);
+        node.typeDecoration = node.expr.typeDecoration;
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("bool")){
+            throw new TypeException("disallowed type in unary negation expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in unary negation expression: " + node.toString());
+        }
+        return node;
     };
-    public UnaryNegationNode Visit(UnaryNegationNode node){
-        return null;
+    public SubtractionNode Visit(SubtractionNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle") && !type.equals("point")){
+            throw new TypeException("disallowed type in subtraction expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in subtraction expression: " + node.toString());
+        }
+        return node;
     };
-    public SubtractionNode Visit(SubtractionNode node){
-        return null;
+    public AdditionNode Visit(AdditionNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle") && !type.equals("point")){
+            throw new TypeException("disallowed type in addition expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in addition expression: " + node.toString());
+        }
+        return node;
     };
-    public AdditionNode Visit(AdditionNode node){
-        return null;
+    public MultiplicationNode Visit(MultiplicationNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in multiplication expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in multiplication expression: " + node.toString());
+        }
+        return node;
     };
-    public MultiplicationNode Visit(MultiplicationNode node){
-        return null;
+    public DivisionNode Visit(DivisionNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in division expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in division expression: " + node.toString());
+        }
+        return node;
     };
-    public DivisionNode Visit(DivisionNode node){
-        return null;
+    public ModuloNode Visit(ModuloNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in modulo expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in modulo expression: " + node.toString());
+        }
+        return node;
     };
-    public ModuloNode Visit(ModuloNode node){
-        return null;
+    public PowerNode Visit(PowerNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float")){
+            throw new TypeException("disallowed type in power expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in power expression: " + node.toString());
+        }
+        return node;
     };
-    public PowerNode Visit(PowerNode node){
-        return null;
+    public EqualsNode Visit(EqualsNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(type.equals("string")){
+            throw new TypeException("disallowed type in equals expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in equals expression: " + node.toString());
+        }
+        return node;
     };
-    public EqualsNode Visit(EqualsNode node){
-        return null;
+    public NotEqualsNode Visit(NotEqualsNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(type.equals("string")){
+            throw new TypeException("disallowed type in notEquals expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in notEquals expression: " + node.toString());
+        }
+        return node;
     };
-    public NotEqualsNode Visit(NotEqualsNode node){
-        return null;
+    public LesserThanNode Visit(LesserThanNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in lesserThan expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in lesserThan expression: " + node.toString());
+        }
+        return node;
     };
-    public LesserThanNode Visit(LesserThanNode node){
-        return null;
+    public GreaterThanNode Visit(GreaterThanNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in greaterThan expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in greaterThan expression: " + node.toString());
+        }
+        return node;
     };
-    public GreaterThanNode Visit(GreaterThanNode node){
-        return null;
+    public LesserOrEqualsNode Visit(LesserOrEqualsNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in lesserOrEquals expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in lesserOrEquals expression: " + node.toString());
+        }
+        return node;
     };
-    public LesserOrEqualsNode Visit(LesserOrEqualsNode node){
-        return null;
+    public GreaterOrEqualsNode Visit(GreaterOrEqualsNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        //check they have compatible types
+        //also throws error if incompatible
+        node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        //type checking according to operator types
+        String type = node.typeDecoration.type;
+        if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
+            throw new TypeException("disallowed type in greaterOrEquals expression: " + node.toString());
+        }
+        else if(!node.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("Lists not allowed in greaterOrEquals expression: " + node.toString());
+        }
+        return node;
     };
-    public GreaterOrEqualsNode Visit(GreaterOrEqualsNode node){
-        return null;
+    public AndNode Visit(AndNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        if(!node.left.typeDecoration.type.equals("bool") || !node.right.typeDecoration.type.equals("bool")){
+            throw new TypeException("non-boolean values not allowed in AND expression: " + node.toString());
+        }
+        else if(!node.left.typeDecoration.typeModifier.equals("") || !node.right.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("list values not allowed in AND expression: " + node.toString());
+        }
+        return node;
     };
-    public AndNode Visit(AndNode node){
-        return null;
+    public OrNode Visit(OrNode node) throws Exception {
+        node.left = (ExprNode) Visit(node.left);
+        node.right = (ExprNode) Visit(node.right);
+        if(!node.left.typeDecoration.type.equals("bool") || !node.right.typeDecoration.type.equals("bool")){
+            throw new TypeException("non-boolean values not allowed in OR expression: " + node.toString());
+        }
+        else if(!node.left.typeDecoration.typeModifier.equals("") || !node.right.typeDecoration.typeModifier.equals("")){
+            throw new TypeException("list values not allowed in OR expression: " + node.toString());
+        }
+        return node;
     };
-    public OrNode Visit(OrNode node){
-        return null;
-    };
+
+
+    //auxiliary functions
+    private TypeDecoration CompatibleTypes(TypeDecoration T1, TypeDecoration T2) throws TypeException {
+        if(CompatibleOneway(T1, T2)){
+            return T2;
+        }
+        else if(CompatibleOneway(T2, T1)){
+            return T1;
+        }
+        else{
+            throw new TypeException("Incompatible types: ( " + T1.toString() + " ) and ( " + T2.toString() + " )");
+        }
+    }
+    private boolean CompatibleOneway(TypeDecoration T1, TypeDecoration T2){
+        if(T1.equals(T2)){
+            return true;
+        }
+        else{
+            //check if T1 can be implicitly converted to T2
+            if(T1.type.equals("int") && T2.type.equals("float")){
+                return true;
+            }
+            else if(T1.type.equals("int") && T2.type.equals("angle")){
+                return true;
+            }
+            else if(T1.type.equals("float") && T2.type.equals("angle")){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+
+    private TypeDecoration CompatibleTypesBoolOp(TypeDecoration T1, TypeDecoration T2) throws TypeException {
+        if(CompatibleOnewayBoolOp(T1, T2)){
+            return T2;
+        }
+        else if(CompatibleOnewayBoolOp(T2, T1)){
+            return T1;
+        }
+        else{
+            throw new TypeException("Incompatible types for comparison/equality: ( " + T1.toString() + " ) and ( " + T2.toString() + " )");
+        }
+    }
+    private boolean CompatibleOnewayBoolOp(TypeDecoration T1, TypeDecoration T2){
+        if(T1.equals(T2)){
+            return true;
+        }
+        else{
+            //check if T1 can be implicitly converted to T2
+            if(T1.type.equals("int") && T2.type.equals("float")){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+
 
 
     public Node Visit(Node node) throws Exception {
@@ -367,8 +679,6 @@ public class ASTdecorator extends ASTvisitor<Node> {
             return Visit((AngleLiteralNode)node);
         }else if(node instanceof ArrayLiteralNode){
             return Visit((ArrayLiteralNode)node);
-        }else if(node instanceof TypeModAccessNode){
-            return Visit((TypeModAccessNode)node);
         }else if(node instanceof FunctionCallNode){
             return Visit((FunctionCallNode)node);
         }else if(node instanceof MethodCallNode){

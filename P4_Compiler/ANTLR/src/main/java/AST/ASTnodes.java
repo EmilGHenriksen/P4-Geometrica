@@ -219,13 +219,6 @@ class ArrayLiteralNode extends LiteralNode{
     }
 }
 
-class TypeModAccessNode extends Node{
-    List<ExprNode> exprNodes;
-    public TypeModAccessNode(){
-        exprNodes = new ArrayList<>();
-    }
-}
-
 class FunctionCallNode extends ExprNode {
     IdentifierNode id;
     ValueListNode parameters;

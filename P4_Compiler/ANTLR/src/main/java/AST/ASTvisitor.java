@@ -33,29 +33,28 @@ public abstract class ASTvisitor<T> {
     public abstract T Visit(StringLiteralNode node);
     public abstract T Visit(BoolLiteralNode node);
     public abstract T Visit(AngleLiteralNode node);
-    public abstract T Visit(ArrayLiteralNode node);
-    public abstract T Visit(TypeModAccessNode node);
-    public abstract T Visit(FunctionCallNode node);
-    public abstract T Visit(MethodCallNode node);
-    public abstract T Visit(PropertyCallNode node);
-    public abstract T Visit(ParenthesisedExprNode node);
-    public abstract T Visit(UnaryMinusNode node);
-    public abstract T Visit(UnaryPlusNode node);
-    public abstract T Visit(UnaryNegationNode node);
-    public abstract T Visit(SubtractionNode node);
-    public abstract T Visit(AdditionNode node);
-    public abstract T Visit(MultiplicationNode node);
-    public abstract T Visit(DivisionNode node);
-    public abstract T Visit(ModuloNode node);
-    public abstract T Visit(PowerNode node);
-    public abstract T Visit(EqualsNode node);
-    public abstract T Visit(NotEqualsNode node);
-    public abstract T Visit(LesserThanNode node);
-    public abstract T Visit(GreaterThanNode node);
-    public abstract T Visit(LesserOrEqualsNode node);
-    public abstract T Visit(GreaterOrEqualsNode node);
-    public abstract T Visit(AndNode node);
-    public abstract T Visit(OrNode node);
+    public abstract T Visit(ArrayLiteralNode node) throws Exception;
+    public abstract T Visit(FunctionCallNode node) throws Exception;
+    public abstract T Visit(MethodCallNode node) throws Exception;
+    public abstract T Visit(PropertyCallNode node) throws Exception;
+    public abstract T Visit(ParenthesisedExprNode node) throws Exception;
+    public abstract T Visit(UnaryMinusNode node) throws Exception;
+    public abstract T Visit(UnaryPlusNode node) throws Exception;
+    public abstract T Visit(UnaryNegationNode node) throws Exception;
+    public abstract T Visit(SubtractionNode node) throws Exception;
+    public abstract T Visit(AdditionNode node) throws Exception;
+    public abstract T Visit(MultiplicationNode node) throws Exception;
+    public abstract T Visit(DivisionNode node) throws Exception;
+    public abstract T Visit(ModuloNode node) throws Exception;
+    public abstract T Visit(PowerNode node) throws Exception;
+    public abstract T Visit(EqualsNode node) throws Exception;
+    public abstract T Visit(NotEqualsNode node) throws Exception;
+    public abstract T Visit(LesserThanNode node) throws Exception;
+    public abstract T Visit(GreaterThanNode node) throws Exception;
+    public abstract T Visit(LesserOrEqualsNode node) throws Exception;
+    public abstract T Visit(GreaterOrEqualsNode node) throws Exception;
+    public abstract T Visit(AndNode node) throws Exception;
+    public abstract T Visit(OrNode node) throws Exception;
 
 
     public T Visit(Node node) throws Exception {
@@ -115,8 +114,6 @@ public abstract class ASTvisitor<T> {
             return Visit((AngleLiteralNode)node);
         }else if(node instanceof ArrayLiteralNode){
             return Visit((ArrayLiteralNode)node);
-        }else if(node instanceof TypeModAccessNode){
-            return Visit((TypeModAccessNode)node);
         }else if(node instanceof FunctionCallNode){
             return Visit((FunctionCallNode)node);
         }else if(node instanceof MethodCallNode){
