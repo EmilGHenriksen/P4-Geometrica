@@ -13,9 +13,79 @@ public class SymTab {
     public SymTab(){
         //default constructor
     }
-    public SymTab(boolean e){
-        //scope constructor
+    public SymTab(boolean e) throws Exception {
+        //scope constructor (includes all default variables/functions)
+
+        //PI
+        DeclareStmtNode declPI = new DeclareStmtNode("float", "", "PI");
+        EnterSymbol(declPI, this);
+
+        //---angle functions
+        //arccos
+        DeclareStmtListNode declArccos = new DeclareStmtListNode();
+        declArccos.declarations.add(new DeclareStmtNode("float", "", "input"));
+        FunctionNode arccos = new FunctionNode("arccos", "angle", "", declArccos);
+        EnterSymbol(arccos);
+        //arcsin
+        FunctionNode arcsin = arccos;
+        arcsin.id.id = "arcsin";
+        EnterSymbol(arcsin);
+        //arctan
+        FunctionNode arctan = arccos;
+        arctan.id.id = "arctan";
+        EnterSymbol(arctan);
+        //cos
+        DeclareStmtListNode declCos = new DeclareStmtListNode();
+        declCos.declarations.add(new DeclareStmtNode("angle", "", "input"));
+        FunctionNode cos = new FunctionNode("cos", "float", "", declCos);
+        EnterSymbol(cos);
+        //sin
+        FunctionNode sin = cos;
+        sin.id.id = "sin";
+        EnterSymbol(sin);
+        //tan
+        FunctionNode tan = cos;
+        tan.id.id = "tan";
+        EnterSymbol(tan);
+
+        //---canvas-related functions
+        //clearcanvas
+        DeclareStmtListNode declClearcanvas = new DeclareStmtListNode();
+        FunctionNode clearcanvas = new FunctionNode("clearcanvas", "void", "", declClearcanvas);
+        EnterSymbol(clearcanvas);
+        //connect
         //TBD
+        //--draw variations
+        //draw point
+        DeclareStmtListNode declDraw = new DeclareStmtListNode();
+        declDraw.declarations.add(new DeclareStmtNode("point", "", "toDraw"));
+        FunctionNode draw = new FunctionNode("draw", "void", "", declDraw);
+        EnterSymbol(draw);
+        //draw line
+        declDraw.declarations.get(0).type = "line";
+        EnterSymbol(draw);
+        //drawAll
+        //TBD
+
+        //---other default functions
+        //move
+        //TBD
+        //root
+        DeclareStmtListNode declRoot = new DeclareStmtListNode();
+        declRoot.declarations.add(new DeclareStmtNode("float", "", "value"));
+        declRoot.declarations.add(new DeclareStmtNode("float", "", "power")); //maybe int instead, depending on implementation difficulty
+        FunctionNode root = new FunctionNode("root", "float", "", declRoot);
+        EnterSymbol(root);
+        //sqrt
+        DeclareStmtListNode declSqrt = new DeclareStmtListNode();
+        declSqrt.declarations.add(new DeclareStmtNode("float", "", "input"));
+        FunctionNode sqrt = new FunctionNode("sqrt", "float", "", declSqrt);
+        EnterSymbol(sqrt);
+        //wait
+        DeclareStmtListNode declWait = new DeclareStmtListNode();
+        declWait.declarations.add(new DeclareStmtNode("int", "", "milliseconds"));
+        FunctionNode wait = new FunctionNode("wait", "void", "", declWait);
+        EnterSymbol(wait);
     }
 
     public List<FuncSymbol> functions = new ArrayList<>(); //unordered list of functions
@@ -206,39 +276,39 @@ class VarSymbol extends Symbol {
         //fields based on node.type
         fields = new SymTab();
         if(node.type.equals("point")){
-            DeclareStmtNode declX = new DeclareStmtNode("float", "x");
+            DeclareStmtNode declX = new DeclareStmtNode("float", "", "x");
             fields.EnterSymbol(declX, fields);
-            DeclareStmtNode declY = new DeclareStmtNode("float", "y");
+            DeclareStmtNode declY = new DeclareStmtNode("float", "", "y");
             fields.EnterSymbol(declY, fields);
         }
         else if(node.type.equals("line")){
-            DeclareStmtNode declA = new DeclareStmtNode("point", "A");
+            DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
             fields.EnterSymbol(declA, fields);
-            DeclareStmtNode declB = new DeclareStmtNode("point", "B");
+            DeclareStmtNode declB = new DeclareStmtNode("point", "", "B");
             fields.EnterSymbol(declB, fields);
         }
         else if(node.type.equals("triangle")){
-            DeclareStmtNode declA = new DeclareStmtNode("point", "A");
+            DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
             fields.EnterSymbol(declA, fields);
-            DeclareStmtNode declB = new DeclareStmtNode("point", "B");
+            DeclareStmtNode declB = new DeclareStmtNode("point", "", "B");
             fields.EnterSymbol(declB, fields);
-            DeclareStmtNode declC = new DeclareStmtNode("point", "C");
+            DeclareStmtNode declC = new DeclareStmtNode("point", "", "C");
             fields.EnterSymbol(declC, fields);
         }
         else if(node.type.equals("square")){
-            DeclareStmtNode declA = new DeclareStmtNode("point", "A");
+            DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
             fields.EnterSymbol(declA, fields);
-            DeclareStmtNode declB = new DeclareStmtNode("point", "B");
+            DeclareStmtNode declB = new DeclareStmtNode("point", "", "B");
             fields.EnterSymbol(declB, fields);
-            DeclareStmtNode declC = new DeclareStmtNode("point", "C");
+            DeclareStmtNode declC = new DeclareStmtNode("point", "", "C");
             fields.EnterSymbol(declC, fields);
-            DeclareStmtNode declD = new DeclareStmtNode("point", "D");
+            DeclareStmtNode declD = new DeclareStmtNode("point", "", "D");
             fields.EnterSymbol(declD, fields);
         }
         else if(node.type.equals("circle")){
-            DeclareStmtNode declC = new DeclareStmtNode("point", "center");
+            DeclareStmtNode declC = new DeclareStmtNode("point", "", "center");
             fields.EnterSymbol(declC, fields);
-            DeclareStmtNode declR = new DeclareStmtNode("float", "radius");
+            DeclareStmtNode declR = new DeclareStmtNode("float", "", "radius");
             fields.EnterSymbol(declR, fields);
         }
     }

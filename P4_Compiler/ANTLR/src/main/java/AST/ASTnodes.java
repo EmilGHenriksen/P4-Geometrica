@@ -24,6 +24,14 @@ class FunctionNode extends Node {
     StmtListNode stmtFuncNodes;
     //decoration
     TypeDecoration typeDecoration;
+    public FunctionNode(){}
+    public FunctionNode(String _name, String _type, String _typeModifier, DeclareStmtListNode _parameters){
+        id = new IdentifierNode();
+        id.id = _name;
+        type = _type;
+        typeModifier = _typeModifier;
+        parameters = _parameters;
+    }
 }
 class DeclareStmtListNode extends Node {
     List<DeclareStmtNode> declarations;
@@ -68,7 +76,7 @@ class DeclareStmtNode extends StmtNode {
         return id.id + typeModifier;
     }
     public DeclareStmtNode(){}
-    public DeclareStmtNode(String _type, String _id){
+    public DeclareStmtNode(String _type, String typeModifier, String _id){
         type = _type;
         id = new IdentifierNode();
         id.id = _id;
