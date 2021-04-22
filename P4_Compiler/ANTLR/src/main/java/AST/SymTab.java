@@ -1,9 +1,6 @@
 package AST;
 
-import Exceptions.FunctionAlreadyDeclaredException;
-import Exceptions.FunctionOverloadingTypeException;
-import Exceptions.SymbolAlreadyDeclaredException;
-import Exceptions.VarNotFoundException;
+import Exceptions.*;
 import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;

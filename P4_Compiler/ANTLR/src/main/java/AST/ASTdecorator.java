@@ -85,9 +85,24 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //for every access node, check if it exists in the symbol table
         while(!(nodeCurrent instanceof IdentifierNode)){
             if(nodeCurrent instanceof VariableModifierAccessNode){
-                //array access
-                if(symCurrent.typeModifier.length() >= nodeCurrent.GetTypeModifier().length()){
-                    nodeCurrent = ((VariableModifierAccessNode) nodeCurrent).variable;
+                //list access
+                VariableModifierAccessNode nodeCurrentList = (VariableModifierAccessNode) nodeCurrent;
+                //check that the number of list dimensions on LHS + RHS totals to the amount in the variable
+                int LHS = nodeCurrentList.GetTypeModifier().length()/2;
+                int RHS = nodeCurrentList.expr.typeDecoration.typeModifier.length()/2;
+                int total = LHS + RHS;
+                int varDimensions = symCurrent.typeModifier.length()/2;
+                if(total == varDimensions){
+                    //check that the expr is of the correct base type
+                    if(nodeCurrentList.expr.typeDecoration.type.equals(symCurrent.type)){
+                        nodeCurrent = ((VariableModifierAccessNode) nodeCurrent).variable;
+                    }
+                    else{
+                        throw new TypeException("Assign error: variable " + node.variable.GetID() + " has different type than value: " + node.value);
+                    }
+                }
+                else if(total < varDimensions){
+                    throw new TypeException("Assign error: variable " + node.variable.GetID() + " has more list dimensions than value: " + node.value);
                 }
                 else{
                     throw new TypeException("Assign error: variable " + node.variable.GetID() + " has fewer list dimensions than value: " + node.value);
