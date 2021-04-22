@@ -67,6 +67,12 @@ class DeclareStmtNode extends StmtNode {
     public String SymbolString(){
         return id.id + typeModifier;
     }
+    public DeclareStmtNode(){}
+    public DeclareStmtNode(String _type, String _id){
+        type = _type;
+        id = new IdentifierNode();
+        id.id = _id;
+    }
 }
 class AssignNode extends StmtNode {
     VariableAccessNode variable;

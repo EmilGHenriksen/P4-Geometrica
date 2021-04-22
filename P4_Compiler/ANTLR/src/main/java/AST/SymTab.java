@@ -10,6 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SymTab {
+    public SymTab(){
+        //default constructor
+    }
+    public SymTab(boolean e){
+        //scope constructor
+        //TBD
+    }
+
     public List<FuncSymbol> functions = new ArrayList<>(); //unordered list of functions
     public List<SymList> scopes = new ArrayList<>(); //these scopes are used as a stack
     public String currentFunc = null;
@@ -176,6 +184,7 @@ class SymList {
     public SymList(){
         symbols = new ArrayList<>();
     }
+
     List<Symbol> symbols;
     //these symbols are an unordered list
 }
@@ -189,11 +198,49 @@ abstract class Symbol{
 }
 
 class VarSymbol extends Symbol {
-    public VarSymbol(DeclareStmtNode node){
+    public VarSymbol(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
         super(node.id.id);
         accessModifier = node.accessModifier;
         type = node.type;
         typeModifier = node.typeModifier;
+        //fields based on node.type
+        fields = new SymTab();
+        if(node.type.equals("point")){
+            DeclareStmtNode declX = new DeclareStmtNode("float", "x");
+            fields.EnterSymbol(declX, fields);
+            DeclareStmtNode declY = new DeclareStmtNode("float", "y");
+            fields.EnterSymbol(declY, fields);
+        }
+        else if(node.type.equals("line")){
+            DeclareStmtNode declA = new DeclareStmtNode("point", "A");
+            fields.EnterSymbol(declA, fields);
+            DeclareStmtNode declB = new DeclareStmtNode("point", "B");
+            fields.EnterSymbol(declB, fields);
+        }
+        else if(node.type.equals("triangle")){
+            DeclareStmtNode declA = new DeclareStmtNode("point", "A");
+            fields.EnterSymbol(declA, fields);
+            DeclareStmtNode declB = new DeclareStmtNode("point", "B");
+            fields.EnterSymbol(declB, fields);
+            DeclareStmtNode declC = new DeclareStmtNode("point", "C");
+            fields.EnterSymbol(declC, fields);
+        }
+        else if(node.type.equals("square")){
+            DeclareStmtNode declA = new DeclareStmtNode("point", "A");
+            fields.EnterSymbol(declA, fields);
+            DeclareStmtNode declB = new DeclareStmtNode("point", "B");
+            fields.EnterSymbol(declB, fields);
+            DeclareStmtNode declC = new DeclareStmtNode("point", "C");
+            fields.EnterSymbol(declC, fields);
+            DeclareStmtNode declD = new DeclareStmtNode("point", "D");
+            fields.EnterSymbol(declD, fields);
+        }
+        else if(node.type.equals("circle")){
+            DeclareStmtNode declC = new DeclareStmtNode("point", "center");
+            fields.EnterSymbol(declC, fields);
+            DeclareStmtNode declR = new DeclareStmtNode("float", "radius");
+            fields.EnterSymbol(declR, fields);
+        }
     }
     String accessModifier;
     String type;

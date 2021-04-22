@@ -103,16 +103,13 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public IdentifierNode Visit(IdentifierNode node){
-
-        return null;
+        return node;
     };
     public VariableModifierAccessNode Visit(VariableModifierAccessNode node){
-
-        return null;
+        return node;
     };
     public VariablePropertyAccessNode Visit(VariablePropertyAccessNode node){
-
-        return null;
+        return node;
     };
     public IfNode Visit(IfNode node){
         //scope is opened by the StmtListNode
