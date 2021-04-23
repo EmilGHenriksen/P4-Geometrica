@@ -10,11 +10,11 @@ public abstract class ASTvisitor<T> {
     public abstract T Visit(ProgramNode node) throws Exception;
     public abstract T Visit(ContentNode node) throws Exception;
     public abstract T Visit(FunctionNode node) throws Exception;
-    public abstract T Visit(DeclareStmtListNode node) throws SymbolAlreadyDeclaredException;
+    public abstract T Visit(DeclareStmtListNode node) throws Exception;
     public abstract T Visit(ValueListNode node) throws Exception;
     public abstract T Visit(StmtListNode node) throws Exception;
     public abstract T Visit(ReturnStmtNode node) throws Exception;
-    public abstract T Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException;
+    public abstract T Visit(DeclareStmtNode node) throws Exception;
     public abstract T Visit(AssignNode node) throws Exception;
     public abstract T Visit(IdentifierNode node) throws VarNotFoundException;
     public abstract T Visit(VariableModifierAccessNode node) throws Exception;

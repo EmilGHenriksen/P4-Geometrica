@@ -25,7 +25,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         for(int i = 0; i < totalNodes; i++){
             Node current = node.stmtAndFuncNodes.get(i);
             if(current instanceof StmtNode){
-                node.stmtAndFuncNodes.set(i, Visit((StmtNode) current));
+                StmtNode currentStmt = (StmtNode) Visit((StmtNode) current);
+                node.stmtAndFuncNodes.set(i, currentStmt);
             }
             else if(current instanceof  FunctionNode){
                 node.stmtAndFuncNodes.set(i, Visit((FunctionNode) current));
@@ -45,9 +46,9 @@ public class ASTdecorator extends ASTvisitor<Node> {
         symTab.currentFunc = null;
         return node;
     };
-    public DeclareStmtListNode Visit(DeclareStmtListNode node) throws SymbolAlreadyDeclaredException {
+    public DeclareStmtListNode Visit(DeclareStmtListNode node) throws Exception {
         for(int i = 0; i < node.declarations.size(); i++){
-            DeclareStmtNode declareStmtNode =  Visit(node.declarations.get(i));
+            DeclareStmtNode declareStmtNode = Visit(node.declarations.get(i));
             node.declarations.set(i, declareStmtNode);
         }
         return node;
@@ -79,8 +80,10 @@ public class ASTdecorator extends ASTvisitor<Node> {
         }
         return node;
     };
-    public DeclareStmtNode Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
+    public DeclareStmtNode Visit(DeclareStmtNode node) throws Exception {
         symTab.EnterSymbol(node, symTab);
+        node.id = Visit(node.id);
+        node.value = (ExprNode) Visit(node.value);
         return node;
     };
     public AssignNode Visit(AssignNode node) throws Exception {
@@ -152,7 +155,9 @@ public class ASTdecorator extends ASTvisitor<Node> {
         if(!node.value.typeDecoration.type.equals("bool") || !node.value.typeDecoration.typeModifier.equals("")){
             throw new TypeException("if node's value: " + node.value.toString() + " needs to be boolean");
         }
-        node.elseStmtNode = (StmtNode) Visit(node.elseStmtNode);
+        if(node.elseStmtNode != null){
+            node.elseStmtNode = (StmtNode) Visit(node.elseStmtNode);
+        }
         node.ifStmtNodes = Visit(node.ifStmtNodes);
         return node;
     };
@@ -469,6 +474,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         else if(!node.typeDecoration.typeModifier.equals("")){
             throw new TypeException("Lists not allowed in equals expression: " + node.toString());
         }
+        //if nothing failed
+        node.typeDecoration.type = "bool";
         return node;
     };
     public NotEqualsNode Visit(NotEqualsNode node) throws Exception {
@@ -485,6 +492,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         else if(!node.typeDecoration.typeModifier.equals("")){
             throw new TypeException("Lists not allowed in notEquals expression: " + node.toString());
         }
+        //if nothing failed
+        node.typeDecoration.type = "bool";
         return node;
     };
     public LesserThanNode Visit(LesserThanNode node) throws Exception {
@@ -501,6 +510,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         else if(!node.typeDecoration.typeModifier.equals("")){
             throw new TypeException("Lists not allowed in lesserThan expression: " + node.toString());
         }
+        //if nothing failed
+        node.typeDecoration.type = "bool";
         return node;
     };
     public GreaterThanNode Visit(GreaterThanNode node) throws Exception {
@@ -517,6 +528,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         else if(!node.typeDecoration.typeModifier.equals("")){
             throw new TypeException("Lists not allowed in greaterThan expression: " + node.toString());
         }
+        //if nothing failed
+        node.typeDecoration.type = "bool";
         return node;
     };
     public LesserOrEqualsNode Visit(LesserOrEqualsNode node) throws Exception {
@@ -533,6 +546,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         else if(!node.typeDecoration.typeModifier.equals("")){
             throw new TypeException("Lists not allowed in lesserOrEquals expression: " + node.toString());
         }
+        //if nothing failed
+        node.typeDecoration.type = "bool";
         return node;
     };
     public GreaterOrEqualsNode Visit(GreaterOrEqualsNode node) throws Exception {
@@ -549,6 +564,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         else if(!node.typeDecoration.typeModifier.equals("")){
             throw new TypeException("Lists not allowed in greaterOrEquals expression: " + node.toString());
         }
+        //if nothing failed
+        node.typeDecoration.type = "bool";
         return node;
     };
     public AndNode Visit(AndNode node) throws Exception {
@@ -591,7 +608,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         if(Objects.equals(T1, T2)){
             return true;
         }
-        else if(T1 != null && T2 != null){
+        else{
             //check if T1 can be implicitly converted to T2
             if(Objects.equals(T1.type, "int") && Objects.equals(T2.type, "float")){
                 return true;
@@ -605,9 +622,6 @@ public class ASTdecorator extends ASTvisitor<Node> {
             else{
                 return false;
             }
-        }
-        else{
-            return false;
         }
     }
 

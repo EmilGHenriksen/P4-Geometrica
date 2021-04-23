@@ -268,6 +268,32 @@ public class SymTab {
         }
         return found;
     }
+
+
+    @Override
+    public boolean equals(Object obj){
+        //Check for null and compare run-time types.
+        if (!(obj instanceof SymTab))
+        {
+            return false;
+        }
+        else {
+            SymTab S1 = (SymTab) obj;
+            SymTab S2 = this;
+            boolean isSame = true;
+            for(int i = 0; i < scopes.size(); i++){
+                if(!S1.scopes.get(i).equals(S2.scopes.get(i))){
+                    isSame = false;
+                }
+            }
+            for(int i = 0; i < functions.size(); i++){
+                if(!S1.functions.get(i).equals(S2.functions.get(i))){
+                    isSame = false;
+                }
+            }
+            return isSame;
+        }
+    }
 }
 
 
@@ -278,6 +304,26 @@ class SymList {
 
     List<Symbol> symbols;
     //these symbols are an unordered list
+
+    @Override
+    public boolean equals(Object obj){
+        //Check for null and compare run-time types.
+        if (!(obj instanceof SymList))
+        {
+            return false;
+        }
+        else {
+            SymList S1 = (SymList) obj;
+            SymList S2 = this;
+            boolean isSame = true;
+            for(int i = 0; i < symbols.size(); i++){
+                if(!S1.symbols.get(i).equals(S2.symbols.get(i))){
+                    isSame = false;
+                }
+            }
+            return isSame;
+        }
+    }
 }
 
 
@@ -286,6 +332,8 @@ abstract class Symbol{
         id = _id;
     }
     String id;
+    @Override
+    public abstract boolean equals(Object obj);
 }
 
 class VarSymbol extends Symbol {
@@ -337,6 +385,40 @@ class VarSymbol extends Symbol {
     String type;
     String typeModifier;
     SymTab fields;
+
+    @Override
+    public boolean equals(Object obj){
+        //Check for null and compare run-time types.
+        if (!(obj instanceof VarSymbol))
+        {
+            return false;
+        }
+        else {
+            VarSymbol V1 = (VarSymbol) obj;
+            VarSymbol V2 = this;
+            boolean isSame = true;
+            if(!V1.type.equals(V2.type)){
+                isSame = false;
+            }
+            if(!V1.typeModifier.equals(V2.typeModifier)){
+                isSame = false;
+            }
+            //if they're null then they're equals
+            //avoids infinitely recursive definition
+            if(!(V1.fields == null) && !(V2.fields == null)){
+                if(!V1.fields.equals(V2.fields)){
+                    isSame = false;
+                }
+            }
+            else if(V1.fields == null && V2.fields != null){
+                isSame = false;
+            }
+            else if(V1.fields != null && V2.fields == null){
+                isSame = false;
+            }
+            return isSame;
+        }
+    }
 }
 
 class FuncSymbol extends Symbol {
@@ -349,4 +431,21 @@ class FuncSymbol extends Symbol {
     String type;
     String typeModifier;
     DeclareStmtListNode parameters;
+
+    @Override
+    public boolean equals(Object obj){
+        //Check for null and compare run-time types.
+        if (!(obj instanceof FuncSymbol))
+        {
+            return false;
+        }
+        else {
+            FuncSymbol F1 = (FuncSymbol) obj;
+            FuncSymbol F2 = this;
+            return F1.id.equals(F2.id)
+                    && F1.type.equals(F2.type)
+                    && F1.typeModifier.equals(F2.typeModifier)
+                    && F1.parameters.equals(F2.parameters);
+        }
+    }
 }

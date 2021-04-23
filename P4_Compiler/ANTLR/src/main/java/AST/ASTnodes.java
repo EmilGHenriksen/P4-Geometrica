@@ -36,6 +36,27 @@ class DeclareStmtListNode extends Node {
     public DeclareStmtListNode(){
         declarations = new ArrayList<>();
     }
+
+
+    @Override
+    public boolean equals(Object obj){
+        //Check for null and compare run-time types.
+        if (!(obj instanceof DeclareStmtListNode))
+        {
+            return false;
+        }
+        else {
+            DeclareStmtListNode D1 = (DeclareStmtListNode) obj;
+            DeclareStmtListNode D2 = this;
+            boolean isSame = true;
+            for(int i = 0; i < declarations.size(); i++){
+                if(!D1.declarations.get(i).equals(D2.declarations.get(i))){
+                    isSame = false;
+                }
+            }
+            return isSame;
+        }
+    }
 }
 
 class ValueListNode extends Node {
@@ -78,6 +99,23 @@ class DeclareStmtNode extends StmtNode {
         type = _type;
         id = new IdentifierNode();
         id.id = _id;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        //Check for null and compare run-time types.
+        if (!(obj instanceof DeclareStmtNode))
+        {
+            return false;
+        }
+        else {
+            DeclareStmtNode D1 = (DeclareStmtNode) obj;
+            DeclareStmtNode D2 = this;
+            return D1.id.equals(D2.id)
+                    && D1.type.equals(D2.type)
+                    && D1.typeModifier.equals(D2.typeModifier)
+                    && D1.accessModifier.equals(D2.accessModifier);
+        }
     }
 }
 class AssignNode extends StmtNode {
