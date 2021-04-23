@@ -6,15 +6,15 @@ import Exceptions.TypeException;
 import Exceptions.VarNotFoundException;
 import kotlin.NotImplementedError;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
 public class ASTdecorator extends ASTvisitor<Node> {
     SymTab symTab;
     public ProgramNode Visit(ProgramNode node) throws Exception {
-        symTab = new SymTab();
-        //global scope
-        symTab.OpenScope();
+        //global scope opened by constructor
+        symTab = new SymTab(true);
         node.content = Visit(node.content);
         symTab.CloseScope();
         return node;
@@ -44,6 +44,11 @@ public class ASTdecorator extends ASTvisitor<Node> {
         symTab.currentFunc = (FuncSymbol) symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
         node.stmtFuncNodes = Visit(node.stmtFuncNodes);
         symTab.currentFunc = null;
+        //last statement needs to be a return statement
+        StmtNode lastStmt = node.stmtFuncNodes.statements.get(node.stmtFuncNodes.statements.size()-1);
+        if(!(lastStmt instanceof ReturnStmtNode)){
+            throw new Exception("Last statement in function needs to be return (in: " + node.toString() + " )");
+        }
         return node;
     };
     public DeclareStmtListNode Visit(DeclareStmtListNode node) throws Exception {

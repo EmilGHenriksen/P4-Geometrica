@@ -10,9 +10,12 @@ import java.util.Objects;
 public class SymTab {
     public SymTab(){
         //default constructor
+        //used for fields
+        this.OpenScope();
     }
     public SymTab(boolean e) throws Exception {
         //scope constructor (includes all default variables/functions)
+        this.OpenScope();
 
         //PI - this symbol might not be necessary
         DeclareStmtNode declPI = new DeclareStmtNode("float", "", "PI");
@@ -60,7 +63,9 @@ public class SymTab {
         FunctionNode draw = new FunctionNode("draw", "void", "", declDraw);
         EnterSymbol(draw);
         //draw line
-        declDraw.declarations.get(0).type = "line";
+        DeclareStmtListNode declDraw2 = new DeclareStmtListNode();
+        declDraw.declarations.add(new DeclareStmtNode("line", "", "toDraw"));
+        FunctionNode draw2 = new FunctionNode("draw", "void", "", declDraw);
         EnterSymbol(draw);
         //drawAll
         //TBD
@@ -151,8 +156,8 @@ public class SymTab {
         }
         return true;
     }
-    private boolean ValidOverload(FuncSymbol currentFunc, FunctionNode node){
-        List<DeclareStmtNode> func1Params = currentFunc.parameters.declarations;
+    private boolean ValidOverload(FuncSymbol _currentFunc, FunctionNode node){
+        List<DeclareStmtNode> func1Params = _currentFunc.parameters.declarations;
         List<DeclareStmtNode> func2Params = node.parameters.declarations;
 
         if(SameParams(func1Params, func2Params)){
@@ -161,8 +166,8 @@ public class SymTab {
         else{
             //found, and with different parameters -> doing function overloading
             //needs same return type
-            boolean sameType = currentFunc.type.equals(node.type)
-                            && currentFunc.typeModifier.equals(node.typeModifier);
+            boolean sameType = _currentFunc.type.equals(node.type)
+                            && _currentFunc.typeModifier.equals(node.typeModifier);
             if(sameType){
                 return true;
             }
@@ -251,12 +256,15 @@ public class SymTab {
     private boolean DeclaredLocally(String id){
         boolean found = false;
         //check local variables
-        int scopeCount = scopes.size()-1;
-        for(int symbolCount = scopes.get(scopeCount).symbols.size()-1; symbolCount >= 0; symbolCount--){
-            //looping through all symbols in all scopes, in reverse order
-            Symbol current = scopes.get(scopeCount).symbols.get(symbolCount);
-            if(current.id.equals(id)){
-                found = true;
+        if(scopes != null && scopes.size() > 0){
+            int scopeCount = scopes.size()-1;
+            int totalSymbols = (scopes.get(scopeCount).symbols.size())-1;
+            for(int symbolCount = totalSymbols; symbolCount >= 0; symbolCount--){
+                //looping through all symbols in local scope, in reverse order
+                Symbol current = scopes.get(scopeCount).symbols.get(symbolCount);
+                if(current.id.equals(id)){
+                    found = true;
+                }
             }
         }
         //check global functions
