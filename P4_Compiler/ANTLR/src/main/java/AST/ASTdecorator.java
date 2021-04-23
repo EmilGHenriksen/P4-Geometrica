@@ -19,7 +19,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public ContentNode Visit(ContentNode node) throws Exception {
         //load all functions
         for(int i = 0; i < node.functionNodes.size(); i++){
-            node.functionNodes.set(i, Visit(node.functionNodes.get(i)));
+            FunctionNode current = Visit(node.functionNodes.get(i));
+            node.functionNodes.set(i, current);
         }
         //go through all statements
         for(int i = 0; i < node.stmtNodes.size(); i++){
@@ -29,8 +30,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     };
     public FunctionNode Visit(FunctionNode node) throws Exception {
         //scope is opened by the StmtListNode
-        node.typeDecoration.type = node.type;
-        node.typeDecoration.typeModifier = node.typeModifier;
+        node.typeDecoration = new TypeDecoration(node.type, node.typeModifier);
         symTab.EnterSymbol(node);
         symTab.currentFunc = (FuncSymbol) symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
         node.stmtFuncNodes = Visit(node.stmtFuncNodes);
@@ -185,9 +185,13 @@ public class ASTdecorator extends ASTvisitor<Node> {
             throw new TypeException("collection in foreach node needs to be a list (in: " + node.toString() + ")");
         }
         //insert element in symTab
-        node.elementID.typeDecoration.type = node.collectionID.typeDecoration.type;
         String oldModifier = node.collectionID.typeDecoration.typeModifier;
         String newModifier = oldModifier.substring(0, oldModifier.length()-2); //new type modifier (1 dimension lower) - remove "[]" from end
+        //don't reset fields if it has been declared, in case it has fields
+        if(node.elementID.typeDecoration == null){
+            node.elementID.typeDecoration = new TypeDecoration();
+        }
+        node.elementID.typeDecoration.type = node.collectionID.typeDecoration.type;
         node.elementID.typeDecoration.typeModifier = newModifier;
         DeclareStmtNode declElement = new DeclareStmtNode(node.collectionID.typeDecoration.type, newModifier, node.elementID.id);
         symTab.EnterSymbol(declElement, symTab);
@@ -222,27 +226,27 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public IntLiteralNode Visit(IntLiteralNode node){
-        node.typeDecoration.type = "int";
+        node.typeDecoration = new TypeDecoration("int", "");
         return node;
     };
     public FloatLiteralNode Visit(FloatLiteralNode node){
-        node.typeDecoration.type = "float";
+        node.typeDecoration = new TypeDecoration("float", "");
         return node;
     };
     public PiLiteralNode Visit(PiLiteralNode node){
-        node.typeDecoration.type = "float";
+        node.typeDecoration = new TypeDecoration("float", "");
         return node;
     };
     public StringLiteralNode Visit(StringLiteralNode node){
-        node.typeDecoration.type = "string";
+        node.typeDecoration = new TypeDecoration("string", "");
         return node;
     };
     public BoolLiteralNode Visit(BoolLiteralNode node){
-        node.typeDecoration.type = "bool";
+        node.typeDecoration = new TypeDecoration("bool", "");
         return node;
     };
     public AngleLiteralNode Visit(AngleLiteralNode node){
-        node.typeDecoration.type = "angle";
+        node.typeDecoration = new TypeDecoration("angle", "");
         return node;
     };
     public ArrayLiteralNode Visit(ArrayLiteralNode node) throws Exception {
@@ -268,8 +272,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.parameters = Visit(node.parameters);
         //retrieval also checks types of parameters
         FuncSymbol funcSym = symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
-        node.typeDecoration.type = funcSym.type;
-        node.typeDecoration.typeModifier = funcSym.typeModifier;
+        node.typeDecoration = new TypeDecoration(funcSym.type, funcSym.typeModifier);
         return node;
     };
     public MethodCallNode Visit(MethodCallNode node) throws Exception {
@@ -279,8 +282,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         VarSymbol variable = symTab.RetrieveSymbol(node.valueID.GetID(), symTab);
         //retrieve also checks types of parameters
         FuncSymbol method = variable.fields.RetrieveSymbol(node.methodID.id, variable.fields, node.parameters);
-        node.typeDecoration.type = method.type;
-        node.typeDecoration.typeModifier = method.typeModifier;
+        node.typeDecoration = new TypeDecoration(method.type, method.typeModifier);
         return node;
     };
     public PropertyCallNode Visit(PropertyCallNode node) throws Exception {
@@ -288,8 +290,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.propertyID = Visit(node.propertyID);
         VarSymbol value = symTab.RetrieveSymbol(node.valueID.GetID(), symTab);
         VarSymbol property = symTab.RetrieveSymbol(node.propertyID.GetID(), value.fields);
-        node.typeDecoration.type = property.type;
-        node.typeDecoration.typeModifier = property.typeModifier;
+        node.typeDecoration = new TypeDecoration(property.type, property.typeModifier);
         node.typeDecoration.fields = property.fields;
         return node;
     };
