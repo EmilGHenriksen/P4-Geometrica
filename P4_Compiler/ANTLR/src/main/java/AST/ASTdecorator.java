@@ -80,7 +80,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //type checking
         FuncSymbol currentFunc = symTab.currentFunc;
         if(!node.typeDecoration.type.equals(currentFunc.type)
-                    || !node.typeDecoration.typeModifier.equals(currentFunc.typeModifier)){
+                    || !(Objects.equals(node.typeDecoration.typeModifier, currentFunc.typeModifier))){
             throw new TypeException("Function: " + currentFunc.id + " does not match type for return statement: " + node.toString());
         }
         return node;

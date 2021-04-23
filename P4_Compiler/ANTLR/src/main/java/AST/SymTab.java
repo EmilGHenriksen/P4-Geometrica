@@ -64,9 +64,9 @@ public class SymTab {
         EnterSymbol(draw);
         //draw line
         DeclareStmtListNode declDraw2 = new DeclareStmtListNode();
-        declDraw.declarations.add(new DeclareStmtNode("line", "", "toDraw"));
-        FunctionNode draw2 = new FunctionNode("draw", "void", "", declDraw);
-        EnterSymbol(draw);
+        declDraw2.declarations.add(new DeclareStmtNode("line", "", "toDraw"));
+        FunctionNode draw2 = new FunctionNode("draw", "void", "", declDraw2);
+        EnterSymbol(draw2);
         //drawAll
         //TBD
 
@@ -166,8 +166,8 @@ public class SymTab {
         else{
             //found, and with different parameters -> doing function overloading
             //needs same return type
-            boolean sameType = _currentFunc.type.equals(node.type)
-                            && _currentFunc.typeModifier.equals(node.typeModifier);
+            boolean sameType = Objects.equals(_currentFunc.type, (node.type))
+                            && Objects.equals(_currentFunc.typeModifier, node.typeModifier);
             if(sameType){
                 return true;
             }
@@ -408,7 +408,7 @@ class VarSymbol extends Symbol {
             if(!V1.type.equals(V2.type)){
                 isSame = false;
             }
-            if(!V1.typeModifier.equals(V2.typeModifier)){
+            if(!Objects.equals(V1.typeModifier, V2.typeModifier)){
                 isSame = false;
             }
             //if they're null then they're equals
@@ -452,7 +452,7 @@ class FuncSymbol extends Symbol {
             FuncSymbol F2 = this;
             return F1.id.equals(F2.id)
                     && F1.type.equals(F2.type)
-                    && F1.typeModifier.equals(F2.typeModifier)
+                    && Objects.equals(F1.typeModifier, F2.typeModifier)
                     && F1.parameters.equals(F2.parameters);
         }
     }

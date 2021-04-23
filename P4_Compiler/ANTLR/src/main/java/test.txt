@@ -1,6 +1,9 @@
 int a IS -5 + 2 * 6 ^ 7 + (6-4);
 float foo(int asda){
+    float b IS 2.5;
     a IS a + 1;
+
+    return b;
 }
 if(a == 4){
     a IS 0;
