@@ -21,15 +21,12 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public ContentNode visitContent(CFG_concreteParser.ContentContext context) {
         ContentNode content = new ContentNode();
         if(context.children != null) {
-            int nFunctions = 0;
-            int nStatements = 0;
             for (int i = 0; i < context.children.size(); i++) {
                 if (context.children.get(i) instanceof CFG_concreteParser.FunctionContext) {
-                    content.functionNodes.add((FunctionNode) visit(context.function(nFunctions)));
-                    nFunctions++;
+                    content.functionNodes.add((FunctionNode) visit(context.children.get(i)));
                 } else if (context.children.get(i) instanceof CFG_concreteParser.StmtContext) {
-                    content.stmtNodes.add((StmtNode) visit(context.stmt(nStatements)));
-                    nStatements++;
+                    StmtNode current = (StmtNode) visit(context.children.get(i));
+                    content.stmtNodes.add(current);
                 }
             }
         }
@@ -189,8 +186,12 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public IfNode visitIfSelect(CFG_concreteParser.IfSelectContext context){
         IfNode ifnode = new IfNode();
         ifnode.value = (ExprNode) visit(context.expr());
-        ifnode.ifStmtNodes = (StmtListNode) visit(context.stmtList());
-        ifnode.elseStmtNode = (StmtNode) visit(context.stmt());
+        if(context.stmtList() != null){
+            ifnode.ifStmtNodes = (StmtListNode) visit(context.stmtList());
+        }
+        if(context.stmt() != null){
+            ifnode.elseStmtNode = (StmtNode) visit(context.stmt());
+        }
         return ifnode;
     }
     @Override
@@ -218,13 +219,17 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public DefinedCaseNode visitDefinedCase(CFG_concreteParser.DefinedCaseContext context){
         DefinedCaseNode definedCaseNode = new DefinedCaseNode();
         definedCaseNode.value = (ExprNode) visit(context.expr());
-        definedCaseNode.stmtNodes = (StmtListNode) visit(context.stmtListNoBraces());
+        if(context.stmtListNoBraces() != null){
+            definedCaseNode.stmtNodes = (StmtListNode) visit(context.stmtListNoBraces());
+        }
         return definedCaseNode;
     }
     @Override
     public DefaultCaseNode visitDefaultCase(CFG_concreteParser.DefaultCaseContext context){
         DefaultCaseNode defaultCaseNode = new DefaultCaseNode();
-        defaultCaseNode.stmtNodes = (StmtListNode) visit(context.stmtListNoBraces());
+        if(context.stmtListNoBraces() != null){
+            defaultCaseNode.stmtNodes = (StmtListNode) visit(context.stmtListNoBraces());
+        }
         return defaultCaseNode;
     }
     @Override
@@ -312,7 +317,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     public FunctionCallNode visitFunctionCall(CFG_concreteParser.FunctionCallContext context){
         FunctionCallNode functionCallNode = new FunctionCallNode();
         functionCallNode.id = (IdentifierNode) visit(context.identifier());
-        functionCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
+        if(context.parameterValueList() != null){
+            functionCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
+        }
         return functionCallNode;
     }
     @Override
@@ -320,7 +327,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         MethodCallNode methodCallNode = new MethodCallNode();
         methodCallNode.valueID = (VariableAccessNode) visit(context.variableAccess());
         methodCallNode.methodID = (IdentifierNode) visit(context.identifier());
-        methodCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
+        if(context.parameterValueList() != null){
+            methodCallNode.parameters = (ValueListNode) visit(context.parameterValueList());
+        }
         return methodCallNode;
     }
     @Override
