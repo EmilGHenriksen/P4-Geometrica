@@ -3,7 +3,10 @@ package AST;
 import Exceptions.InvalidStatementException;
 import Exceptions.SymbolAlreadyDeclaredException;
 import Exceptions.TypeException;
+import Exceptions.VarNotFoundException;
 import kotlin.NotImplementedError;
+
+import java.util.Objects;
 
 
 public class ASTdecorator extends ASTvisitor<Node> {
@@ -17,14 +20,19 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public ContentNode Visit(ContentNode node) throws Exception {
-        //load all functions
-        for(int i = 0; i < node.functionNodes.size(); i++){
-            FunctionNode current = Visit(node.functionNodes.get(i));
-            node.functionNodes.set(i, current);
-        }
-        //go through all statements
-        for(int i = 0; i < node.stmtNodes.size(); i++){
-            node.stmtNodes.set(i, (StmtNode) Visit(node.stmtNodes.get(i)));
+        //go through all statements and functions
+        int totalNodes = node.stmtAndFuncNodes.size();
+        for(int i = 0; i < totalNodes; i++){
+            Node current = node.stmtAndFuncNodes.get(i);
+            if(current instanceof StmtNode){
+                node.stmtAndFuncNodes.set(i, Visit((StmtNode) current));
+            }
+            else if(current instanceof  FunctionNode){
+                node.stmtAndFuncNodes.set(i, Visit((FunctionNode) current));
+            }
+            else{
+                throw new Exception("invalid node type in global scope");
+            }
         }
         return node;
     };
@@ -121,6 +129,11 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public IdentifierNode Visit(IdentifierNode node){
+        try{
+            VarSymbol varSymbol = symTab.RetrieveSymbol(node.GetID(), symTab);
+            node.typeDecoration = new TypeDecoration(varSymbol.type, varSymbol.typeModifier);
+        }
+        catch(VarNotFoundException e){/*might just be a declaration*/}
         return node;
     };
     public VariableModifierAccessNode Visit(VariableModifierAccessNode node) throws Exception {
@@ -575,23 +588,26 @@ public class ASTdecorator extends ASTvisitor<Node> {
         }
     }
     private boolean CompatibleOneway(TypeDecoration T1, TypeDecoration T2){
-        if(T1.equals(T2)){
+        if(Objects.equals(T1, T2)){
             return true;
         }
-        else{
+        else if(T1 != null && T2 != null){
             //check if T1 can be implicitly converted to T2
-            if(T1.type.equals("int") && T2.type.equals("float")){
+            if(Objects.equals(T1.type, "int") && Objects.equals(T2.type, "float")){
                 return true;
             }
-            else if(T1.type.equals("int") && T2.type.equals("angle")){
+            else if(Objects.equals(T1.type, "int") && Objects.equals(T2.type, "angle")){
                 return true;
             }
-            else if(T1.type.equals("float") && T2.type.equals("angle")){
+            else if(Objects.equals(T1.type, "float") && Objects.equals(T2.type, "angle")){
                 return true;
             }
             else{
                 return false;
             }
+        }
+        else{
+            return false;
         }
     }
 
@@ -607,17 +623,20 @@ public class ASTdecorator extends ASTvisitor<Node> {
         }
     }
     private boolean CompatibleOnewayBoolOp(TypeDecoration T1, TypeDecoration T2){
-        if(T1.equals(T2)){
+        if(Objects.equals(T1, T2)){
             return true;
         }
-        else{
+        else if(T1 != null && T2 != null){
             //check if T1 can be implicitly converted to T2
-            if(T1.type.equals("int") && T2.type.equals("float")){
+            if(Objects.equals(T1.type, "int") && Objects.equals(T2.type, "float")){
                 return true;
             }
             else{
                 return false;
             }
+        }
+        else{
+            return false;
         }
     }
 

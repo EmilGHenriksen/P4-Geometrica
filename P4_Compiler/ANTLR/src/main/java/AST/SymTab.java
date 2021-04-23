@@ -5,6 +5,7 @@ import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SymTab {
     public SymTab(){
@@ -183,7 +184,7 @@ public class SymTab {
                 boolean paramFound = false;
                 for(int j = 0; j < func2Params.size(); j++){
                     if (func1Params.get(i).type.equals(func2Params.get(j).type)
-                            && func1Params.get(i).typeModifier.equals(func2Params.get(j).typeModifier)) {
+                            && Objects.equals(func1Params.get(i).typeModifier, func2Params.get(j).typeModifier)) {
                         paramFound = true;
                         break;
                     }

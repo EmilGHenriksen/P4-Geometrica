@@ -8,11 +8,9 @@ class ProgramNode extends Node {
 }
 
 class ContentNode extends Node {
-    public List<StmtNode> stmtNodes;
-    public List<FunctionNode> functionNodes;
+    public List<Node> stmtAndFuncNodes;
     public ContentNode(){
-        stmtNodes = new ArrayList<>();
-        functionNodes = new ArrayList<>();
+        stmtAndFuncNodes = new ArrayList<>();
     }
 }
 

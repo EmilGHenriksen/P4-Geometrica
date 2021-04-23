@@ -2,6 +2,7 @@ package AST;
 
 import Exceptions.SymbolAlreadyDeclaredException;
 import Exceptions.TypeException;
+import Exceptions.VarNotFoundException;
 import kotlin.NotImplementedError;
 
 
@@ -15,7 +16,7 @@ public abstract class ASTvisitor<T> {
     public abstract T Visit(ReturnStmtNode node) throws Exception;
     public abstract T Visit(DeclareStmtNode node) throws SymbolAlreadyDeclaredException;
     public abstract T Visit(AssignNode node) throws Exception;
-    public abstract T Visit(IdentifierNode node);
+    public abstract T Visit(IdentifierNode node) throws VarNotFoundException;
     public abstract T Visit(VariableModifierAccessNode node) throws Exception;
     public abstract T Visit(VariablePropertyAccessNode node) throws Exception;
     public abstract T Visit(IfNode node) throws Exception;

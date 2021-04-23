@@ -23,10 +23,10 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         if(context.children != null) {
             for (int i = 0; i < context.children.size(); i++) {
                 if (context.children.get(i) instanceof CFG_concreteParser.FunctionContext) {
-                    content.functionNodes.add((FunctionNode) visit(context.children.get(i)));
+                    content.stmtAndFuncNodes.add((FunctionNode) visit(context.children.get(i)));
                 } else if (context.children.get(i) instanceof CFG_concreteParser.StmtContext) {
                     StmtNode current = (StmtNode) visit(context.children.get(i));
-                    content.stmtNodes.add(current);
+                    content.stmtAndFuncNodes.add(current);
                 }
             }
         }
