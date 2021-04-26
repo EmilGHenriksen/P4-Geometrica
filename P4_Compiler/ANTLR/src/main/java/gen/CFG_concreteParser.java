@@ -1204,7 +1204,7 @@ public class CFG_concreteParser extends Parser {
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-g			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitIfSelect(this);
+			if ( visitor instanceof CFG_concreteVisitor ) return ((CFG_concreteVisitor<? extends T>)visitor).visitIfSelect(this);
 			else return visitor.visitChildren(this);
 		}
 	}
