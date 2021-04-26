@@ -95,6 +95,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.variable = (VariableAccessNode) Visit(node.variable);
         node.value = (ExprNode) Visit(node.value);
         //---type checking---
+        /* deprecated and probably bad. Left here as potential inspiration/reminder for SymTab.RetrieveSymbol, not sure if that method is complete
         //copy the node
         VariableAccessNode nodeCurrent = node.variable;
         //find the variable in SymTab
@@ -112,7 +113,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
                 int varDimensions = symCurrent.typeModifier.length()/2;
                 if(total == varDimensions){
                     //check that the expr is of the correct base type
-                    if(nodeCurrentList.expr.typeDecoration.type.equals(symCurrent.type)){
+                    TypeDecoration symCurrentDec = new TypeDecoration(symCurrent.type, symCurrent.typeModifier);
+                    if(CompatibleOneway(nodeCurrentList.expr.typeDecoration, symCurrentDec)){
                         nodeCurrent = ((VariableModifierAccessNode) nodeCurrent).variable;
                     }
                     else{
@@ -134,6 +136,11 @@ public class ASTdecorator extends ASTvisitor<Node> {
         }
         Visit(nodeCurrent);
         //if no exceptions have been thrown, it can be returned
+        */
+        if(!CompatibleOneway(node.value.typeDecoration, node.variable.typeDecoration)){
+            throw new TypeException("Assign error: variable " + node.variable.GetID() + " has incompatible type with value: " + node.value);
+        }
+
         return node;
     };
     public IdentifierNode Visit(IdentifierNode node){
@@ -147,11 +154,13 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public VariableModifierAccessNode Visit(VariableModifierAccessNode node) throws Exception {
         node.expr = (ExprNode) Visit(node.expr);
         node.variable = (VariableAccessNode) Visit(node.variable);
+        node.typeDecoration.typeModifier = node.typeDecoration.typeModifier + "[]";
         return node;
     };
     public VariablePropertyAccessNode Visit(VariablePropertyAccessNode node) throws Exception {
         node.child = (VariableAccessNode) Visit(node.child);
         node.parent = (VariableAccessNode) Visit(node.parent);
+        node.typeDecoration = node.child.typeDecoration;
         return node;
     };
     public IfNode Visit(IfNode node) throws Exception {
