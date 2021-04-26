@@ -483,6 +483,18 @@ public class CFG_concreteBaseListener implements CFG_concreteListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariableAccessExpr(CFG_concreteParser.VariableAccessExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableAccessExpr(CFG_concreteParser.VariableAccessExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLiteral(CFG_concreteParser.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -339,6 +339,12 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         return parenthesisedExprNode;
     }
     @Override
+    public ExprNode visitVariableAccessExpr(CFG_concreteParser.VariableAccessExprContext context){
+        VariableAccessExprNode variableAccessExprNode = new VariableAccessExprNode();
+        variableAccessExprNode.variableExpr = (VariableAccessNode) visit(context.variableAccess());
+        return variableAccessExprNode;
+    }
+    @Override
     public ExprNode visitUnaryExpr(CFG_concreteParser.UnaryExprContext context){
         ExprNode exprNode;
         if(context.children.size() > 1){

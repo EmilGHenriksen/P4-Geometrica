@@ -244,6 +244,12 @@ public interface CFG_concreteVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParenthesisedExpr(CFG_concreteParser.ParenthesisedExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CFG_concreteParser#variableAccessExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableAccessExpr(CFG_concreteParser.VariableAccessExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CFG_concreteParser#literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

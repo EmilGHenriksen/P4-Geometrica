@@ -99,11 +99,12 @@ powerExpr : unaryExpr ('^' powerExpr)? ;
 unaryExpr : ('-'|'+'|'!')? atomExpr ;
 atomExpr : parenthesisedExpr
          | literal
-         | variableAccess
+         | variableAccessExpr
          | functionCall
          | methodCall
          ;
 parenthesisedExpr : '(' orExpr ')' ;
+variableAccessExpr : variableAccess; //useful in type checking
 
 
 //----literals----

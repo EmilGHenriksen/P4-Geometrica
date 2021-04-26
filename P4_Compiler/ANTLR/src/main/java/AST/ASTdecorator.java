@@ -122,6 +122,14 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.typeDecoration = node.child.typeDecoration;
         return node;
     };
+    public ExprNode Visit(VariableAccessExprNode node) throws Exception {
+        node.variableExpr = (VariableAccessNode) Visit(node.variableExpr);
+        //check that it exists
+        symTab.RetrieveSymbol(node.variableExpr, symTab);
+        //assign type
+        node.typeDecoration = node.variableExpr.typeDecoration;
+        return node;
+    }
     public IfNode Visit(IfNode node) throws Exception {
         //scope is opened by the StmtListNode
         node.value = (ExprNode) Visit(node.value);
@@ -659,8 +667,10 @@ public class ASTdecorator extends ASTvisitor<Node> {
             return Visit((IdentifierNode)node);
         }else if(node instanceof VariableModifierAccessNode){
             return Visit((VariableModifierAccessNode)node);
-        }else if(node instanceof VariablePropertyAccessNode){
-            return Visit((VariablePropertyAccessNode)node);
+        }else if(node instanceof VariablePropertyAccessNode) {
+            return Visit((VariablePropertyAccessNode) node);
+        }else if(node instanceof VariableAccessExprNode){
+            return Visit((VariableAccessExprNode) node);
         }else if(node instanceof IfNode){
             return Visit((IfNode)node);
         }else if(node instanceof SwitchNode){

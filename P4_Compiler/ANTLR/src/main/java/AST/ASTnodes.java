@@ -124,8 +124,9 @@ class AssignNode extends StmtNode {
 }
 
 //--variable access--
-abstract class VariableAccessNode extends ExprNode {
-    //symbol table stuff
+abstract class VariableAccessNode extends Node {
+     //symbol table stuff
+     TypeDecoration typeDecoration;
      abstract String GetID();
      abstract String GetTypeModifier();
 }
@@ -166,6 +167,9 @@ class VariablePropertyAccessNode extends VariableAccessNode {
     public String GetTypeModifier(){
         return parent.GetTypeModifier();
     }
+}
+class VariableAccessExprNode extends ExprNode{
+    VariableAccessNode variableExpr;
 }
 
 
