@@ -19,6 +19,7 @@ public abstract class ASTvisitor<T> {
     public abstract T Visit(IdentifierNode node) throws VarNotFoundException;
     public abstract T Visit(VariableModifierAccessNode node) throws Exception;
     public abstract T Visit(VariablePropertyAccessNode node) throws Exception;
+    public abstract T Visit(VariableAccessExprNode node) throws Exception;
     public abstract T Visit(IfNode node) throws Exception;
     public abstract T Visit(SwitchNode node) throws Exception;
     public abstract T Visit(DefinedCaseListNode node) throws Exception;
