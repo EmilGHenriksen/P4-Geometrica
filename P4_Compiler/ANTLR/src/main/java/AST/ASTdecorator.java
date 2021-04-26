@@ -174,7 +174,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         }
         node.cases = Visit(node.cases);
         for(int i = 0; i < node.cases.cases.size(); i++){
-            if(node.cases.cases.get(i).value.typeDecoration != node.value.typeDecoration){
+            if(!CompatibleOneway(node.cases.cases.get(i).value.typeDecoration, node.value.typeDecoration)){
                 throw new TypeException("case: " + node.cases.cases.get(i).toString() + " does not have same type as its switching value");
             }
         }
