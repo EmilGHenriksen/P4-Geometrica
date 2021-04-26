@@ -9,6 +9,20 @@ public class CodeGenerator extends ASTvisitor<Node>{
     private void Emit(String text) {
         WriteToFile.Emit(text);
     }
+    String indentation = "    ";
+    String currentIndentation = "";
+    private void EmitNewline(){
+        Emit("\n" + currentIndentation);
+    }
+    private void Indent(){
+        currentIndentation += indentation;
+    }
+    private void Outdent(){
+        if(!currentIndentation.equals("")){
+            currentIndentation = currentIndentation.substring(0, currentIndentation.length()-indentation.length());
+        }
+    }
+
 
     //visitors
     @Override
@@ -27,32 +41,66 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(FunctionNode node) throws Exception {
-        Emit(node.type);
+        //first line
+        Emit(node.type + node.typeModifier + " ");
+        Emit(node.id + "(");
+        for(int i = 0; i < node.parameters.declarations.size(); i++){
+            DeclareStmtNode currentParam = node.parameters.declarations.get(i);
+            Emit(currentParam.type + currentParam.typeModifier + " ");
+            Emit(currentParam.id.id);
+            if(i != node.parameters.declarations.size()-1){
+                Emit(", ");
+            }
+        }
+        Emit(") {");
+        EmitNewline();
+        //statements
+        Indent();
+        Visit(node.stmtFuncNodes);
+        Outdent();
+        //end of function
+        Emit("}");
+        EmitNewline();
         return null;
     }
 
     @Override
     public Node Visit(DeclareStmtListNode node) throws Exception {
+        //unused
         return null;
     }
 
     @Override
     public Node Visit(ValueListNode node) throws Exception {
+        //unused
         return null;
     }
 
     @Override
     public Node Visit(StmtListNode node) throws Exception {
+        for(int i = 0; i < node.statements.size(); i++){
+            Visit(node.statements.get(i));
+        }
         return null;
     }
 
     @Override
     public Node Visit(ReturnStmtNode node) throws Exception {
+        Emit("return ");
+        Visit(node.value);
+        Emit(";");
+        EmitNewline();
         return null;
     }
 
     @Override
     public Node Visit(DeclareStmtNode node) throws Exception {
+        Emit(node.type + node.typeModifier + " ");
+        Emit(node.id.id + " ");
+        Emit("= ");
+        Visit(node.value);
+        Emit(";");
+        EmitNewline();
         return null;
     }
 
