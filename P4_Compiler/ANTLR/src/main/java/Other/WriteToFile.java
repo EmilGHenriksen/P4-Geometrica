@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;  // Import the IOException class to handle errors
 
-public class WriteToFile implements IWriteToFile {
-    File file;
-    FileWriter writer;
+public class WriteToFile{
+    static File file;
+    static FileWriter writer;
 
-    @Override
     //fileName needs to include path
-    public void Initiate(String fileName) {
+    public static void Initiate(String fileName) {
         try {
             file = new File(fileName);
             if (file.createNewFile()) {
@@ -25,8 +24,7 @@ public class WriteToFile implements IWriteToFile {
         }
     }
 
-    @Override
-    public void Emit(String text) {
+    public static void Emit(String text) {
         try {
             writer.write(text);
         } catch (IOException e) {
@@ -35,8 +33,7 @@ public class WriteToFile implements IWriteToFile {
         }
     }
 
-    @Override
-    public void Close() {
+    public static void Close() {
         try {
             writer.close();
         } catch (IOException e) {

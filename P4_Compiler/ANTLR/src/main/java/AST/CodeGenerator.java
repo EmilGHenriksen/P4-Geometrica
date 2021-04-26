@@ -1,22 +1,33 @@
 package AST;
 
 import Exceptions.VarNotFoundException;
+import Other.WriteToFile;
 
 //generates code in Java
 public class CodeGenerator extends ASTvisitor<Node>{
+    //output
+    private void Emit(String text) {
+        WriteToFile.Emit(text);
+    }
 
+    //visitors
     @Override
     public Node Visit(ProgramNode node) throws Exception {
+        Visit(node.content);
         return null;
     }
 
     @Override
     public Node Visit(ContentNode node) throws Exception {
+        for(int i = 0; i < node.stmtAndFuncNodes.size(); i++){
+            Visit(node.stmtAndFuncNodes.get(i));
+        }
         return null;
     }
 
     @Override
     public Node Visit(FunctionNode node) throws Exception {
+        Emit(node.type);
         return null;
     }
 
