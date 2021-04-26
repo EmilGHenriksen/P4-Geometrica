@@ -79,8 +79,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.typeDecoration = node.value.typeDecoration;
         //type checking
         FuncSymbol currentFunc = symTab.currentFunc;
-        if(!node.typeDecoration.type.equals(currentFunc.type)
-                    || !(Objects.equals(node.typeDecoration.typeModifier, currentFunc.typeModifier))){
+        TypeDecoration currentFuncDec = new TypeDecoration(currentFunc.type, currentFunc.typeModifier);
+        if(!CompatibleOneway(node.typeDecoration, currentFuncDec)){
             throw new TypeException("Function: " + currentFunc.id + " does not match type for return statement: " + node.toString());
         }
         return node;
