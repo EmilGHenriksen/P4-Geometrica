@@ -171,6 +171,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //scope is opened by the StmtListNode
         node.elementID = Visit(node.elementID);
         node.collectionID = Visit(node.collectionID);
+        //check that the collection exits
+        symTab.RetrieveSymbol(node.collectionID, symTab);
         //check that the collection is a list
         if(node.collectionID.typeDecoration.typeModifier.equals("")){
             throw new TypeException("collection in foreach node needs to be a list (in: " + node.toString() + ")");
