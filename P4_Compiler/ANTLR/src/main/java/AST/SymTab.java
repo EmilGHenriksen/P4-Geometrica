@@ -202,7 +202,30 @@ public class SymTab {
         return true;
     }
 
-
+    //retrieve variable
+    public VarSymbol RetrieveSymbol(VariableAccessNode node, SymTab _symTab) throws VarNotFoundException {
+        if(node instanceof IdentifierNode){
+            return RetrieveSymbol(((IdentifierNode) node).id, _symTab);
+        }
+        else if(node instanceof VariableModifierAccessNode){
+            //x[e]
+            //check it has at most the same number of dimensions as the stored variable
+            VarSymbol variable = RetrieveSymbol(node.GetID(), _symTab);
+            if(node.GetTypeModifier().length() <= variable.typeModifier.length()){
+                return RetrieveSymbol(((VariableModifierAccessNode) node).variable, _symTab);
+            }
+            else{
+                throw new VarNotFoundException("Variable: " + node.GetID() + " does not have at least " + (node.GetTypeModifier().length()/2) + " list dimensions" );
+            }
+        }
+        else{
+            //instance of VariablePropertyAccessNode
+            //x.x
+            VarSymbol variable = RetrieveSymbol(node.GetID(), _symTab);
+            VarSymbol property = RetrieveSymbol(((VariablePropertyAccessNode) node).child, variable.fields);
+            return property;
+        }
+    }
     public VarSymbol RetrieveSymbol(String id, SymTab _symTab) throws VarNotFoundException {
         Symbol symbol = null;
         //try to find a variable
@@ -220,6 +243,7 @@ public class SymTab {
         }
         return (VarSymbol) symbol;
     }
+    //retrieve function
     public FuncSymbol RetrieveSymbol(String id, SymTab _symTab, DeclareStmtListNode parameters) throws VarNotFoundException {
         Symbol symbol = null;
         //try to find a function
