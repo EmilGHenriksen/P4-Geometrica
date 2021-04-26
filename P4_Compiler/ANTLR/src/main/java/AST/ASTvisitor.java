@@ -82,8 +82,10 @@ public abstract class ASTvisitor<T> {
             return Visit((IdentifierNode)node);
         }else if(node instanceof VariableModifierAccessNode){
             return Visit((VariableModifierAccessNode)node);
-        }else if(node instanceof VariablePropertyAccessNode){
-            return Visit((VariablePropertyAccessNode)node);
+        }else if(node instanceof VariablePropertyAccessNode) {
+            return Visit((VariablePropertyAccessNode) node);
+        }else if(node instanceof VariableAccessExprNode){
+            return Visit((VariableAccessExprNode) node);
         }else if(node instanceof IfNode){
             return Visit((IfNode)node);
         }else if(node instanceof SwitchNode){

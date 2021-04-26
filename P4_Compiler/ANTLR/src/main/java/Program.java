@@ -1,6 +1,8 @@
 import AST.ASTdecorator;
 import AST.BuildAstVisitor;
+import AST.CodeGenerator;
 import AST.Node;
+import Other.WriteToFile;
 import gen.CFG_concreteLexer;
 import gen.CFG_concreteParser;
 import org.antlr.v4.runtime.CharStream;
@@ -20,28 +22,37 @@ public class Program
 {
     public static void main(String[] args) {
         CharStream inputStream = null;
+        String fileName = "test.txt";
         try {
-            String path = new File("").getAbsolutePath();
-            path = path.concat("\\ANTLR\\src\\main\\java\\test.txt");
-            inputStream = CharStreams.fromFileName(path);
+            String BasePath = new File("").getAbsolutePath();
+            String ANTLRpath = BasePath.concat("\\ANTLR\\src\\main\\java\\");
+            String InputPath = ANTLRpath.concat(fileName);
+            inputStream = CharStreams.fromFileName(InputPath);
+
+
+            CFG_concreteLexer lexer = new CFG_concreteLexer(inputStream);
+            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+            CFG_concreteParser parser = new CFG_concreteParser(tokenStream);
+            ASTdecorator decorator = new ASTdecorator();
+            CodeGenerator generator = new CodeGenerator();
+
+            try
+            {
+                var cst = parser.program();
+                var ast = new BuildAstVisitor().visitProgram(cst);
+                var ASTdecorated = decorator.Visit(ast);
+                WriteToFile.Initiate(ANTLRpath + "out.java");
+                generator.Visit(ASTdecorated);
+                //WriteToFile.Close();
+
+                System.out.println(ASTdecorated);
+            }
+            catch (Exception ex)
+            {
+                System.out.print(ex.toString());
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        CFG_concreteLexer lexer = new CFG_concreteLexer(inputStream);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        CFG_concreteParser parser = new CFG_concreteParser(tokenStream);
-        ASTdecorator decorator = new ASTdecorator();
-
-        try
-        {
-            var cst = parser.program();
-            var ast = new BuildAstVisitor().visitProgram(cst);
-            var ASTdecorated = decorator.Visit(ast);
-            System.out.println(ASTdecorated);
-        }
-        catch (Exception ex)
-        {
-            System.out.print(ex.toString());
         }
     }
 }

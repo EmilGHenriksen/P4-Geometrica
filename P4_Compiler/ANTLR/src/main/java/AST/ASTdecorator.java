@@ -40,6 +40,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public FunctionNode Visit(FunctionNode node) throws Exception {
         //scope is opened by the StmtListNode
         node.typeDecoration = new TypeDecoration(node.type, node.typeModifier);
+        if(node.typeModifier == null) node.typeModifier = "";
+        node.parameters = Visit(node.parameters);
         symTab.EnterSymbol(node);
         symTab.currentFunc = (FuncSymbol) symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
         node.stmtFuncNodes = Visit(node.stmtFuncNodes);
@@ -54,6 +56,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public DeclareStmtListNode Visit(DeclareStmtListNode node) throws Exception {
         for(int i = 0; i < node.declarations.size(); i++){
             DeclareStmtNode declareStmtNode = Visit(node.declarations.get(i));
+            if(node.declarations.get(i).typeModifier == null) node.declarations.get(i).typeModifier = "";
             node.declarations.set(i, declareStmtNode);
         }
         return node;
@@ -61,6 +64,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public ValueListNode Visit(ValueListNode node) throws Exception {
         for(int i = 0; i < node.exprNodes.size(); i++){
             ExprNode exprNode = (ExprNode) Visit(node.exprNodes.get(i));
+            if(node.exprNodes.get(i).typeDecoration.typeModifier == null) node.exprNodes.get(i).typeDecoration.typeModifier = "";
             node.exprNodes.set(i, exprNode);
         }
         return node;
@@ -86,9 +90,12 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public DeclareStmtNode Visit(DeclareStmtNode node) throws Exception {
+        if(node.typeModifier == null) node.typeModifier = "";
         symTab.EnterSymbol(node, symTab);
         node.id = Visit(node.id);
-        node.value = (ExprNode) Visit(node.value);
+        if(node.value != null){
+            node.value = (ExprNode) Visit(node.value);
+        }
         return node;
     };
     public AssignNode Visit(AssignNode node) throws Exception {
@@ -113,6 +120,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public VariableModifierAccessNode Visit(VariableModifierAccessNode node) throws Exception {
         node.expr = (ExprNode) Visit(node.expr);
         node.variable = (VariableAccessNode) Visit(node.variable);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         node.typeDecoration.typeModifier = node.typeDecoration.typeModifier + "[]";
         return node;
     };
@@ -120,6 +128,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.child = (VariableAccessNode) Visit(node.child);
         node.parent = (VariableAccessNode) Visit(node.parent);
         node.typeDecoration = node.child.typeDecoration;
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         return node;
     };
     public ExprNode Visit(VariableAccessExprNode node) throws Exception {
@@ -128,6 +137,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         symTab.RetrieveSymbol(node.variableExpr, symTab);
         //assign type
         node.typeDecoration = node.variableExpr.typeDecoration;
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         return node;
     }
     public IfNode Visit(IfNode node) throws Exception {
@@ -269,6 +279,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
             }
             //decorate
             node.typeDecoration = currentLargestType;
+            if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
             node.typeDecoration.typeModifier += "[]"; //add another list dimension (e.g. int -> int[])
         }
         return node;
@@ -279,6 +290,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //retrieval also checks types of parameters
         FuncSymbol funcSym = symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
         node.typeDecoration = new TypeDecoration(funcSym.type, funcSym.typeModifier);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         return node;
     };
     public MethodCallNode Visit(MethodCallNode node) throws Exception {
@@ -289,6 +301,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //retrieve also checks types of parameters
         FuncSymbol method = variable.fields.RetrieveSymbol(node.methodID.id, variable.fields, node.parameters);
         node.typeDecoration = new TypeDecoration(method.type, method.typeModifier);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         return node;
     };
     public PropertyCallNode Visit(PropertyCallNode node) throws Exception {
@@ -298,11 +311,13 @@ public class ASTdecorator extends ASTvisitor<Node> {
         VarSymbol property = symTab.RetrieveSymbol(node.propertyID.GetID(), value.fields);
         node.typeDecoration = new TypeDecoration(property.type, property.typeModifier);
         node.typeDecoration.fields = property.fields;
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         return node;
     };
     public ParenthesisedExprNode Visit(ParenthesisedExprNode node) throws Exception {
         node.innerExpr = (ExprNode) Visit(node.innerExpr);
         node.typeDecoration = node.innerExpr.typeDecoration;
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("bool") && !type.equals("angle")){
@@ -316,6 +331,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public UnaryMinusNode Visit(UnaryMinusNode node) throws Exception {
         node.expr = (ExprNode) Visit(node.expr);
         node.typeDecoration = node.expr.typeDecoration;
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -329,6 +345,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public UnaryPlusNode Visit(UnaryPlusNode node) throws Exception {
         node.expr = (ExprNode) Visit(node.expr);
         node.typeDecoration = node.expr.typeDecoration;
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -342,6 +359,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public UnaryNegationNode Visit(UnaryNegationNode node) throws Exception {
         node.expr = (ExprNode) Visit(node.expr);
         node.typeDecoration = node.expr.typeDecoration;
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("bool")){
@@ -358,6 +376,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle") && !type.equals("point")){
@@ -374,6 +393,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle") && !type.equals("point")){
@@ -390,6 +410,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -406,6 +427,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -422,6 +444,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -438,6 +461,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypes(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float")){
@@ -454,6 +478,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(type.equals("string")){
@@ -472,6 +497,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(type.equals("string")){
@@ -490,6 +516,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -508,6 +535,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -526,6 +554,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){
@@ -544,6 +573,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check they have compatible types
         //also throws error if incompatible
         node.typeDecoration = CompatibleTypesBoolOp(node.left.typeDecoration, node.right.typeDecoration);
+        if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         //type checking according to operator types
         String type = node.typeDecoration.type;
         if(!type.equals("int") && !type.equals("float") && !type.equals("angle")){

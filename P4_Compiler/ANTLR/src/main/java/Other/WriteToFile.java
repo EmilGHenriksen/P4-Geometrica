@@ -14,7 +14,7 @@ public class WriteToFile{
             file = new File(fileName);
             if (file.createNewFile()) {
                 System.out.println("File created: " + file.getName());
-                writer = new FileWriter(fileName);
+                //writer = new FileWriter(fileName);
             } else {
                 System.out.println("File already exists.");
             }
@@ -26,13 +26,16 @@ public class WriteToFile{
 
     public static void Emit(String text) {
         try {
+            writer = new FileWriter(file.getAbsolutePath(), true);
             writer.write(text);
+            writer.close();
         } catch (IOException e) {
             System.out.println("An I/O error occurred while trying to write to file.");
             e.printStackTrace();
         }
     }
 
+    /*
     public static void Close() {
         try {
             writer.close();
@@ -41,4 +44,5 @@ public class WriteToFile{
             e.printStackTrace();
         }
     }
+    */
 }
