@@ -2,6 +2,7 @@ package AST;
 
 import Exceptions.VarNotFoundException;
 
+//generates code in Java
 public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
