@@ -279,13 +279,18 @@ public class ASTdecorator extends ASTvisitor<Node> {
                 node.elements.set(i, (ExprNode) Visit(node.elements.get(i)));
             }
             //type check
-            for(int i = 0; i < node.elements.size()-1; i++){
-                if(node.elements.get(i).typeDecoration != node.elements.get(i+1).typeDecoration){
-                    throw new TypeException("Elements of different types not allowed in lists (in: " + node.toString() + ")");
+            //also allow implicit type conversions (angle > float > int)
+            TypeDecoration currentLargestType = new TypeDecoration();
+            for(int i = 0; i < node.elements.size(); i++){
+                try{
+                    currentLargestType = CompatibleTypes(currentLargestType, node.elements.get(i).typeDecoration);
+                }
+                catch(TypeException e){
+                    throw new TypeException("Elements of incompatible types not allowed in lists (in: " + node.toString() + ")");
                 }
             }
             //decorate
-            node.typeDecoration = node.elements.get(0).typeDecoration;
+            node.typeDecoration = currentLargestType;
             node.typeDecoration.typeModifier += "[]"; //add another list dimension (e.g. int -> int[])
         }
         return node;
