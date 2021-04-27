@@ -24,7 +24,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
     private void Emit(String text) {
         WriteToFile.Emit(text);
     }
-    String indentation = "    ";
+    final String indentation = "    ";
     String currentIndentation = "";
     private void EmitNewline(){
         Emit("\n" + currentIndentation);
@@ -42,14 +42,46 @@ public class CodeGenerator extends ASTvisitor<Node>{
     //visitors
     @Override
     public Node Visit(ProgramNode node) throws Exception {
-        Visit(node.content);
+        Emit("public class out{");
+        Indent();
+            EmitNewline();
+            //global variables
+            for(int i = 0; i < SymTab.globalVars.size(); i++){
+                DeclareStmtNode current = SymTab.globalVars.get(i);
+                if(current.typeModifier == null) current.typeModifier = "";
+                Emit("private static ");
+                Visit(current);
+                EmitNewline();
+            }
+            //global functions
+            for(int i = 0; i < SymTab.globalFuncs.size(); i++){
+                FunctionNode current = SymTab.globalFuncs.get(i);
+                Emit("private static ");
+                Visit(current);
+                EmitNewline();
+            }
+            //rest of code
+            Emit("public static void main(String[] args) {");
+            Indent();
+                EmitNewline();
+                Visit(node.content);
+            Outdent();
+            Emit("}");
+            EmitNewline();
+        Outdent();
+        Emit("}");
+        EmitNewline();
         return null;
     }
 
     @Override
     public Node Visit(ContentNode node) throws Exception {
         for(int i = 0; i < node.stmtAndFuncNodes.size(); i++){
-            Visit(node.stmtAndFuncNodes.get(i));
+            Node current = node.stmtAndFuncNodes.get(i);
+            //functions and global declarations already loaded at this point
+            if(!(current instanceof FunctionNode) && !(current instanceof DeclareStmtNode)){
+                Visit(current);
+            }
         }
         return null;
     }
@@ -70,8 +102,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit(") {");
         //statements
         Indent();
-        EmitNewline();
-        Visit(node.stmtFuncNodes);
+            EmitNewline();
+            Visit(node.stmtFuncNodes);
         Outdent();
         //end of function
         Emit("}");
@@ -111,9 +143,11 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(DeclareStmtNode node) throws Exception {
         Emit(FixType(node.type) + node.typeModifier + " ");
-        Emit(node.id.id + " ");
-        Emit("= ");
-        Visit(node.value);
+        Emit(node.id.id);
+        if(node.value != null){
+            Emit(" = ");
+            Visit(node.value);
+        }
         Emit(";");
         EmitNewline();
         return null;
@@ -165,8 +199,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit(") {");
         if(node.ifStmtNodes != null){
             Indent();
-            EmitNewline();
-            Visit(node.ifStmtNodes);
+                EmitNewline();
+                Visit(node.ifStmtNodes);
             Outdent();
         }
         Emit("}");
@@ -174,8 +208,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
         if(node.elseStmtNode != null){
             Emit("else {");
             Indent();
-            EmitNewline();
-            Visit(node.elseStmtNode);
+                EmitNewline();
+                Visit(node.elseStmtNode);
             Outdent();
             Emit("}");
             EmitNewline();
@@ -189,9 +223,9 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Visit(node.value);
         Emit(") {");
         Indent();
-        EmitNewline();
-        Visit(node.cases);
-        Visit(node.defaultCase);
+            EmitNewline();
+            Visit(node.cases);
+            Visit(node.defaultCase);
         Outdent();
         Emit("}");
         EmitNewline();
@@ -205,9 +239,9 @@ public class CodeGenerator extends ASTvisitor<Node>{
             Visit(node.cases.get(i).value);
             Emit(":");
             Indent();
-            EmitNewline();
-            Visit(node.cases.get(i).stmtNodes);
-            Emit("break;");
+                EmitNewline();
+                Visit(node.cases.get(i).stmtNodes);
+                Emit("break;");
             Outdent();
             EmitNewline();
         }
@@ -224,8 +258,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
     public Node Visit(DefaultCaseNode node) throws Exception {
         Emit("default:");
         Indent();
-        EmitNewline();
-        Visit(node.stmtNodes);
+            EmitNewline();
+            Visit(node.stmtNodes);
         Outdent();
         return null;
     }
@@ -239,8 +273,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit(node.collectionID.id);
         Emit(") {");
         Indent();
-        EmitNewline();
-        Visit(node.stmtNodes);
+            EmitNewline();
+            Visit(node.stmtNodes);
         Outdent();
         Emit("}");
         return null;
@@ -251,27 +285,23 @@ public class CodeGenerator extends ASTvisitor<Node>{
         String newVar = GetUnusedVarName();
         Emit("{");
         Indent();
-        {
             EmitNewline();
             //the counting variable
-            Emit("longq " + newVar + " = ");
+            Emit("long " + newVar + " = ");
             Visit(node.loopcount);
             Emit(";");
             //main matter - converts it to a while loop
             Emit("while(" + newVar + " > 0) {");
             Indent();
-            {
                 EmitNewline();
                 //code from the loop
                 Visit(node.stmtNodes);
                 //counting update
                 Emit(newVar + "--;");
-            }
             Outdent();
             Emit("}");
             EmitNewline();
             //end of main matter
-        }
         Outdent();
         Emit("}");
         EmitNewline();

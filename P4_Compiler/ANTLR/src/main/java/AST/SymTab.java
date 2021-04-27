@@ -19,41 +19,41 @@ public class SymTab {
 
         //PI - this symbol might not be necessary
         DeclareStmtNode declPI = new DeclareStmtNode("float", "", "PI");
-        EnterSymbol(declPI, this);
+        EnterSymbol(declPI, this, true);
 
         //---angle functions
         //arccos
         DeclareStmtListNode declArccos = new DeclareStmtListNode();
         declArccos.declarations.add(new DeclareStmtNode("float", "", "input"));
         FunctionNode arccos = new FunctionNode("arccos", "angle", "", declArccos);
-        EnterSymbol(arccos);
+        EnterSymbol(arccos, false);
         //arcsin
         FunctionNode arcsin = arccos;
         arcsin.id.id = "arcsin";
-        EnterSymbol(arcsin);
+        EnterSymbol(arcsin, false);
         //arctan
         FunctionNode arctan = arccos;
         arctan.id.id = "arctan";
-        EnterSymbol(arctan);
+        EnterSymbol(arctan, false);
         //cos
         DeclareStmtListNode declCos = new DeclareStmtListNode();
         declCos.declarations.add(new DeclareStmtNode("angle", "", "input"));
         FunctionNode cos = new FunctionNode("cos", "float", "", declCos);
-        EnterSymbol(cos);
+        EnterSymbol(cos, false);
         //sin
         FunctionNode sin = cos;
         sin.id.id = "sin";
-        EnterSymbol(sin);
+        EnterSymbol(sin, false);
         //tan
         FunctionNode tan = cos;
         tan.id.id = "tan";
-        EnterSymbol(tan);
+        EnterSymbol(tan, false);
 
         //---canvas-related functions
         //clearcanvas
         DeclareStmtListNode declClearcanvas = new DeclareStmtListNode();
         FunctionNode clearcanvas = new FunctionNode("clearcanvas", "void", "", declClearcanvas);
-        EnterSymbol(clearcanvas);
+        EnterSymbol(clearcanvas, false);
         //connect
         //TBD
         //--draw variations
@@ -61,12 +61,12 @@ public class SymTab {
         DeclareStmtListNode declDraw = new DeclareStmtListNode();
         declDraw.declarations.add(new DeclareStmtNode("point", "", "toDraw"));
         FunctionNode draw = new FunctionNode("draw", "void", "", declDraw);
-        EnterSymbol(draw);
+        EnterSymbol(draw, false);
         //draw line
         DeclareStmtListNode declDraw2 = new DeclareStmtListNode();
         declDraw2.declarations.add(new DeclareStmtNode("line", "", "toDraw"));
         FunctionNode draw2 = new FunctionNode("draw", "void", "", declDraw2);
-        EnterSymbol(draw2);
+        EnterSymbol(draw2, false);
         //drawAll
         //TBD
 
@@ -78,22 +78,26 @@ public class SymTab {
         declRoot.declarations.add(new DeclareStmtNode("float", "", "value"));
         declRoot.declarations.add(new DeclareStmtNode("float", "", "power")); //maybe int instead, depending on implementation difficulty
         FunctionNode root = new FunctionNode("root", "float", "", declRoot);
-        EnterSymbol(root);
+        EnterSymbol(root, false);
         //sqrt
         DeclareStmtListNode declSqrt = new DeclareStmtListNode();
         declSqrt.declarations.add(new DeclareStmtNode("float", "", "input"));
         FunctionNode sqrt = new FunctionNode("sqrt", "float", "", declSqrt);
-        EnterSymbol(sqrt);
+        EnterSymbol(sqrt, false);
         //wait
         DeclareStmtListNode declWait = new DeclareStmtListNode();
         declWait.declarations.add(new DeclareStmtNode("int", "", "milliseconds"));
         FunctionNode wait = new FunctionNode("wait", "void", "", declWait);
-        EnterSymbol(wait);
+        EnterSymbol(wait, false);
     }
 
     public List<FuncSymbol> functions = new ArrayList<>(); //unordered list of functions
     public List<SymList> scopes = new ArrayList<>(); //these scopes are used as a stack
     public FuncSymbol currentFunc = null;
+    //for code generation
+    public static List<FunctionNode> globalFuncs = new ArrayList<>();
+    public static List<DeclareStmtNode> globalVars = new ArrayList<>();
+
 
     public void OpenScope(){
         scopes.add(new SymList());
@@ -102,7 +106,7 @@ public class SymTab {
         scopes.remove(scopes.size()-1);
     }
 
-    public void EnterSymbol(DeclareStmtNode node, SymTab symTab) throws SymbolAlreadyDeclaredException {
+    public void EnterSymbol(DeclareStmtNode node, SymTab symTab, boolean isGlobal) throws SymbolAlreadyDeclaredException {
         //check if the symbol is already in the table
         if(DeclaredLocally(node.id.id)){
             throw new SymbolAlreadyDeclaredException("Variable already declared in current scope with name: " + node.id.id);
@@ -110,6 +114,9 @@ public class SymTab {
         else{
             SymList currentScope = scopes.get(scopes.size()-1);
             currentScope.symbols.add(new VarSymbol(node));
+            if(isGlobal){
+                globalVars.add(node);
+            }
         }
     }
 
@@ -118,17 +125,20 @@ public class SymTab {
     //OR
     //  -it has a non-unique name, with the same type as previously declared function of that name, and unique parameters*
     //      *ordering of parameters does not change uniqueness
-    public void EnterSymbol(FunctionNode node) throws Exception {
+    public void EnterSymbol(FunctionNode node, boolean isFinal) throws Exception {
         //check if the symbol is already in the table
         if(DeclaredLocally(node.id.id)){
-            EnterOverloadedFunc(node);
+            EnterOverloadedFunc(node, isFinal);
         }
         else{
             //not found in table
             functions.add(new FuncSymbol(node.type, node.typeModifier, node.id.id, node.parameters));
+            if(isFinal){
+                globalFuncs.add(node);
+            }
         }
     }
-    private void EnterOverloadedFunc(FunctionNode node) throws Exception {
+    private void EnterOverloadedFunc(FunctionNode node, boolean isFinal) throws Exception {
         //go through all declared functions, and find the ones with the same name
         List<FuncSymbol> sameFuncs = new ArrayList<>();
         for(int i = 0; i < functions.size(); i++){
@@ -141,6 +151,9 @@ public class SymTab {
         //check if the overloading is valid
         if(AllValidOverload(sameFuncs, node)){
             functions.add(new FuncSymbol(node.type, node.typeModifier, node.id.id, node.parameters));
+            if(isFinal){
+                globalFuncs.add(node);
+            }
         }
         else{
             throw new FunctionAlreadyDeclaredException("Function already declared with name: " + node.id.id + " with type: " + node.type + " and parameters: " + node.parameters.declarations.toString());
@@ -378,39 +391,39 @@ class VarSymbol extends Symbol {
         fields = new SymTab();
         if(node.type.equals("point")){
             DeclareStmtNode declX = new DeclareStmtNode("float", "", "x");
-            fields.EnterSymbol(declX, fields);
+            fields.EnterSymbol(declX, fields, false);
             DeclareStmtNode declY = new DeclareStmtNode("float", "", "y");
-            fields.EnterSymbol(declY, fields);
+            fields.EnterSymbol(declY, fields, false);
         }
         else if(node.type.equals("line")){
             DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
-            fields.EnterSymbol(declA, fields);
+            fields.EnterSymbol(declA, fields, false);
             DeclareStmtNode declB = new DeclareStmtNode("point", "", "B");
-            fields.EnterSymbol(declB, fields);
+            fields.EnterSymbol(declB, fields, false);
         }
         else if(node.type.equals("triangle")){
             DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
-            fields.EnterSymbol(declA, fields);
+            fields.EnterSymbol(declA, fields, false);
             DeclareStmtNode declB = new DeclareStmtNode("point", "", "B");
-            fields.EnterSymbol(declB, fields);
+            fields.EnterSymbol(declB, fields, false);
             DeclareStmtNode declC = new DeclareStmtNode("point", "", "C");
-            fields.EnterSymbol(declC, fields);
+            fields.EnterSymbol(declC, fields, false);
         }
         else if(node.type.equals("square")){
             DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
-            fields.EnterSymbol(declA, fields);
+            fields.EnterSymbol(declA, fields, false);
             DeclareStmtNode declB = new DeclareStmtNode("point", "", "B");
-            fields.EnterSymbol(declB, fields);
+            fields.EnterSymbol(declB, fields, false);
             DeclareStmtNode declC = new DeclareStmtNode("point", "", "C");
-            fields.EnterSymbol(declC, fields);
+            fields.EnterSymbol(declC, fields, false);
             DeclareStmtNode declD = new DeclareStmtNode("point", "", "D");
-            fields.EnterSymbol(declD, fields);
+            fields.EnterSymbol(declD, fields, false);
         }
         else if(node.type.equals("circle")){
             DeclareStmtNode declC = new DeclareStmtNode("point", "", "center");
-            fields.EnterSymbol(declC, fields);
+            fields.EnterSymbol(declC, fields, false);
             DeclareStmtNode declR = new DeclareStmtNode("float", "", "radius");
-            fields.EnterSymbol(declR, fields);
+            fields.EnterSymbol(declR, fields, false);
         }
     }
     String accessModifier;

@@ -42,7 +42,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.typeDecoration = new TypeDecoration(node.type, node.typeModifier);
         if(node.typeModifier == null) node.typeModifier = "";
         node.parameters = Visit(node.parameters);
-        symTab.EnterSymbol(node);
+        symTab.EnterSymbol(node, true);
         symTab.currentFunc = (FuncSymbol) symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
         node.stmtFuncNodes = Visit(node.stmtFuncNodes);
         symTab.currentFunc = null;
@@ -91,11 +91,12 @@ public class ASTdecorator extends ASTvisitor<Node> {
     };
     public DeclareStmtNode Visit(DeclareStmtNode node) throws Exception {
         if(node.typeModifier == null) node.typeModifier = "";
-        symTab.EnterSymbol(node, symTab);
+        boolean isGlobal = (symTab.scopes.size() == 1);
         node.id = Visit(node.id);
         if(node.value != null){
             node.value = (ExprNode) Visit(node.value);
         }
+        symTab.EnterSymbol(node, symTab, isGlobal);
         return node;
     };
     public AssignNode Visit(AssignNode node) throws Exception {
@@ -205,7 +206,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.elementID.typeDecoration.type = node.collectionID.typeDecoration.type;
         node.elementID.typeDecoration.typeModifier = newModifier;
         DeclareStmtNode declElement = new DeclareStmtNode(node.collectionID.typeDecoration.type, newModifier, node.elementID.id);
-        symTab.EnterSymbol(declElement, symTab);
+        boolean isGlobal = symTab.scopes.size() == 1;
+        symTab.EnterSymbol(declElement, symTab, isGlobal);
 
         node.stmtNodes = Visit(node.stmtNodes);
         return node;
