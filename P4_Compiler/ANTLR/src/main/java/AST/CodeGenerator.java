@@ -518,7 +518,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(PowerNode node) throws Exception {
-        Emit("Math.Pow(");
+        Emit("Math.pow(");
         Visit(node.left);
         Emit(", ");
         Visit(node.right);
