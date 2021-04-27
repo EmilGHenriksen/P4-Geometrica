@@ -19,7 +19,7 @@ public class SymTab {
 
         //PI - this symbol might not be necessary
         DeclareStmtNode declPI = new DeclareStmtNode("float", "", "PI");
-        EnterSymbol(declPI, this, true);
+        EnterSymbol(declPI, this, false); //technically it is global, but Math.PI is inserted directly instead
 
         //---angle functions
         //arccos

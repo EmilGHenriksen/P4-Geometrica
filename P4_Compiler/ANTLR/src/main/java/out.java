@@ -1,5 +1,4 @@
 public class out{
-    private static double PI;
     private static long a = (((-5) + (2 * ((long)Math.pow(6, 7)))) + ((6 - 4)));
     private static long asda;
     private static double foo(long asda) {
