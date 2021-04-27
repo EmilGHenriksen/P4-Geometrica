@@ -118,22 +118,23 @@ public class out{
         return Math.sqrt(value);
     }
     private static void wait(double milliseconds) throws InterruptedException {
-        if(milliseconds < Math.pow(10, 2-3)){
+        long precisionDigits = 2;
+        if(milliseconds < Math.pow(10, precisionDigits-3)){
             long nanoseconds = (long)(milliseconds*1000*1000);
             TimeUnit.NANOSECONDS.sleep(nanoseconds);
         }
-        else if(milliseconds < Math.pow(10, 2)){
+        else if(milliseconds < Math.pow(10, precisionDigits)){
             long microseconds = (long)(milliseconds*1000);
             TimeUnit.MICROSECONDS.sleep(microseconds);
         }
-        else if(milliseconds < Math.pow(10, 2+3)){
+        else if(milliseconds < Math.pow(10, precisionDigits+3)){
             TimeUnit.MILLISECONDS.sleep((long)milliseconds);
         }
-        else if(milliseconds < Math.pow(10, 2+6)){
+        else if(milliseconds < Math.pow(10, precisionDigits+6)){
             long seconds = (long)(milliseconds/1000);
             TimeUnit.SECONDS.sleep(seconds);
         }
-        else if(milliseconds < Math.pow(10, 2+9)){
+        else if(milliseconds < Math.pow(10, 1+precisionDigits+9)){
             long hours = (long)(milliseconds/(1000*60*60));
             TimeUnit.HOURS.sleep(hours);
         }
