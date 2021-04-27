@@ -2,7 +2,12 @@ package AST;
 
 import Exceptions.VarNotFoundException;
 import Other.WriteToFile;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.security.SecureRandom;
+import java.util.Scanner;
+
 
 //generates code in Java
 public class CodeGenerator extends ASTvisitor<Node>{
@@ -37,6 +42,24 @@ public class CodeGenerator extends ASTvisitor<Node>{
             currentIndentation = currentIndentation.substring(0, currentIndentation.length()-indentation.length());
         }
     }
+    private void EmitLibrary(){
+        String fs = File.separator;
+        String BasePath = new File("").getAbsolutePath();
+        String OtherPath = BasePath.concat( fs + "ANTLR" + fs + "src" + fs + "main" + fs + "java" + fs + "Other" + fs);
+        try {
+            File myObj = new File(OtherPath + "DefaultLibrary.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                Emit(data);
+                EmitNewline();
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An I/O error occurred while trying to read default library.");
+            e.printStackTrace();
+        }
+    }
 
 
     //visitors
@@ -45,6 +68,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit("public class out{");
         Indent();
             EmitNewline();
+            //default library
+            EmitLibrary();
             //global variables
             for(int i = 0; i < SymTab.globalVars.size(); i++){
                 DeclareStmtNode current = SymTab.globalVars.get(i);
