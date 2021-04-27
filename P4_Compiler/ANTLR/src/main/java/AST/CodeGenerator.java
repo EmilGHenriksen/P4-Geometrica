@@ -66,9 +66,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
                 EmitNewline();
                 Visit(node.content);
             Outdent();
-            Emit("}");
             EmitNewline();
+            Emit("}");
         Outdent();
+        EmitNewline();
         Emit("}");
         EmitNewline();
         return null;
@@ -81,6 +82,9 @@ public class CodeGenerator extends ASTvisitor<Node>{
             //functions and global declarations already loaded at this point
             if(!(current instanceof FunctionNode) && !(current instanceof DeclareStmtNode)){
                 Visit(current);
+                if(i != node.stmtAndFuncNodes.size()-1){
+                    EmitNewline();
+                }
             }
         }
         return null;
@@ -105,9 +109,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
             EmitNewline();
             Visit(node.stmtFuncNodes);
         Outdent();
-        //end of function
-        Emit("}");
         EmitNewline();
+        Emit("}");
         return null;
     }
 
@@ -127,6 +130,9 @@ public class CodeGenerator extends ASTvisitor<Node>{
     public Node Visit(StmtListNode node) throws Exception {
         for(int i = 0; i < node.statements.size(); i++){
             Visit(node.statements.get(i));
+            if(i != node.statements.size()-1){
+                EmitNewline();
+            }
         }
         return null;
     }
@@ -136,7 +142,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit("return ");
         Visit(node.value);
         Emit(";");
-        EmitNewline();
         return null;
     }
 
@@ -149,7 +154,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
             Visit(node.value);
         }
         Emit(";");
-        EmitNewline();
         return null;
     }
 
@@ -159,7 +163,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit(" = ");
         Visit(node.value);
         Emit(";");
-        EmitNewline();
         return null;
     }
 
@@ -203,16 +206,16 @@ public class CodeGenerator extends ASTvisitor<Node>{
                 Visit(node.ifStmtNodes);
             Outdent();
         }
-        Emit("}");
         EmitNewline();
+        Emit("}");
         if(node.elseStmtNode != null){
+            EmitNewline();
             Emit("else {");
             Indent();
                 EmitNewline();
                 Visit(node.elseStmtNode);
             Outdent();
             Emit("}");
-            EmitNewline();
         }
         return null;
     }
@@ -228,7 +231,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
             Visit(node.defaultCase);
         Outdent();
         Emit("}");
-        EmitNewline();
         return null;
     }
 
@@ -243,7 +245,9 @@ public class CodeGenerator extends ASTvisitor<Node>{
                 Visit(node.cases.get(i).stmtNodes);
                 Emit("break;");
             Outdent();
-            EmitNewline();
+            if(i != node.cases.size()-1){
+                EmitNewline();
+            }
         }
         return null;
     }
@@ -304,7 +308,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
             //end of main matter
         Outdent();
         Emit("}");
-        EmitNewline();
         return null;
     }
     private String GetUnusedVarName(){
@@ -334,7 +337,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
         }
         Outdent();
         Emit("}");
-        EmitNewline();
         return null;
     }
 
@@ -342,7 +344,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
     public Node Visit(ExprStmtNode node) throws Exception {
         Visit(node.expr);
         Emit(";");
-        EmitNewline();
         return null;
     }
 
