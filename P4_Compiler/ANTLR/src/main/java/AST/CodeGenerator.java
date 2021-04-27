@@ -518,11 +518,12 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(PowerNode node) throws Exception {
-        Emit("Math.pow(");
+        //explicitly type cast because Java's Math.pow returns int
+        Emit("((long)Math.pow(");
         Visit(node.left);
         Emit(", ");
         Visit(node.right);
-        Emit(")");
+        Emit("))");
         return null;
     }
 
