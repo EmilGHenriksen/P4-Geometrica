@@ -22,10 +22,11 @@ public class Program
 {
     public static void main(String[] args) {
         CharStream inputStream = null;
+        String fs = File.separator;
         String fileName = "test.txt";
         try {
             String BasePath = new File("").getAbsolutePath();
-            String ANTLRpath = BasePath.concat( File.separator + "ANTLR" + File.separator + "src" + File.separator + "main" + File.separator + "java/");
+            String ANTLRpath = BasePath.concat( fs + "ANTLR" + fs + "src" + fs + "main" + fs + "java" + fs);
             String InputPath = ANTLRpath.concat(fileName);
             inputStream = CharStreams.fromFileName(InputPath);
 
