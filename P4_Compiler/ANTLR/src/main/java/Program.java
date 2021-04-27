@@ -25,7 +25,7 @@ public class Program
         String fileName = "test.txt";
         try {
             String BasePath = new File("").getAbsolutePath();
-            String ANTLRpath = BasePath.concat("\\ANTLR\\src\\main\\java\\");
+            String ANTLRpath = BasePath.concat( File.separator + "ANTLR" + File.separator + "src" + File.separator + "main" + File.separator + "java/");
             String InputPath = ANTLRpath.concat(fileName);
             inputStream = CharStreams.fromFileName(InputPath);
 
