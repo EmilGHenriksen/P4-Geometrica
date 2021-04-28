@@ -6,6 +6,9 @@ import Other.WriteToFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -58,6 +61,15 @@ public class CodeGenerator extends ASTvisitor<Node>{
         } catch (FileNotFoundException e) {
             System.out.println("An I/O error occurred while trying to read default library.");
             e.printStackTrace();
+        }
+    }
+    private void EmitListType(String type, String typeModifier){
+        //was working here----------------------------------------------------------------------------------
+        //List<Long> e = Arrays.asList((long)1, (long)2);
+
+        int dimensions = typeModifier.length()/2;
+        for(int i = 0; i < dimensions; i++){
+            Emit("List<");
         }
     }
 
