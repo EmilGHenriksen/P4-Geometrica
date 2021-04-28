@@ -9,6 +9,10 @@ public class out{
         }
         long x;
         long y;
+        void move(double _x, double _y){
+            x += _x;
+            y += _y;
+        }
     }
     private class line{
         private line(point _A, point _B){
@@ -17,6 +21,10 @@ public class out{
         }
         point A;
         point B;
+        void move(double _x, double _y){
+            A.move(_x, _y);
+            B.move(_x, _y);
+        }
     }
     private class circle{
         private circle(point _center, double _radius){
@@ -25,6 +33,9 @@ public class out{
         }
         point center;
         double radius;
+        void move(double _x, double _y){
+            center.move(_x, _y);
+        }
     }
     private class triangle{
         private triangle(point _A, point _B, point _C){
@@ -35,6 +46,11 @@ public class out{
         point A;
         point B;
         point C;
+        void move(double _x, double _y){
+            A.move(_x, _y);
+            B.move(_x, _y);
+            C.move(_x, _y);
+        }
     }
     private class square{
         private square(point _A, point _B, point _C, point _D){
@@ -47,6 +63,12 @@ public class out{
         point B;
         point C;
         point D;
+        void move(double _x, double _y){
+            A.move(_x, _y);
+            B.move(_x, _y);
+            C.move(_x, _y);
+            D.move(_x, _y);
+        }
     }
     private static class canvas{
         //TBD
@@ -69,6 +91,7 @@ public class out{
         private static void clear(){
             //TBD
         }
+        //drawAll TBD
     }
     //---default functions---
     //default angle functions
@@ -91,7 +114,7 @@ public class out{
         return Math.tan(angle);
     }
     //other default functions
-    public static void clearcanvas(){
+    private static void clearcanvas(){
         canvas.clear();
     }
     private static void draw(point toDraw){
@@ -110,37 +133,41 @@ public class out{
         canvas.draw(toDraw);
     }
     //drawAll TBD
-    //move TBD
     private static double root(double value, double rootOf){
         return Math.pow(value, 1/rootOf);
     }
     private static double sqrt(double value){
         return Math.sqrt(value);
     }
-    private static void wait(double milliseconds) throws InterruptedException {
-        long precisionDigits = 2;
-        if(milliseconds < Math.pow(10, precisionDigits-3)){
-            long nanoseconds = (long)(milliseconds*1000*1000);
-            TimeUnit.NANOSECONDS.sleep(nanoseconds);
+    private static void wait(double milliseconds) {
+        long precisionDigits = 4;
+        try{
+            if(milliseconds < Math.pow(10, precisionDigits-3)){
+                long nanoseconds = (long)(milliseconds*1000*1000);
+                TimeUnit.NANOSECONDS.sleep(nanoseconds);
+            }
+            else if(milliseconds < Math.pow(10, precisionDigits)){
+                long microseconds = (long)(milliseconds*1000);
+                TimeUnit.MICROSECONDS.sleep(microseconds);
+            }
+            else if(milliseconds < Math.pow(10, precisionDigits+3)){
+                TimeUnit.MILLISECONDS.sleep((long)milliseconds);
+            }
+            else if(milliseconds < Math.pow(10, precisionDigits+6)){
+                long seconds = (long)(milliseconds/1000);
+                TimeUnit.SECONDS.sleep(seconds);
+            }
+            else if(milliseconds < Math.pow(10, 1+precisionDigits+9)){
+                long hours = (long)(milliseconds/(1000*60*60));
+                TimeUnit.HOURS.sleep(hours);
+            }
+            else{
+                long days = (long)(milliseconds/(1000*60*60*24));
+                TimeUnit.DAYS.sleep(days);
+            }
         }
-        else if(milliseconds < Math.pow(10, precisionDigits)){
-            long microseconds = (long)(milliseconds*1000);
-            TimeUnit.MICROSECONDS.sleep(microseconds);
-        }
-        else if(milliseconds < Math.pow(10, precisionDigits+3)){
-            TimeUnit.MILLISECONDS.sleep((long)milliseconds);
-        }
-        else if(milliseconds < Math.pow(10, precisionDigits+6)){
-            long seconds = (long)(milliseconds/1000);
-            TimeUnit.SECONDS.sleep(seconds);
-        }
-        else if(milliseconds < Math.pow(10, 1+precisionDigits+9)){
-            long hours = (long)(milliseconds/(1000*60*60));
-            TimeUnit.HOURS.sleep(hours);
-        }
-        else{
-            long days = (long)(milliseconds/(1000*60*60*24));
-            TimeUnit.DAYS.sleep(days);
+        catch(InterruptedException e){
+            System.out.println(e.getMessage());
         }
     }
 

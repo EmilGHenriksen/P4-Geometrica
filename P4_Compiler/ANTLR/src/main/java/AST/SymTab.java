@@ -54,8 +54,7 @@ public class SymTab {
         DeclareStmtListNode declClearcanvas = new DeclareStmtListNode();
         FunctionNode clearcanvas = new FunctionNode("clearcanvas", "void", "", declClearcanvas);
         EnterSymbol(clearcanvas, false);
-        //connect
-        //TBD
+        //connect TBD
         //--draw variations
         //draw point
         DeclareStmtListNode declDraw = new DeclareStmtListNode();
@@ -67,12 +66,24 @@ public class SymTab {
         declDraw2.declarations.add(new DeclareStmtNode("line", "", "toDraw"));
         FunctionNode draw2 = new FunctionNode("draw", "void", "", declDraw2);
         EnterSymbol(draw2, false);
-        //drawAll
-        //TBD
+        //draw circle
+        DeclareStmtListNode declDraw3 = new DeclareStmtListNode();
+        declDraw3.declarations.add(new DeclareStmtNode("circle", "", "toDraw"));
+        FunctionNode draw3 = new FunctionNode("draw", "void", "", declDraw3);
+        EnterSymbol(draw3, false);
+        //draw triangle
+        DeclareStmtListNode declDraw4 = new DeclareStmtListNode();
+        declDraw4.declarations.add(new DeclareStmtNode("triangle", "", "toDraw"));
+        FunctionNode draw4 = new FunctionNode("draw", "void", "", declDraw4);
+        EnterSymbol(draw4, false);
+        //draw square
+        DeclareStmtListNode declDraw5 = new DeclareStmtListNode();
+        declDraw5.declarations.add(new DeclareStmtNode("square", "", "toDraw"));
+        FunctionNode draw5 = new FunctionNode("draw", "void", "", declDraw5);
+        EnterSymbol(draw5, false);
+        //drawAll TBD
 
         //---other default functions
-        //move
-        //TBD
         //root
         DeclareStmtListNode declRoot = new DeclareStmtListNode();
         declRoot.declarations.add(new DeclareStmtNode("float", "", "value"));
@@ -106,7 +117,7 @@ public class SymTab {
         scopes.remove(scopes.size()-1);
     }
 
-    public void EnterSymbol(DeclareStmtNode node, SymTab symTab, boolean isGlobal) throws SymbolAlreadyDeclaredException {
+    public void EnterSymbol(DeclareStmtNode node, SymTab symTab, boolean isGlobal) throws Exception {
         //check if the symbol is already in the table
         if(DeclaredLocally(node.id.id)){
             throw new SymbolAlreadyDeclaredException("Variable already declared in current scope with name: " + node.id.id);
@@ -376,24 +387,32 @@ abstract class Symbol{
 }
 
 class VarSymbol extends Symbol {
-    public VarSymbol(DeclareStmtNode node) throws SymbolAlreadyDeclaredException {
+    public VarSymbol(DeclareStmtNode node) throws Exception {
         super(node.id.id);
         accessModifier = node.accessModifier;
         type = node.type;
         typeModifier = node.typeModifier;
         //fields based on node.type
         fields = new SymTab();
+        //.move
+        DeclareStmtListNode moveDecl = new DeclareStmtListNode();
+        moveDecl.declarations.add(new DeclareStmtNode("float", "", "x"));
+        moveDecl.declarations.add(new DeclareStmtNode("float", "", "y"));
+        FunctionNode move = new FunctionNode("move", "void", "", moveDecl);
+        //.add and .remove TBD
         if(node.type.equals("point")){
             DeclareStmtNode declX = new DeclareStmtNode("float", "", "x");
             fields.EnterSymbol(declX, fields, false);
             DeclareStmtNode declY = new DeclareStmtNode("float", "", "y");
             fields.EnterSymbol(declY, fields, false);
+            fields.EnterSymbol(move,false);
         }
         else if(node.type.equals("line")){
             DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
             fields.EnterSymbol(declA, fields, false);
             DeclareStmtNode declB = new DeclareStmtNode("point", "", "B");
             fields.EnterSymbol(declB, fields, false);
+            fields.EnterSymbol(move,false);
         }
         else if(node.type.equals("triangle")){
             DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
@@ -402,6 +421,7 @@ class VarSymbol extends Symbol {
             fields.EnterSymbol(declB, fields, false);
             DeclareStmtNode declC = new DeclareStmtNode("point", "", "C");
             fields.EnterSymbol(declC, fields, false);
+            fields.EnterSymbol(move,false);
         }
         else if(node.type.equals("square")){
             DeclareStmtNode declA = new DeclareStmtNode("point", "", "A");
@@ -412,12 +432,14 @@ class VarSymbol extends Symbol {
             fields.EnterSymbol(declC, fields, false);
             DeclareStmtNode declD = new DeclareStmtNode("point", "", "D");
             fields.EnterSymbol(declD, fields, false);
+            fields.EnterSymbol(move,false);
         }
         else if(node.type.equals("circle")){
             DeclareStmtNode declC = new DeclareStmtNode("point", "", "center");
             fields.EnterSymbol(declC, fields, false);
             DeclareStmtNode declR = new DeclareStmtNode("float", "", "radius");
             fields.EnterSymbol(declR, fields, false);
+            fields.EnterSymbol(move,false);
         }
     }
     String accessModifier;

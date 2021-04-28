@@ -95,8 +95,9 @@ class DeclareStmtNode extends StmtNode {
         return id.id + typeModifier;
     }
     public DeclareStmtNode(){}
-    public DeclareStmtNode(String _type, String typeModifier, String _id){
+    public DeclareStmtNode(String _type, String _typeModifier, String _id){
         type = _type;
+        typeModifier = _typeModifier;
         id = new IdentifierNode();
         id.id = _id;
     }
