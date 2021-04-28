@@ -81,8 +81,12 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public ReturnStmtNode Visit(ReturnStmtNode node) throws Exception {
         node.value = (ExprNode) Visit(node.value);
         node.typeDecoration = node.value.typeDecoration;
-        //type checking
         FuncSymbol currentFunc = symTab.currentFunc;
+        //check it is inside a function
+        if(currentFunc == null){
+            throw new Exception("return statement not allowed outside functions (in: " + node.toString() + ")");
+        }
+        //type checking
         TypeDecoration currentFuncDec = new TypeDecoration(currentFunc.type, currentFunc.typeModifier);
         if(!CompatibleOneway(node.typeDecoration, currentFuncDec)){
             throw new TypeException("Function: " + currentFunc.id + " does not match type for return statement: " + node.toString());
