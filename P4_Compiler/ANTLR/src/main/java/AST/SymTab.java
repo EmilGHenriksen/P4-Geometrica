@@ -196,23 +196,17 @@ public class SymTab {
             return false;
         }
         else{
-            //check if individual parameters from func1 exist in func2
+            //check if each parameter is of the same type
             for(int i = 0; i < func1Params.size(); i++){
-                //check if the number i parameter from func1 exists in func2
-                boolean paramFound = false;
-                for(int j = 0; j < func2Params.size(); j++){
-                    if (func1Params.get(i).type.equals(func2Params.get(j).type)
-                            && Objects.equals(func1Params.get(i).typeModifier, func2Params.get(j).typeModifier)) {
-                        paramFound = true;
-                        break;
-                    }
-                }
-                if(!paramFound){
+                boolean sameType = (func1Params.get(i).type.equals(func2Params.get(i).type));
+                boolean sameTypeModifier = (func1Params.get(i).typeModifier.equals(func2Params.get(i).typeModifier));
+                if(!sameType || !sameTypeModifier){
                     return false;
                 }
             }
+            //if no parameter is different
+            return true;
         }
-        return true;
     }
 
     //retrieve variable

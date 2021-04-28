@@ -20,7 +20,6 @@ import java.util.List;
 
 public class Program
 {
-
     public static void main(String[] args) {
         CharStream inputStream = null;
         String fs = File.separator;
