@@ -196,8 +196,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
                 }
                 EmitNewline();
             }
+            if(node.parameters.declarations.size() > 0){
+                EmitNewline();
+            }
             //statements
-            EmitNewline();
             Visit(node.stmtFuncNodes);
         Outdent();
         EmitNewline();
@@ -231,7 +233,9 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(ReturnStmtNode node) throws Exception {
         Emit("return ");
-        Visit(node.value);
+        if(!node.typeDecoration.type.equals("void")){
+            Visit(node.value);
+        }
         Emit(";");
         return null;
     }
@@ -496,7 +500,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(FunctionCallNode node) throws Exception {
-        Emit(node.id + "(");
+        Emit(node.id.id + "(");
         for(int i = 0; i < node.parameters.exprNodes.size(); i++){
             Visit(node.parameters.exprNodes.get(i));
             if(i != node.parameters.exprNodes.size()){

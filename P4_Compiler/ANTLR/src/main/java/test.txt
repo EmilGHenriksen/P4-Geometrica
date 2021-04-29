@@ -10,3 +10,10 @@ if(a == 4){
 }
 int[] myArr IS [1, 2, 3];
 string myString IS "hello!";
+
+//void function checking
+void bar(){
+    a IS 5;
+    return;
+}
+bar();

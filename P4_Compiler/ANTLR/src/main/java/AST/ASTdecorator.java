@@ -79,8 +79,14 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public ReturnStmtNode Visit(ReturnStmtNode node) throws Exception {
-        node.value = (ExprNode) Visit(node.value);
-        node.typeDecoration = node.value.typeDecoration;
+        if(node.value != null){
+            node.value = (ExprNode) Visit(node.value);
+            node.typeDecoration = node.value.typeDecoration;
+        }
+        else{
+            node.typeDecoration = new TypeDecoration();
+            node.typeDecoration.type = "void";
+        }
         FuncSymbol currentFunc = symTab.currentFunc;
         //check it is inside a function
         if(currentFunc == null){
@@ -99,6 +105,11 @@ public class ASTdecorator extends ASTvisitor<Node> {
         node.id = Visit(node.id);
         if(node.value != null){
             node.value = (ExprNode) Visit(node.value);
+            //type checking
+            TypeDecoration variableDecoration = new TypeDecoration(node.type, node.typeModifier);
+            if(!CompatibleOneway(node.value.typeDecoration, variableDecoration)){
+                throw new TypeException("Declaration error: Expression " + node.value + " does not have type " + node.type + node.typeModifier);
+            }
         }
         symTab.EnterSymbol(node, symTab, isGlobal);
         return node;

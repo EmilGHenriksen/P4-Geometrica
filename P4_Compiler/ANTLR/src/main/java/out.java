@@ -226,10 +226,14 @@ public class out{
         a = (long)(a + (long)1);
         return b;
     }
+    private static void bar() {
+        a = (long)5;
+        return ;
+    }
     public static void main(String[] args) {
         if((a == (long)4)) {
             a = (long)0;
         }
-        
+        bar();
     }
 }

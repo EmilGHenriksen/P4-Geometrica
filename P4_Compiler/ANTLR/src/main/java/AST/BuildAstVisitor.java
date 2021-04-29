@@ -45,8 +45,12 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             function.typeModifier = context.TypeModifier().getText();
         }
         function.id = (IdentifierNode) visit(context.identifier());
-        function.parameters = (DeclareStmtListNode) visit(context.parameterDeclareList());
-        function.stmtFuncNodes = (StmtListNode) visit(context.stmtList());
+        if(context.parameterDeclareList() != null){
+            function.parameters = (DeclareStmtListNode) visit(context.parameterDeclareList());
+        }
+        if(context.stmtList() != null){
+            function.stmtFuncNodes = (StmtListNode) visit(context.stmtList());
+        }
         return function;
     }
     @Override
@@ -119,7 +123,9 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
         ReturnStmtNode returnStmt = new ReturnStmtNode();
         if(context.children != null) {
             if (context.children.size() > 0) {
-                returnStmt.value = (ExprNode) visit(context.expr());
+                if(context.expr() != null){
+                    returnStmt.value = (ExprNode) visit(context.expr());
+                }
             }
         }
         return returnStmt;
