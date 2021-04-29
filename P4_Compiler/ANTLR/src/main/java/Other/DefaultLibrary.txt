@@ -1,4 +1,3 @@
-
 //---default classes---
 private class point{
     private point(double _x, double _y){
@@ -168,22 +167,23 @@ private static void wait(double milliseconds) {
         System.out.println(e.getMessage());
     }
 }
+//constructor callers
 private point createPoint(double x, double y) {
     return new point(x, y);
 }
-
 private line createLine(point A, point B) {
     return new line(A, B);
 }
-
 private triangle createTriangle(point A, point B, point C) {
     return new triangle(A, B, C);
 }
-
 private square createSquare(point A, point B, point C, point D) {
     return new square(A, B, C, D);
 }
-
 private circle createCircle(point center, double radius) {
     return new circle(center, radius);
 }
+//---end of default library---
+
+
+

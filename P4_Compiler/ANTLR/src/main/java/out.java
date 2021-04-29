@@ -2,7 +2,6 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 public class out{
-    
     //---default classes---
     private class point{
         private point(double _x, double _y){
@@ -172,25 +171,26 @@ public class out{
             System.out.println(e.getMessage());
         }
     }
+    //constructor callers
     private point createPoint(double x, double y) {
         return new point(x, y);
     }
-    
     private line createLine(point A, point B) {
         return new line(A, B);
     }
-    
     private triangle createTriangle(point A, point B, point C) {
         return new triangle(A, B, C);
     }
-    
     private square createSquare(point A, point B, point C, point D) {
         return new square(A, B, C, D);
     }
-    
     private circle createCircle(point center, double radius) {
         return new circle(center, radius);
     }
+    //---end of default library---
+    
+    
+    
     private static long a = (long)((long)((-(long)5) + (long)((long)2 * (long)(Math.pow((long)6, (long)7)))) + ((long)((long)6 - (long)4)));
     private static long asda;
     private static List<Long> myArr = Arrays.asList((long)1, (long)2, (long)3);
