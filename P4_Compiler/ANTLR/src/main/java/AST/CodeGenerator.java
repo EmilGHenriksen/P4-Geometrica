@@ -33,6 +33,23 @@ public class CodeGenerator extends ASTvisitor<Node>{
             default: return type;
         }
     }
+    private void EmitType(String type, String typeModifier){
+        int dimensions = typeModifier.length()/2;
+        for(int i = 0; i < dimensions; i++){
+            Emit("List<");
+        }
+        String fixedType = "";
+        if(typeModifier.equals("")){
+            fixedType = FixType(type);
+        }
+        else{
+            fixedType = NonPrimitive(FixType(type));
+        }
+        Emit(fixedType);
+        for(int i = 0; i < dimensions; i++){
+            Emit(">");
+        }
+    }
 
 
 
@@ -69,23 +86,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
         } catch (FileNotFoundException e) {
             System.out.println("An I/O error occurred while trying to read default library.");
             e.printStackTrace();
-        }
-    }
-    private void EmitType(String type, String typeModifier){
-        int dimensions = typeModifier.length()/2;
-        for(int i = 0; i < dimensions; i++){
-            Emit("List<");
-        }
-        String fixedType = "";
-        if(typeModifier.equals("")){
-            fixedType = FixType(type);
-        }
-        else{
-            fixedType = NonPrimitive(FixType(type));
-        }
-        Emit(fixedType);
-        for(int i = 0; i < dimensions; i++){
-            Emit(">");
         }
     }
 
@@ -406,18 +406,21 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(IntLiteralNode node) {
+        Emit("(long)");
         Emit(node.value.toString());
         return null;
     }
 
     @Override
     public Node Visit(FloatLiteralNode node) {
+        Emit("(double)");
         Emit(node.value.toString());
         return null;
     }
 
     @Override
     public Node Visit(PiLiteralNode node) {
+        Emit("(double)");
         Emit("Math.PI");
         return null;
     }
@@ -436,6 +439,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(AngleLiteralNode node) {
+        Emit("(double)");
         double value = node.value % 360;
         Emit(String.valueOf(value));
         return null;
@@ -526,6 +530,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(SubtractionNode node) throws Exception {
         Emit("(");
+        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+        Emit(")(");
         Visit(node.left);
         Emit(" - ");
         Visit(node.right);
@@ -536,6 +542,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(AdditionNode node) throws Exception {
         Emit("(");
+        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+        Emit(")(");
         Visit(node.left);
         Emit(" + ");
         Visit(node.right);
@@ -546,6 +554,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(MultiplicationNode node) throws Exception {
         Emit("(");
+        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+        Emit(")(");
         Visit(node.left);
         Emit(" * ");
         Visit(node.right);
@@ -556,6 +566,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(DivisionNode node) throws Exception {
         Emit("(");
+        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+        Emit(")(");
         Visit(node.left);
         Emit(" / ");
         Visit(node.right);
@@ -566,6 +578,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(ModuloNode node) throws Exception {
         Emit("(");
+        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+        Emit(")(");
         Visit(node.left);
         Emit(" % ");
         Visit(node.right);
@@ -575,8 +589,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(PowerNode node) throws Exception {
-        //explicitly type cast because Java's Math.pow returns int
-        Emit("((long)Math.pow(");
+        //explicitly type cast because Java's Math.pow returns int/float
+        Emit("(");
+        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+        Emit(")(Math.pow(");
         Visit(node.left);
         Emit(", ");
         Visit(node.right);
@@ -584,6 +600,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
         return null;
     }
 
+    //boolean operators - type casting not necessary
     @Override
     public Node Visit(EqualsNode node) throws Exception {
         Emit("(");
