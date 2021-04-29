@@ -463,7 +463,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(StringLiteralNode node) {
-        Emit(node.value);
+        Emit('"' + node.value + '"');
         return null;
     }
 

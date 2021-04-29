@@ -218,6 +218,7 @@ public class out{
     private static long a = (long)((long)((-(long)5) + (long)((long)2 * (long)(Math.pow((long)6, (long)7)))) + ((long)((long)6 - (long)4)));
     private static List<Long> asda;
     private static List<Long> myArr = Arrays.asList((long)1, (long)2, (long)3);
+    private static String myString = "hello!";
     private static double foo(List<Long> asda) {
         asda = new ArrayList<>(asda);
         
