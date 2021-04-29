@@ -25,6 +25,14 @@ public class CodeGenerator extends ASTvisitor<Node>{
             default: return Type;
         }
     }
+    private String NonPrimitive(String type){
+        switch(type){
+            case "long": return "Long";
+            case "double": return "Double";
+            case "boolean": return "Boolean";
+            default: return type;
+        }
+    }
 
 
 
@@ -63,13 +71,21 @@ public class CodeGenerator extends ASTvisitor<Node>{
             e.printStackTrace();
         }
     }
-    private void EmitListType(String type, String typeModifier){
-        //was working here----------------------------------------------------------------------------------
-        //List<Long> e = Arrays.asList((long)1, (long)2);
-
+    private void EmitType(String type, String typeModifier){
         int dimensions = typeModifier.length()/2;
         for(int i = 0; i < dimensions; i++){
             Emit("List<");
+        }
+        String fixedType = "";
+        if(typeModifier.equals("")){
+            fixedType = FixType(type);
+        }
+        else{
+            fixedType = NonPrimitive(FixType(type));
+        }
+        Emit(fixedType);
+        for(int i = 0; i < dimensions; i++){
+            Emit(">");
         }
     }
 
@@ -130,11 +146,13 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(FunctionNode node) throws Exception {
         //first line
-        Emit(FixType(node.type) + node.typeModifier + " ");
+        EmitType(node.type, node.typeModifier);
+        Emit(" ");
         Emit(node.id.id + "(");
         for(int i = 0; i < node.parameters.declarations.size(); i++){
             DeclareStmtNode currentParam = node.parameters.declarations.get(i);
-            Emit(FixType(currentParam.type) + currentParam.typeModifier + " ");
+            EmitType(node.type, node.typeModifier);
+            Emit(" ");
             Emit(currentParam.id.id);
             if(i != node.parameters.declarations.size()-1){
                 Emit(", ");
@@ -184,7 +202,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(DeclareStmtNode node) throws Exception {
-        Emit(FixType(node.type) + node.typeModifier + " ");
+        EmitType(node.type, node.typeModifier);
+        Emit(" ");
         Emit(node.id.id);
         if(node.value != null){
             Emit(" = ");
@@ -212,9 +231,9 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(VariableModifierAccessNode node) throws Exception {
         Visit(node.variable);
-        Emit("[");
+        Emit(".get(");
         Visit(node.expr);
-        Emit("]");
+        Emit(")");
         return null;
     }
 
@@ -308,7 +327,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(ForeachNode node) throws Exception {
         Emit("for(");
-        Emit(FixType(node.elementID.typeDecoration.type) + node.elementID.typeDecoration.typeModifier + " ");
+        EmitType(node.elementID.typeDecoration.type, node.elementID.typeDecoration.typeModifier);
+        Emit(" ");
         Emit(node.elementID.id + " ");
         Emit(": ");
         Emit(node.collectionID.id);
@@ -423,14 +443,14 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(ArrayLiteralNode node) throws Exception {
-        Emit("{");
+        Emit("Arrays.asList(");
         for(int i = 0; i < node.elements.size(); i++){
             Visit(node.elements.get(i));
             if(i != node.elements.size()-1){
                 Emit(", ");
             }
         }
-        Emit("}");
+        Emit(")");
         return null;
     }
 
