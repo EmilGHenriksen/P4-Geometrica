@@ -1,5 +1,5 @@
 int a IS -5 + 2 * 6 ^ 7 + (6-4);
-float foo(int asda){
+float foo(int[] asda){
     float b IS 2.5;
     a IS a + 1;
 

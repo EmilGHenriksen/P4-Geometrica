@@ -22,6 +22,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
             case "float": return "double";
             case "angle": return "double";
             case "bool": return "boolean";
+            case "string": return "String";
             default: return Type;
         }
     }
@@ -30,6 +31,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
             case "long": return "Long";
             case "double": return "Double";
             case "boolean": return "Boolean";
+            case "string": return "String";
             default: return type;
         }
     }
@@ -98,6 +100,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
         EmitNewline();
         Emit("import java.util.Arrays;");
         EmitNewline();
+        Emit("import java.util.ArrayList;");
+        EmitNewline();
         Emit("import java.util.concurrent.TimeUnit;");
         EmitNewline();
         //program
@@ -153,22 +157,46 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(FunctionNode node) throws Exception {
-        //first line
-        EmitType(node.type, node.typeModifier);
-        Emit(" ");
-        Emit(node.id.id + "(");
-        for(int i = 0; i < node.parameters.declarations.size(); i++){
-            DeclareStmtNode currentParam = node.parameters.declarations.get(i);
+        Indent();
             EmitType(node.type, node.typeModifier);
             Emit(" ");
-            Emit(currentParam.id.id);
-            if(i != node.parameters.declarations.size()-1){
-                Emit(", ");
+            //parameters
+            Emit(node.id.id + "(");
+            for(int i = 0; i < node.parameters.declarations.size(); i++){
+                DeclareStmtNode currentParam = node.parameters.declarations.get(i);
+                EmitType(currentParam.type, currentParam.typeModifier);
+                Emit(" ");
+                Emit(currentParam.id.id);
+                if(i != node.parameters.declarations.size()-1){
+                    Emit(", ");
+                }
             }
-        }
-        Emit(") {");
-        //statements
-        Indent();
+            Emit(") {");
+            EmitNewline();
+            //ensure it acts as pass-by-value by making each parameter a new copy of itself
+            for(int i = 0; i < node.parameters.declarations.size(); i++){
+                DeclareStmtNode current = node.parameters.declarations.get(i);
+                if(current.typeModifier == null) current.typeModifier = "";
+
+                Emit(current.id.id + " = ");
+                if(!current.typeModifier.equals("")){
+                    //list
+                    Emit("new ArrayList<>(" + current.id.id + ");");
+                }
+                else if(current.type.equals("int") || current.type.equals("float") || current.type.equals("bool") || current.type.equals("string")){
+                    //primitives
+                    Emit(NonPrimitive(FixType(current.type)));
+                    Emit(".valueOf(" + current.id.id + ");");
+                }
+                else{
+                    //non-primitives
+                    Emit("new ");
+                    EmitType(current.type, current.typeModifier);
+                    Emit("(" + current.id.id + ");");
+                }
+                EmitNewline();
+            }
+            //statements
             EmitNewline();
             Visit(node.stmtFuncNodes);
         Outdent();

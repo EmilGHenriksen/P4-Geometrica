@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 public class out{
     //---default classes---
@@ -7,6 +8,10 @@ public class out{
         private point(double _x, double _y){
             x = _x;
             y = _y;
+        }
+        private point(point p){
+            x = p.x;
+            y = p.y;
         }
         double x;
         double y;
@@ -20,6 +25,10 @@ public class out{
             A = _A;
             B = _B;
         }
+        private line(line l){
+            A = l.A;
+            B = l.B;
+        }
         point A;
         point B;
         void move(double _x, double _y){
@@ -32,6 +41,10 @@ public class out{
             center = _center;
             radius = _radius;
         }
+        private circle(circle c){
+            center = c.center;
+            radius = c.radius;
+        }
         point center;
         double radius;
         void move(double _x, double _y){
@@ -43,6 +56,11 @@ public class out{
             A = _A;
             B = _B;
             C = _C;
+        }
+        private triangle(triangle t){
+            A = t.A;
+            B = t.B;
+            C = t.C;
         }
         point A;
         point B;
@@ -59,6 +77,12 @@ public class out{
             B = _B;
             C = _C;
             D = _D;
+        }
+        private square(square s){
+            A = s.A;
+            B = s.B;
+            C = s.C;
+            D = s.D;
         }
         point A;
         point B;
@@ -192,9 +216,11 @@ public class out{
     
     
     private static long a = (long)((long)((-(long)5) + (long)((long)2 * (long)(Math.pow((long)6, (long)7)))) + ((long)((long)6 - (long)4)));
-    private static long asda;
+    private static List<Long> asda;
     private static List<Long> myArr = Arrays.asList((long)1, (long)2, (long)3);
-    private static double foo(double asda) {
+    private static double foo(List<Long> asda) {
+        asda = new ArrayList<>(asda);
+        
         double b = (double)2.5;
         a = (long)(a + (long)1);
         return b;

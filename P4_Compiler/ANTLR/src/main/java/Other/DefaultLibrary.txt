@@ -4,6 +4,10 @@ private class point{
         x = _x;
         y = _y;
     }
+    private point(point p){
+        x = p.x;
+        y = p.y;
+    }
     double x;
     double y;
     void move(double _x, double _y){
@@ -15,6 +19,10 @@ private class line{
     private line(point _A, point _B){
         A = _A;
         B = _B;
+    }
+    private line(line l){
+        A = l.A;
+        B = l.B;
     }
     point A;
     point B;
@@ -28,6 +36,10 @@ private class circle{
         center = _center;
         radius = _radius;
     }
+    private circle(circle c){
+        center = c.center;
+        radius = c.radius;
+    }
     point center;
     double radius;
     void move(double _x, double _y){
@@ -39,6 +51,11 @@ private class triangle{
         A = _A;
         B = _B;
         C = _C;
+    }
+    private triangle(triangle t){
+        A = t.A;
+        B = t.B;
+        C = t.C;
     }
     point A;
     point B;
@@ -55,6 +72,12 @@ private class square{
         B = _B;
         C = _C;
         D = _D;
+    }
+    private square(square s){
+        A = s.A;
+        B = s.B;
+        C = s.C;
+        D = s.D;
     }
     point A;
     point B;
