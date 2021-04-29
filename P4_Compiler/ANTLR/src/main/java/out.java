@@ -1,14 +1,14 @@
 import java.util.concurrent.TimeUnit;
-
 public class out{
+    
     //---default classes---
     private class point{
-        private point(long _x, long _y){
+        private point(double _x, double _y){
             x = _x;
             y = _y;
         }
-        long x;
-        long y;
+        double x;
+        double y;
         void move(double _x, double _y){
             x += _x;
             y += _y;
@@ -72,7 +72,7 @@ public class out{
     }
     private static class canvas{
         //TBD
-
+    
         private static void draw(point toDraw){
             //TBD
         }
@@ -170,13 +170,28 @@ public class out{
             System.out.println(e.getMessage());
         }
     }
-
-
-
-
+    private point createPoint(double x, double y) {
+        return new point(x, y);
+    }
+    
+    private line createLine(point A, point B) {
+        return new line(A, B);
+    }
+    
+    private triangle createTriangle(point A, point B, point C) {
+        return new triangle(A, B, C);
+    }
+    
+    private square createSquare(point A, point B, point C, point D) {
+        return new square(A, B, C, D);
+    }
+    
+    private circle createCircle(point center, double radius) {
+        return new circle(center, radius);
+    }
     private static long a = (((-5) + (2 * ((long)Math.pow(6, 7)))) + ((6 - 4)));
     private static long asda;
-    private static double foo(long asda) {
+    private static double foo(double asda) {
         double b = 2.5;
         a = (a + 1);
         return b;
@@ -185,7 +200,5 @@ public class out{
         if((a == 4)) {
             a = 0;
         }
-        double time = 1;
-        wait(time);
     }
 }
