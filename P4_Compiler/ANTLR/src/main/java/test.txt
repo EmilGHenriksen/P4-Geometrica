@@ -8,3 +8,4 @@ float foo(int asda){
 if(a == 4){
     a IS 0;
 }
+int[] myArr IS [1, 2, 3];

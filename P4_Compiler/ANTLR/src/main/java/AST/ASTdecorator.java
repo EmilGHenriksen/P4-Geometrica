@@ -267,15 +267,15 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public ArrayLiteralNode Visit(ArrayLiteralNode node) throws Exception {
-        if(node.elements != null){
+        if(node.elements != null && node.elements.size() > 0){
             //visit
             for(int i = 0; i < node.elements.size(); i++){
                 node.elements.set(i, (ExprNode) Visit(node.elements.get(i)));
             }
             //type check
             //also allow implicit type conversions (angle > float > int)
-            TypeDecoration currentLargestType = new TypeDecoration();
-            for(int i = 0; i < node.elements.size(); i++){
+            TypeDecoration currentLargestType = node.elements.get(0).typeDecoration;
+            for(int i = 1; i < node.elements.size(); i++){
                 try{
                     currentLargestType = CompatibleTypes(currentLargestType, node.elements.get(i).typeDecoration);
                 }

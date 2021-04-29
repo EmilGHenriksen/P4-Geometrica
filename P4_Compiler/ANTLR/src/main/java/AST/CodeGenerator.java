@@ -94,6 +94,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(ProgramNode node) throws Exception {
         //external libraries
+        Emit("import java.util.List;");
+        EmitNewline();
+        Emit("import java.util.Arrays;");
+        EmitNewline();
         Emit("import java.util.concurrent.TimeUnit;");
         EmitNewline();
         //program

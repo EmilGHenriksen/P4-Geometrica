@@ -1,3 +1,5 @@
+import java.util.List;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 public class out{
     
@@ -189,16 +191,18 @@ public class out{
     private circle createCircle(point center, double radius) {
         return new circle(center, radius);
     }
-    private static long a = (((-5) + (2 * ((long)Math.pow(6, 7)))) + ((6 - 4)));
+    private static long a = (long)((long)((-(long)5) + (long)((long)2 * (long)(Math.pow((long)6, (long)7)))) + ((long)((long)6 - (long)4)));
     private static long asda;
+    private static List<Long> myArr = Arrays.asList((long)1, (long)2, (long)3);
     private static double foo(double asda) {
-        double b = 2.5;
-        a = (a + 1);
+        double b = (double)2.5;
+        a = (long)(a + (long)1);
         return b;
     }
     public static void main(String[] args) {
-        if((a == 4)) {
-            a = 0;
+        if((a == (long)4)) {
+            a = (long)0;
         }
+        
     }
 }
