@@ -3,12 +3,12 @@ import java.util.concurrent.TimeUnit;
 public class out{
     //---default classes---
     private class point{
-        private point(long _x, long _y){
+        private point(double _x, double _y){
             x = _x;
             y = _y;
         }
-        long x;
-        long y;
+        double x;
+        double y;
         void move(double _x, double _y){
             x += _x;
             y += _y;
@@ -169,6 +169,25 @@ public class out{
         catch(InterruptedException e){
             System.out.println(e.getMessage());
         }
+    }
+    private point createPoint(double x, double y) {
+        return new point(x, y);
+    }
+
+    private line createLine(point A, point B) {
+        return new line(A, B);
+    }
+
+    private triangle createTriangle(point A, point B, point C) {
+        return new triangle(A, B, C);
+    }
+
+    private square createSquare(point A, point B, point C, point D) {
+        return new square(A, B, C, D);
+    }
+
+    private circle createCircle(point center, double radius) {
+        return new circle(center, radius);
     }
 
 

@@ -1,11 +1,13 @@
 package AST;
 
 import Exceptions.*;
+import kotlin.jvm.functions.FunctionN;
 import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class SymTab {
     public SymTab(){
@@ -82,6 +84,45 @@ public class SymTab {
         FunctionNode draw5 = new FunctionNode("draw", "void", "", declDraw5);
         EnterSymbol(draw5, false);
         //drawAll TBD
+
+        //constructors
+        //point
+        DeclareStmtListNode declPointConstructor = new DeclareStmtListNode();
+        declPointConstructor.declarations.add(new DeclareStmtNode("float", "", "x"));
+        declPointConstructor.declarations.add(new DeclareStmtNode("float","", "y"));
+        FunctionNode pointConstructor = new FunctionNode("createPoint","point","", declPointConstructor);
+        EnterSymbol(pointConstructor, false);
+
+        //line
+        DeclareStmtListNode declLineConstructor = new DeclareStmtListNode();
+        declLineConstructor.declarations.add(new DeclareStmtNode("point", "","A"));
+        declLineConstructor.declarations.add(new DeclareStmtNode("point", "", "B"));
+        FunctionNode lineConstructor = new FunctionNode("createLine", "line", "", declLineConstructor);
+        EnterSymbol(lineConstructor, false);
+
+        //triangle
+        DeclareStmtListNode declTriangleConstructor = new DeclareStmtListNode();
+        declTriangleConstructor.declarations.add(new DeclareStmtNode("point", "", "A"));
+        declTriangleConstructor.declarations.add(new DeclareStmtNode("point", "", "B"));
+        declTriangleConstructor.declarations.add(new DeclareStmtNode("point", "", "C"));
+        FunctionNode triangleConstructor = new FunctionNode("createTriangle", "triangle", "", declTriangleConstructor);
+        EnterSymbol(triangleConstructor, false);
+
+        //square
+        DeclareStmtListNode declSquareConstructor = new DeclareStmtListNode();
+        declSquareConstructor.declarations.add(new DeclareStmtNode("point", "", "A"));
+        declSquareConstructor.declarations.add(new DeclareStmtNode("point", "", "B"));
+        declSquareConstructor.declarations.add(new DeclareStmtNode("point", "", "C"));
+        declSquareConstructor.declarations.add(new DeclareStmtNode("point", "", "D"));
+        FunctionNode squareConstructor = new FunctionNode("createSquare", "square", "", declSquareConstructor);
+        EnterSymbol(squareConstructor, false);
+
+        //circle
+        DeclareStmtListNode declCircleConstructor = new DeclareStmtListNode();
+        declCircleConstructor.declarations.add(new DeclareStmtNode("point", "", "center"));
+        declCircleConstructor.declarations.add(new DeclareStmtNode("float", "", "radius"));
+        FunctionNode circleConstructor = new FunctionNode("createCircle", "circle", "", declCircleConstructor);
+        EnterSymbol(circleConstructor, false);
 
         //---other default functions
         //root
