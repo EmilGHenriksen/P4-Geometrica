@@ -93,6 +93,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
     //visitors
     @Override
     public Node Visit(ProgramNode node) throws Exception {
+        //external libraries
+        Emit("import java.util.concurrent.TimeUnit;");
+        EmitNewline();
+        //program
         Emit("public class out{");
         Indent();
             EmitNewline();
