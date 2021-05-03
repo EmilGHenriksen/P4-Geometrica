@@ -1,63 +1,37 @@
-import Other.*;
+import Other.point;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.Console;
-import java.io.IOException;
-import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
+import java.awt.Canvas;
+import java.awt.Graphics;
 import java.util.concurrent.TimeUnit;
-public class out{
-    
-    //---default functions---
-    private static Drawing drawer = new Drawing();
-    //default angle functions
-    private static double arccos(double length){
-        return Math.acos(length);
+import javax.swing.JFrame;
+
+class out extends Canvas {
+    Graphics g;
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Geometry");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Canvas canvas = new out();
+        canvas.setSize(400, 400);
+        frame.add(canvas);
+        frame.pack();
+        frame.setVisible(true);
     }
-    private static double arcsin(double length){
-        return Math.asin(length);
+
+    public void paint(Graphics _g) {
+        g = _g;
+
+        trueMain();
     }
-    private static double arctan(double length){
-        return Math.atan(length);
+    public void draw(point toDraw){
+        int x = (int) (toDraw.x * 10);
+        int y = (int) (toDraw.y * 10);
+        int width = (int)3;
+        g.drawRect(x,y, width, width);
     }
-    private static double cos(double angle){
-        return Math.cos(angle);
+    public point createPoint(double x, double y){
+        return new point(x, y);
     }
-    private static double sin(double angle){
-        return Math.sin(angle);
-    }
-    private static double tan(double angle){
-        return Math.tan(angle);
-    }
-    //other default functions
-    private static void clearcanvas(){
-        drawer.clear();
-    }
-    private static void draw(point toDraw){
-        drawer.draw(toDraw);
-    }
-    private static void draw(line toDraw){
-        drawer.draw(toDraw);
-    }
-    private static void draw(circle toDraw){
-        drawer.draw(toDraw);
-    }
-    private static void draw(triangle toDraw){
-        drawer.draw(toDraw);
-    }
-    private static void draw(square toDraw){
-        drawer.draw(toDraw);
-    }
-    //drawAll TBD
-    private static double root(double value, double rootOf){
-        return Math.pow(value, 1/rootOf);
-    }
-    private static double sqrt(double value){
-        return Math.sqrt(value);
-    }
-    private static void wait(double milliseconds) {
+    public static void wait(double milliseconds) {
         long precisionDigits = 4;
         try{
             if(milliseconds < Math.pow(10, precisionDigits-3)){
@@ -84,45 +58,13 @@ public class out{
                 TimeUnit.DAYS.sleep(days);
             }
         }
-        catch(InterruptedException e){
+        catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
-    //constructor callers
-    private static point createPoint(double x, double y) {
-        return new point(x, y);
-    }
-    private static line createLine(point A, point B) {
-        return new line(A, B);
-    }
-    private static triangle createTriangle(point A, point B, point C) {
-        return new triangle(A, B, C);
-    }
-    private static square createSquare(point A, point B, point C, point D) {
-        return new square(A, B, C, D);
-    }
-    private static circle createCircle(point center, double radius) {
-        return new circle(center, radius);
-    }
-    //---end of default library---
-    
-    
-    public static void main(String[] args) {
-        draw(createPoint((double)10.0, (double)10.0));
-        draw(createPoint((double)20.0, (double)20.0));
-        draw(createPoint((double)30.0, (double)30.0));
-        JLabel yellowLabel = new JLabel();
-        yellowLabel.setOpaque(true);
-        yellowLabel.setBackground(new Color(248, 213, 131));
-        yellowLabel.setPreferredSize(new Dimension(200, 180));
-        drawer.frame.getContentPane().add(yellowLabel, BorderLayout.CENTER);
-        drawer.repaint();
-        //make main not stop
-        int i = 0;
-        while(i == 0){
-            draw(createPoint((double)-30.0, (double)-30.0));
-            drawer.repaint();
-        }
-        //draw(createPoint((double)30.0, (double)30.0));
+
+    public void trueMain(){
+        draw(createPoint(10, 10));
+        wait((double)1000);
     }
 }

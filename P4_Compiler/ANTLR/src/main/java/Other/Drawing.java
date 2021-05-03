@@ -9,15 +9,12 @@ public class Drawing extends Canvas implements IDrawing {
     public Drawing() {
         frame = new JFrame("Geometrica");
         this.setSize(400, 400);
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.add(this);
         frame.pack();
         pixelsPerUnit = 10;
         pointSize = 3;
-        g = getGraphics();
-        g.setColor(new Color(0, 0, 0));
-        this.paint(g);
     }
     public JFrame frame;
     final double pixelsPerUnit;
@@ -30,7 +27,6 @@ public class Drawing extends Canvas implements IDrawing {
         int y = (int) (toDraw.y * pixelsPerUnit);
         int width = (int)pointSize;
         g.drawRect(x,y, width, width);
-        repaint();
     }
 
     public void draw(line toDraw) {
