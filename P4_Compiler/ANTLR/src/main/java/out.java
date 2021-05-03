@@ -1,5 +1,9 @@
 import Other.*;
+
+import javax.swing.*;
 import java.awt.*;
+import java.io.Console;
+import java.io.IOException;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -7,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class out{
     
     //---default functions---
-    private static IDrawing drawer = new Drawing();
+    private static Drawing drawer = new Drawing();
     //default angle functions
     private static double arccos(double length){
         return Math.acos(length);
@@ -105,5 +109,20 @@ public class out{
     
     public static void main(String[] args) {
         draw(createPoint((double)10.0, (double)10.0));
+        draw(createPoint((double)20.0, (double)20.0));
+        draw(createPoint((double)30.0, (double)30.0));
+        JLabel yellowLabel = new JLabel();
+        yellowLabel.setOpaque(true);
+        yellowLabel.setBackground(new Color(248, 213, 131));
+        yellowLabel.setPreferredSize(new Dimension(200, 180));
+        drawer.frame.getContentPane().add(yellowLabel, BorderLayout.CENTER);
+        drawer.repaint();
+        //make main not stop
+        int i = 0;
+        while(i == 0){
+            draw(createPoint((double)-30.0, (double)-30.0));
+            drawer.repaint();
+        }
+        //draw(createPoint((double)30.0, (double)30.0));
     }
 }
