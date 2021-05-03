@@ -1,124 +1,13 @@
+import Other.*;
+import java.awt.*;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 public class out{
-    //---default classes---
-    private class point{
-        private point(double _x, double _y){
-            x = _x;
-            y = _y;
-        }
-        private point(point p){
-            x = p.x;
-            y = p.y;
-        }
-        double x;
-        double y;
-        void move(double _x, double _y){
-            x += _x;
-            y += _y;
-        }
-    }
-    private class line{
-        private line(point _A, point _B){
-            A = _A;
-            B = _B;
-        }
-        private line(line l){
-            A = l.A;
-            B = l.B;
-        }
-        point A;
-        point B;
-        void move(double _x, double _y){
-            A.move(_x, _y);
-            B.move(_x, _y);
-        }
-    }
-    private class circle{
-        private circle(point _center, double _radius){
-            center = _center;
-            radius = _radius;
-        }
-        private circle(circle c){
-            center = c.center;
-            radius = c.radius;
-        }
-        point center;
-        double radius;
-        void move(double _x, double _y){
-            center.move(_x, _y);
-        }
-    }
-    private class triangle{
-        private triangle(point _A, point _B, point _C){
-            A = _A;
-            B = _B;
-            C = _C;
-        }
-        private triangle(triangle t){
-            A = t.A;
-            B = t.B;
-            C = t.C;
-        }
-        point A;
-        point B;
-        point C;
-        void move(double _x, double _y){
-            A.move(_x, _y);
-            B.move(_x, _y);
-            C.move(_x, _y);
-        }
-    }
-    private class square{
-        private square(point _A, point _B, point _C, point _D){
-            A = _A;
-            B = _B;
-            C = _C;
-            D = _D;
-        }
-        private square(square s){
-            A = s.A;
-            B = s.B;
-            C = s.C;
-            D = s.D;
-        }
-        point A;
-        point B;
-        point C;
-        point D;
-        void move(double _x, double _y){
-            A.move(_x, _y);
-            B.move(_x, _y);
-            C.move(_x, _y);
-            D.move(_x, _y);
-        }
-    }
-    private static class canvas{
-        //TBD
     
-        private static void draw(point toDraw){
-            //TBD
-        }
-        private static void draw(line toDraw){
-            //TBD
-        }
-        private static void draw(circle toDraw){
-            //TBD
-        }
-        private static void draw(triangle toDraw){
-            //TBD
-        }
-        private static void draw(square toDraw){
-            //TBD
-        }
-        private static void clear(){
-            //TBD
-        }
-        //drawAll TBD
-    }
     //---default functions---
+    private static IDrawing drawer = new Drawing();
     //default angle functions
     private static double arccos(double length){
         return Math.acos(length);
@@ -140,22 +29,22 @@ public class out{
     }
     //other default functions
     private static void clearcanvas(){
-        canvas.clear();
+        drawer.clear();
     }
     private static void draw(point toDraw){
-        canvas.draw(toDraw);
+        drawer.draw(toDraw);
     }
     private static void draw(line toDraw){
-        canvas.draw(toDraw);
+        drawer.draw(toDraw);
     }
     private static void draw(circle toDraw){
-        canvas.draw(toDraw);
+        drawer.draw(toDraw);
     }
     private static void draw(triangle toDraw){
-        canvas.draw(toDraw);
+        drawer.draw(toDraw);
     }
     private static void draw(square toDraw){
-        canvas.draw(toDraw);
+        drawer.draw(toDraw);
     }
     //drawAll TBD
     private static double root(double value, double rootOf){
@@ -196,44 +85,25 @@ public class out{
         }
     }
     //constructor callers
-    private point createPoint(double x, double y) {
+    private static point createPoint(double x, double y) {
         return new point(x, y);
     }
-    private line createLine(point A, point B) {
+    private static line createLine(point A, point B) {
         return new line(A, B);
     }
-    private triangle createTriangle(point A, point B, point C) {
+    private static triangle createTriangle(point A, point B, point C) {
         return new triangle(A, B, C);
     }
-    private square createSquare(point A, point B, point C, point D) {
+    private static square createSquare(point A, point B, point C, point D) {
         return new square(A, B, C, D);
     }
-    private circle createCircle(point center, double radius) {
+    private static circle createCircle(point center, double radius) {
         return new circle(center, radius);
     }
     //---end of default library---
     
     
-    
-    private static long a = (long)((long)((-(long)5) + (long)((long)2 * (long)(Math.pow((long)6, (long)7)))) + ((long)((long)6 - (long)4)));
-    private static List<Long> asda;
-    private static List<Long> myArr = Arrays.asList((long)1, (long)2, (long)3);
-    private static String myString = "hello!";
-    private static double foo(List<Long> asda) {
-        asda = new ArrayList<>(asda);
-        
-        double b = (double)2.5;
-        a = (long)(a + (long)1);
-        return b;
-    }
-    private static void bar() {
-        a = (long)5;
-        return ;
-    }
     public static void main(String[] args) {
-        if((a == (long)4)) {
-            a = (long)0;
-        }
-        bar();
+        draw(createPoint((double)10.0, (double)10.0));
     }
 }

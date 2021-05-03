@@ -96,6 +96,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(ProgramNode node) throws Exception {
         //external libraries
+        Emit("import Other.*;");
+        EmitNewline();
+        Emit("import java.awt.*;");
+        EmitNewline();
         Emit("import java.util.List;");
         EmitNewline();
         Emit("import java.util.Arrays;");
@@ -503,7 +507,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit(node.id.id + "(");
         for(int i = 0; i < node.parameters.exprNodes.size(); i++){
             Visit(node.parameters.exprNodes.get(i));
-            if(i != node.parameters.exprNodes.size()){
+            if(i != node.parameters.exprNodes.size()-1){
                 Emit(", ");
             }
         }

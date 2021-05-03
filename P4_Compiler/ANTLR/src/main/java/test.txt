@@ -1,3 +1,4 @@
+/*
 int a IS -5 + 2 * 6 ^ 7 + (6-4);
 float foo(int[] asda){
     float b IS 2.5;
@@ -17,3 +18,6 @@ void bar(){
     return;
 }
 bar();
+*/
+
+draw(createPoint(10.0, 10.0));
