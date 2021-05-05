@@ -120,6 +120,9 @@ public class ASTdecorator extends ASTvisitor<Node> {
         //check that the variable exists
         symTab.RetrieveSymbol(node.variable, symTab);
         //type checking
+        if(node.variable.typeDecoration.type.equals("string")){
+            throw new TypeException("Assign error: strings cannot be used in assignment, please give value at declaration (in: " + node.toString() + ")");
+        }
         if(!CompatibleOneway(node.value.typeDecoration, node.variable.typeDecoration)){
             throw new TypeException("Assign error: variable " + node.variable.GetID() + " has incompatible type with value: " + node.value);
         }
