@@ -103,13 +103,11 @@ public class ASTdecorator extends ASTvisitor<Node> {
         if(node.typeModifier == null) node.typeModifier = "";
         boolean isGlobal = (symTab.scopes.size() == 1);
         node.id = Visit(node.id);
-        if(node.value != null){
-            node.value = (ExprNode) Visit(node.value);
-            //type checking
-            TypeDecoration variableDecoration = new TypeDecoration(node.type, node.typeModifier);
-            if(!CompatibleOneway(node.value.typeDecoration, variableDecoration)){
-                throw new TypeException("Declaration error: Expression " + node.value + " does not have type " + node.type + node.typeModifier);
-            }
+        node.value = (ExprNode) Visit(node.value);
+        //type checking
+        TypeDecoration variableDecoration = new TypeDecoration(node.type, node.typeModifier);
+        if(!CompatibleOneway(node.value.typeDecoration, variableDecoration)){
+            throw new TypeException("Declaration error: Expression " + node.value + " does not have type " + node.type + node.typeModifier);
         }
         symTab.EnterSymbol(node, symTab, isGlobal);
         return node;

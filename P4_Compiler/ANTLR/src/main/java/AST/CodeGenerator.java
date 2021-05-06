@@ -249,10 +249,8 @@ public class CodeGenerator extends ASTvisitor<Node>{
         EmitType(node.type, node.typeModifier);
         Emit(" ");
         Emit(node.id.id);
-        if(node.value != null){
-            Emit(" = ");
-            Visit(node.value);
-        }
+        Emit(" = ");
+        Visit(node.value);
         Emit(";");
         return null;
     }

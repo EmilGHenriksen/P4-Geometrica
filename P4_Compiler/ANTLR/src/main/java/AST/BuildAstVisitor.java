@@ -141,9 +141,7 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
             dcl.typeModifier = context.TypeModifier().getText();
         }
         dcl.id = (IdentifierNode) visit(context.identifier());
-        if(context.expr() != null) {
-            dcl.value = (ExprNode) visit(context.expr());
-        }
+        dcl.value = (ExprNode) visit(context.expr());
         return dcl;
     }
     @Override

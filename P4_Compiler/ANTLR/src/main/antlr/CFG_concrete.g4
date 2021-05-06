@@ -39,7 +39,7 @@ stmtListNoBraces : stmt* ;
 
 //--------------statements--------------
 return_ : 'return' expr? ';' ;
-declare : AccessModifier? Type TypeModifier? identifier ('IS' expr)? ';' ;
+declare : AccessModifier? Type TypeModifier? identifier 'IS' expr ';' ;
 assign  :                                 variableAccess 'IS' expr ';' ;
 
 //--variable access--

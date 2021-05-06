@@ -41,7 +41,7 @@ stmt -> return
 stmtList -> '{' stmt* '}'
 
 return -> 'return' expr? ';'
-declare -> AccessModifier? type typeModifier? identifier ('IS' expr)? ';'
+declare -> AccessModifier? type typeModifier? identifier 'IS' expr ';'
 assign  ->                                     varAccess  'IS' expr ';'
 //--------------------------------------------------------------------------------
 
