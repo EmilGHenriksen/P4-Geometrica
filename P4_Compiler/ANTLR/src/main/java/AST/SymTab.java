@@ -19,7 +19,7 @@ public class SymTab {
         //scope constructor (includes all default variables/functions)
         this.OpenScope();
 
-        //PI - this symbol might not be necessary
+        //PI
         DeclareStmtNode declPI = new DeclareStmtNode("float", "", "PI");
         EnterSymbol(declPI, this, false); //technically it is global, but Math.PI is inserted directly instead
 
