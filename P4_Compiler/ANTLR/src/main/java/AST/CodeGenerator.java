@@ -108,8 +108,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
         EmitNewline();
         Emit("import java.util.concurrent.TimeUnit;");
         EmitNewline();
+        Emit("import javax.swing.JFrame;");
+        EmitNewline();
         //program
-        Emit("public class out{");
+        Emit("public class out extends Canvas{");
         Indent();
             EmitNewline();
             //default library
@@ -130,7 +132,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
                 EmitNewline();
             }
             //rest of code
-            Emit("public static void main(String[] args) {");
+            Emit("public void trueMain(){");
             Indent();
                 EmitNewline();
                 Visit(node.content);

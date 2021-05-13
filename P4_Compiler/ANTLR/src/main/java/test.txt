@@ -21,3 +21,4 @@ bar();
 */
 
 draw(createPoint(10.0, 10.0));
+draw(createTriangle(createPoint(20.0, 10.0), createPoint(10.0, 20.0), createPoint(20.0, 20.0)));
