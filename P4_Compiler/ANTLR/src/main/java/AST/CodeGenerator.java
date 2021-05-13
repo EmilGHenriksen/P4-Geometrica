@@ -373,7 +373,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit(" ");
         Emit(node.elementID.id + " ");
         Emit(": ");
-        Emit(node.collectionID.id);
+        Visit(node.collectionID);
         Emit(") {");
         Indent();
             EmitNewline();

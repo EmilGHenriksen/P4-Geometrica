@@ -204,7 +204,7 @@ class DefaultCaseNode extends Node {
 
 class ForeachNode extends StmtNode {
     IdentifierNode elementID;
-    IdentifierNode collectionID;
+    VariableAccessNode collectionID;
     StmtListNode stmtNodes;
 }
 class LoopNode extends StmtNode {

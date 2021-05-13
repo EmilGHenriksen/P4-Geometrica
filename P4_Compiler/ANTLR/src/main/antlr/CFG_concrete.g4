@@ -70,7 +70,7 @@ iterate  : foreachIterate
          | loopIterate
          | whileIterate
          ;
-foreachIterate : 'foreach' '(' identifier 'in' identifier ')' stmtList ;
+foreachIterate : 'foreach' '(' identifier 'in' variableAccess ')' stmtList ;
 loopIterate    : 'loop' '(' expr ')' stmtList ;
 whileIterate   : 'while' '(' expr ')' stmtList ;
 

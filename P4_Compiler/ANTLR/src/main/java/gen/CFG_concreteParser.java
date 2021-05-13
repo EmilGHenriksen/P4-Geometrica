@@ -1541,11 +1541,11 @@ public class CFG_concreteParser extends Parser {
 	}
 
 	public static class ForeachIterateContext extends ParserRuleContext {
-		public List<IdentifierContext> identifier() {
-			return getRuleContexts(IdentifierContext.class);
+		public IdentifierContext identifier() {
+			return getRuleContext(IdentifierContext.class,0);
 		}
-		public IdentifierContext identifier(int i) {
-			return getRuleContext(IdentifierContext.class,i);
+		public VariableAccessContext variableAccess() {
+			return getRuleContext(VariableAccessContext.class,0);
 		}
 		public StmtListContext stmtList() {
 			return getRuleContext(StmtListContext.class,0);
@@ -1584,7 +1584,7 @@ public class CFG_concreteParser extends Parser {
 			setState(254);
 			match(T__19);
 			setState(255);
-			identifier();
+			variableAccess();
 			setState(256);
 			match(T__2);
 			setState(257);
@@ -3477,7 +3477,7 @@ public class CFG_concreteParser extends Parser {
 		"\2\2\u00f6\u00f7\5\20\t\2\u00f7)\3\2\2\2\u00f8\u00fc\5,\27\2\u00f9\u00fc"+
 		"\5.\30\2\u00fa\u00fc\5\60\31\2\u00fb\u00f8\3\2\2\2\u00fb\u00f9\3\2\2\2"+
 		"\u00fb\u00fa\3\2\2\2\u00fc+\3\2\2\2\u00fd\u00fe\7\25\2\2\u00fe\u00ff\7"+
-		"\4\2\2\u00ff\u0100\5b\62\2\u0100\u0101\7\26\2\2\u0101\u0102\5b\62\2\u0102"+
+		"\4\2\2\u00ff\u0100\5b\62\2\u0100\u0101\7\26\2\2\u0101\u0102\5\30\r\2\u0102"+
 		"\u0103\7\5\2\2\u0103\u0104\5\16\b\2\u0104-\3\2\2\2\u0105\u0106\7\27\2"+
 		"\2\u0106\u0107\7\4\2\2\u0107\u0108\5:\36\2\u0108\u0109\7\5\2\2\u0109\u010a"+
 		"\5\16\b\2\u010a/\3\2\2\2\u010b\u010c\7\30\2\2\u010c\u010d\7\4\2\2\u010d"+

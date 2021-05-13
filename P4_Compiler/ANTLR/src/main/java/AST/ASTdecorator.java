@@ -205,7 +205,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public ForeachNode Visit(ForeachNode node) throws Exception {
         //scope is opened by the StmtListNode
         node.elementID = Visit(node.elementID);
-        node.collectionID = Visit(node.collectionID);
+        node.collectionID = (VariableAccessNode) Visit(node.collectionID);
         //check that the collection exits
         symTab.RetrieveSymbol(node.collectionID, symTab);
         //check that the collection is a list

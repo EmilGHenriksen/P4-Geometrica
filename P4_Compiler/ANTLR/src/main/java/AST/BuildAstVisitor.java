@@ -239,8 +239,8 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public ForeachNode visitForeachIterate(CFG_concreteParser.ForeachIterateContext context){
         ForeachNode foreachNode = new ForeachNode();
-        foreachNode.elementID = (IdentifierNode) visit(context.identifier(0));
-        foreachNode.collectionID = (IdentifierNode) visit(context.identifier(1));
+        foreachNode.elementID = (IdentifierNode) visit(context.identifier());
+        foreachNode.collectionID = (VariableAccessNode) visit(context.variableAccess());
         foreachNode.stmtNodes = (StmtListNode) visit(context.stmtList());
         return foreachNode;
     }
