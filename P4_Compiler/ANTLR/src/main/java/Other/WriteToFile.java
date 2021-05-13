@@ -12,11 +12,14 @@ public class WriteToFile{
     public static void Initiate(String fileName) {
         try {
             file = new File(fileName);
-            if (file.createNewFile()) {
-                System.out.println("File created: " + file.getName());
+            if (!file.exists()) {
+                file.createNewFile();
+                System.out.println("\"out\" file created. ");
                 //writer = new FileWriter(fileName);
             } else {
-                System.out.println("File already exists.");
+                file.delete();
+                file.createNewFile();
+                System.out.println("\"out\" file overwritten.");
             }
         } catch (IOException e) {
             System.out.println("An I/O error occurred while trying to initiate file.");
