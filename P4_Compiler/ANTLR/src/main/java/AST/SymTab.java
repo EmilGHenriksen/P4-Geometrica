@@ -150,7 +150,7 @@ public class SymTab {
                                         "Pi", "pi", "point", "return", "string", "PI", "semicircle", "switch", "square", "triangle", "TRUE",
                                         "True", "true", "void", "while",
                                         //functions that are not usable
-                                        "main", "_truemain", "_g", "_canvasSize", "_unitSize", "_pointRadius", "_convertX", "_convertY",
+                                        "main", "_trueMain", "_g", "_canvasSize", "_unitSize", "_pointRadius", "_convertX", "_convertY",
                                         //functions that are usable
                                         "createPoint", "createLine", "createTriangle", "createSquare", "createCircle",
                                         "arccos", "arcsin", "arctan", "cos", "sin", "tan", "root", "sqrt",
