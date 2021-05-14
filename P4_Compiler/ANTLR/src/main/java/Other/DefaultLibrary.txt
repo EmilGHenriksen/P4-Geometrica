@@ -25,7 +25,7 @@ public void paint(Graphics _g_in) {
     _g.drawLine(centerX, 0, centerX, _canvasSize);
     _g.setColor(new Color(0, 0, 0));
 
-    trueMain();
+    _trueMain();
 }
 Graphics _g;
 public static int _canvasSize;

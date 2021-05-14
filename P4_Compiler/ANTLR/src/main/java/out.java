@@ -22,18 +22,10 @@ public class out extends Canvas{
     
     public void paint(Graphics _g_in) {
         _g = _g_in;
+
+        clearcanvas();
     
-        int brightness = 150;
-        _g.setColor(new Color(brightness, brightness, brightness));
-        int centerX = (int)(_canvasSize/2);
-        int centerY = (int)(_canvasSize/2);
-        //vertical line
-        _g.drawLine(0, centerY, _canvasSize, centerY);
-        //horizontal line
-        _g.drawLine(centerX, 0, centerX, _canvasSize);
-        _g.setColor(new Color(0, 0, 0));
-    
-        trueMain();
+        _trueMain();
     }
     Graphics _g;
     public static int _canvasSize;
@@ -149,6 +141,20 @@ public class out extends Canvas{
         int radius = (int) (toDraw.radius * _unitSize);
         _g.drawOval(x, y, radius, radius);
     }
+    public void clearcanvas(){
+        int brightness = 255;
+        _g.setColor(new Color(brightness, brightness, brightness));
+        _g.fillRect(-10, -10, _canvasSize+20, _canvasSize+20);
+        brightness = 150;
+        _g.setColor(new Color(brightness, brightness, brightness));
+        int centerX = (int)(_canvasSize/2);
+        int centerY = (int)(_canvasSize/2);
+        //vertical line
+        _g.drawLine(0, centerY, _canvasSize, centerY);
+        //horizontal line
+        _g.drawLine(centerX, 0, centerX, _canvasSize);
+        _g.setColor(new Color(0, 0, 0));
+    }
     //other default functions
     public static void wait(double milliseconds) {
         long precisionDigits = 4;
@@ -187,7 +193,7 @@ public class out extends Canvas{
     
     
     
-    public void trueMain(){
+    public void _trueMain(){
         draw(createPoint((double)10.0, (double)10.0));
         draw(createTriangle(createPoint((double)20.0, (double)10.0), createPoint((double)10.0, (double)20.0), createPoint((double)20.0, (double)20.0)));
     }

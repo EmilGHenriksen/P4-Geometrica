@@ -132,7 +132,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
                 EmitNewline();
             }
             //rest of code
-            Emit("public void trueMain(){");
+            Emit("public void _trueMain(){");
             Indent();
                 EmitNewline();
                 Visit(node.content);
