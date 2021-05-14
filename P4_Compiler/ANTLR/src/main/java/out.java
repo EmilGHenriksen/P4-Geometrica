@@ -22,7 +22,7 @@ public class out extends Canvas{
     
     public void paint(Graphics _g_in) {
         _g = _g_in;
-
+    
         clearcanvas();
     
         _trueMain();

@@ -5,6 +5,7 @@ import kotlin.jvm.functions.FunctionN;
 import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -141,6 +142,20 @@ public class SymTab {
         declWait.declarations.add(new DeclareStmtNode("int", "", "milliseconds"));
         FunctionNode wait = new FunctionNode("wait", "void", "", declWait);
         EnterSymbol(wait, false);
+
+
+        //---reserved words---
+        reservedWords = Arrays.asList("AND", "angle", "bool", "case", "circle", "deg", "default", "draw", "else", "FALSE", "False", "false",
+                                        "float", "foreach", "hexagon", "if", "in", "int", "IS", "Is", "is", "line", "loop", "OR", "pentagon",
+                                        "Pi", "pi", "point", "return", "string", "PI", "semicircle", "switch", "square", "triangle", "TRUE",
+                                        "True", "true", "void", "while",
+                                        //functions that are not usable
+                                        "main", "_truemain", "_g", "_canvasSize", "_unitSize", "_pointRadius", "_convertX", "_convertY",
+                                        //functions that are usable
+                                        "createPoint", "createLine", "createTriangle", "createSquare", "createCircle",
+                                        "arccos", "arcsin", "arctan", "cos", "sin", "tan", "root", "sqrt",
+                                        "draw", "clearcanvas", "wait");
+
     }
 
     public List<FuncSymbol> functions = new ArrayList<>(); //unordered list of functions
@@ -149,6 +164,7 @@ public class SymTab {
     //for code generation
     public static List<FunctionNode> globalFuncs = new ArrayList<>();
     public static List<DeclareStmtNode> globalVars = new ArrayList<>();
+    public List<String> reservedWords;
 
 
     public void OpenScope(){
@@ -159,6 +175,11 @@ public class SymTab {
     }
 
     public void EnterSymbol(DeclareStmtNode node, SymTab symTab, boolean isGlobal) throws Exception {
+        if(reservedWords != null) {
+            if (reservedWords.contains(node.id.id)) {
+                throw new ReservedWordException("word: " + node.id.id + " is reserved, and cannot be declared as a value");
+            }
+        }
         //check if the symbol is already in the table
         if(DeclaredLocally(node.id.id)){
             throw new SymbolAlreadyDeclaredException("Variable already declared in current scope with name: " + node.id.id);
@@ -178,6 +199,11 @@ public class SymTab {
     //  -it has a non-unique name, with the same type as previously declared function of that name, and unique parameters*
     //      *ordering of parameters does not change uniqueness
     public void EnterSymbol(FunctionNode node, boolean isFinal) throws Exception {
+        if(reservedWords != null) {
+            if (reservedWords.contains(node.id.id)) {
+                throw new ReservedWordException("word: " + node.id.id + " is reserved, and cannot be declared as a function");
+            }
+        }
         //check if the symbol is already in the table
         if(DeclaredLocally(node.id.id)){
             EnterOverloadedFunc(node, isFinal);
