@@ -120,14 +120,14 @@ public class CodeGenerator extends ASTvisitor<Node>{
             for(int i = 0; i < SymTab.globalVars.size(); i++){
                 DeclareStmtNode current = SymTab.globalVars.get(i);
                 if(current.typeModifier == null) current.typeModifier = "";
-                Emit("private static ");
+                Emit("private ");
                 Visit(current);
                 EmitNewline();
             }
             //global functions
             for(int i = 0; i < SymTab.globalFuncs.size(); i++){
                 FunctionNode current = SymTab.globalFuncs.get(i);
-                Emit("private static ");
+                Emit("private ");
                 Visit(current);
                 EmitNewline();
             }

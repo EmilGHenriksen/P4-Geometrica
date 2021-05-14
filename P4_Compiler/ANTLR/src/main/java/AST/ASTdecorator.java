@@ -144,7 +144,8 @@ public class ASTdecorator extends ASTvisitor<Node> {
     public VariablePropertyAccessNode Visit(VariablePropertyAccessNode node) throws Exception {
         node.child = (VariableAccessNode) Visit(node.child);
         node.parent = (VariableAccessNode) Visit(node.parent);
-        node.typeDecoration = node.child.typeDecoration;
+        VarSymbol thisNode = symTab.RetrieveSymbol(node, symTab);
+        node.typeDecoration = new TypeDecoration(thisNode.type, thisNode.typeModifier);
         if(node.typeDecoration.typeModifier == null) node.typeDecoration.typeModifier = "";
         return node;
     };

@@ -306,7 +306,7 @@ public class SymTab {
         else{
             //instance of VariablePropertyAccessNode
             //x.x
-            VarSymbol variable = RetrieveSymbol(node.GetID(), _symTab);
+            VarSymbol variable = RetrieveSymbol(((VariablePropertyAccessNode) node).parent, _symTab);
             VarSymbol property = RetrieveSymbol(((VariablePropertyAccessNode) node).child, variable.fields);
             return property;
         }

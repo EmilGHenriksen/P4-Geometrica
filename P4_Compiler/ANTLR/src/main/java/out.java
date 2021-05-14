@@ -193,8 +193,15 @@ public class out extends Canvas{
     
     
     
+    private point A = createPoint((double)10.0, (double)10.0);
+    private point B = createPoint((double)10.0, (double)20.0);
+    private point C = createPoint((double)20.0, (double)10.0);
+    private triangle t = createTriangle(A, B, C);
     public void _trueMain(){
-        draw(createPoint((double)10.0, (double)10.0));
-        draw(createTriangle(createPoint((double)20.0, (double)10.0), createPoint((double)10.0, (double)20.0), createPoint((double)20.0, (double)20.0)));
+        draw(t);
+        t.A.x = (-t.A.x);
+        t.B.x = (-t.B.x);
+        t.C.x = (-t.C.x);
+        draw(t);
     }
 }

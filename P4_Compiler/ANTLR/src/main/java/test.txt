@@ -1,24 +1,26 @@
-/*
-int a IS -5 + 2 * 6 ^ 7 + (6-4);
-float foo(int[] asda){
-    float b IS 2.5;
-    a IS a + 1;
+/* Exercise description:
+Part 1:
+    -Make a triangle using the given points
+    -Draw this triangle to the screen
 
-    return b;
-}
-if(a == 4){
-    a IS 0;
-}
-int[] myArr IS [1, 2, 3];
-string myString IS "hello!";
-
-//void function checking
-void bar(){
-    a IS 5;
-    return;
-}
-bar();
+Part 2:
+    -Mirror the triangle in the y-axis
+    -Draw it again
 */
 
-draw(createPoint(10.0, 10.0));
-draw(createTriangle(createPoint(20.0, 10.0), createPoint(10.0, 20.0), createPoint(20.0, 20.0)));
+//points given
+point A IS createPoint(10.0, 10.0);
+point B IS createPoint(10.0, 20.0);
+point C IS createPoint(20.0, 10.0);
+
+
+//solution here
+//Part 1
+triangle t IS createTriangle(A, B, C);
+draw(t);
+
+//Part 2
+t.A.x IS -t.A.x;
+t.B.x IS -t.B.x;
+t.C.x IS -t.C.x;
+draw(t);
