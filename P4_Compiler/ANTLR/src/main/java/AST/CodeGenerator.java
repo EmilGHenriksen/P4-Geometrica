@@ -523,7 +523,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit("(");
         for(int i = 0; i < node.parameters.exprNodes.size(); i++){
             Visit(node.parameters.exprNodes.get(i));
-            if(i != node.parameters.exprNodes.size()){
+            if(i != node.parameters.exprNodes.size()-1){
                 Emit(", ");
             }
         }

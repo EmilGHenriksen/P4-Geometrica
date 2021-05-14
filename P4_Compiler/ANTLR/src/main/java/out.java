@@ -26,6 +26,8 @@ public class out extends Canvas{
         clearcanvas();
     
         _trueMain();
+    
+        wait(Math.pow(10, 3+10));
     }
     Graphics _g;
     public static int _canvasSize;
@@ -202,6 +204,8 @@ public class out extends Canvas{
         t.A.x = (-t.A.x);
         t.B.x = (-t.B.x);
         t.C.x = (-t.C.x);
+        draw(t);
+        t.move((double)0.0, (-(double)30.0));
         draw(t);
     }
 }

@@ -18,6 +18,8 @@ public void paint(Graphics _g_in) {
     clearcanvas();
 
     _trueMain();
+
+    wait(Math.pow(10, 3+10));
 }
 Graphics _g;
 public static int _canvasSize;

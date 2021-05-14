@@ -19,8 +19,13 @@ point C IS createPoint(20.0, 10.0);
 triangle t IS createTriangle(A, B, C);
 draw(t);
 
+
 //Part 2
 t.A.x IS -t.A.x;
 t.B.x IS -t.B.x;
 t.C.x IS -t.C.x;
+draw(t);
+
+
+t.move(0.0, -30.0);
 draw(t);
