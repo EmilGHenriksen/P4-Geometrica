@@ -95,8 +95,8 @@ public class out extends Canvas{
         draw(toDraw, true);
         draw(toDraw.A);
         draw(toDraw.B);
-        _g.drawString("A", _convertX((int)(toDraw.A.x*_unitSize))+5, _convertY((int)(toDraw.A.y*_unitSize))-5);
-        _g.drawString("B", _convertX((int)(toDraw.B.x*_unitSize))+5, _convertY((int)(toDraw.B.y*_unitSize))-5);
+        // _g.drawString("A", _convertX((int)(toDraw.A.x*_unitSize))+5, _convertY((int)(toDraw.A.y*_unitSize))-5);
+        // _g.drawString("B", _convertX((int)(toDraw.B.x*_unitSize))+5, _convertY((int)(toDraw.B.y*_unitSize))-5);
     }
     public void draw(line toDraw, boolean isCustom){
         int Ax = _convertX((int) (toDraw.A.x * _unitSize));
@@ -195,17 +195,19 @@ public class out extends Canvas{
     
     
     
-    private point A = createPoint((double)10.0, (double)10.0);
-    private point B = createPoint((double)10.0, (double)20.0);
-    private point C = createPoint((double)20.0, (double)10.0);
-    private triangle t = createTriangle(A, B, C);
+    private double x = (-(long)30);
+    private double f(double x) {
+        x = Double.valueOf(x);
+        
+        double y = (((-((Math.pow(x, (long)2)))) + ((long)3 * x)) + (long)5);
+        return y;
+    }
     public void _trueMain(){
-        draw(t);
-        t.A.x = (-t.A.x);
-        t.B.x = (-t.B.x);
-        t.C.x = (-t.C.x);
-        draw(t);
-        t.move((double)0.0, (-(double)30.0));
-        draw(t);
+        while((x < (long)30)) {
+            point p1 = createPoint(x, f(x));
+            point p2 = createPoint((double)(x + (long)1), f((double)(x + (long)1)));
+            line current = createLine(p1, p2);
+            draw(current);
+            x = (double)(x + (long)1);}
     }
 }

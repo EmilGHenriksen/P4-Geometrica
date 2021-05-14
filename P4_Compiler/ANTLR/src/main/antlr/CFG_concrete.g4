@@ -117,7 +117,7 @@ literal  : intLiteral
 		 | arrayLiteral
 		 //the other types have no literals
 		 ;
-arrayLiteral : '[' (expr (',' expr)*)? ']' ;
+arrayLiteral : '[' (expr (',' expr)*)? ']';
 piLiteral : 'PI' ;
 
 

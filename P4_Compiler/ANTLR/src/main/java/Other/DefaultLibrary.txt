@@ -87,8 +87,8 @@ public void draw(line toDraw){
     draw(toDraw, true);
     draw(toDraw.A);
     draw(toDraw.B);
-    _g.drawString("A", _convertX((int)(toDraw.A.x*_unitSize))+5, _convertY((int)(toDraw.A.y*_unitSize))-5);
-    _g.drawString("B", _convertX((int)(toDraw.B.x*_unitSize))+5, _convertY((int)(toDraw.B.y*_unitSize))-5);
+    // _g.drawString("A", _convertX((int)(toDraw.A.x*_unitSize))+5, _convertY((int)(toDraw.A.y*_unitSize))-5);
+    // _g.drawString("B", _convertX((int)(toDraw.B.x*_unitSize))+5, _convertY((int)(toDraw.B.y*_unitSize))-5);
 }
 public void draw(line toDraw, boolean isCustom){
     int Ax = _convertX((int) (toDraw.A.x * _unitSize));

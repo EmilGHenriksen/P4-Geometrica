@@ -275,7 +275,7 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(VariableModifierAccessNode node) throws Exception {
         Visit(node.variable);
-        Emit(".get(");
+        Emit(".get((int)");
         Visit(node.expr);
         Emit(")");
         return null;
@@ -491,14 +491,19 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(ArrayLiteralNode node) throws Exception {
-        Emit("Arrays.asList(");
-        for(int i = 0; i < node.elements.size(); i++){
-            Visit(node.elements.get(i));
-            if(i != node.elements.size()-1){
-                Emit(", ");
+        if(node.elements.size() != 0){
+            Emit("Arrays.asList(");
+            for(int i = 0; i < node.elements.size(); i++){
+                Visit(node.elements.get(i));
+                if(i != node.elements.size()-1){
+                    Emit(", ");
+                }
             }
+            Emit(")");
         }
-        Emit(")");
+        else{
+            Emit("new ArrayList<>()");
+        }
         return null;
     }
 
@@ -521,6 +526,10 @@ public class CodeGenerator extends ASTvisitor<Node>{
         Emit(".");
         Emit(node.methodID.id);
         Emit("(");
+        //since Java only accepts int on .get/.remove, it needs to be converted
+        if(node.methodID.id.equals("remove")){ //.get is in VariableModifierAccessNode
+            Emit("(int)");
+        }
         for(int i = 0; i < node.parameters.exprNodes.size(); i++){
             Visit(node.parameters.exprNodes.get(i));
             if(i != node.parameters.exprNodes.size()-1){
@@ -573,9 +582,12 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(SubtractionNode node) throws Exception {
+        if(node.typeDecoration != null){
+            Emit("(");
+            EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+            Emit(")");
+        }
         Emit("(");
-        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
-        Emit(")(");
         Visit(node.left);
         Emit(" - ");
         Visit(node.right);
@@ -585,9 +597,12 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(AdditionNode node) throws Exception {
+        if(node.typeDecoration != null){
+            Emit("(");
+            EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+            Emit(")");
+        }
         Emit("(");
-        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
-        Emit(")(");
         Visit(node.left);
         Emit(" + ");
         Visit(node.right);
@@ -597,9 +612,12 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(MultiplicationNode node) throws Exception {
+        if(node.typeDecoration != null){
+            Emit("(");
+            EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+            Emit(")");
+        }
         Emit("(");
-        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
-        Emit(")(");
         Visit(node.left);
         Emit(" * ");
         Visit(node.right);
@@ -609,9 +627,12 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(DivisionNode node) throws Exception {
+        if(node.typeDecoration != null){
+            Emit("(");
+            EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+            Emit(")");
+        }
         Emit("(");
-        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
-        Emit(")(");
         Visit(node.left);
         Emit(" / ");
         Visit(node.right);
@@ -621,9 +642,12 @@ public class CodeGenerator extends ASTvisitor<Node>{
 
     @Override
     public Node Visit(ModuloNode node) throws Exception {
+        if(node.typeDecoration != null){
+            Emit("(");
+            EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+            Emit(")");
+        }
         Emit("(");
-        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
-        Emit(")(");
         Visit(node.left);
         Emit(" % ");
         Visit(node.right);
@@ -634,9 +658,12 @@ public class CodeGenerator extends ASTvisitor<Node>{
     @Override
     public Node Visit(PowerNode node) throws Exception {
         //explicitly type cast because Java's Math.pow returns int/float
-        Emit("(");
-        EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
-        Emit(")(Math.pow(");
+        if(node.typeDecoration != null){
+            Emit("(");
+            EmitType(node.typeDecoration.type, node.typeDecoration.typeModifier);
+            Emit(")");
+        }
+        Emit("(Math.pow(");
         Visit(node.left);
         Emit(", ");
         Visit(node.right);

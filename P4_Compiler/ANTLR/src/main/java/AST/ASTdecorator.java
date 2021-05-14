@@ -38,9 +38,11 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public FunctionNode Visit(FunctionNode node) throws Exception {
-        //scope is opened by the StmtListNode
+        symTab.OpenScope();
         node.typeDecoration = new TypeDecoration(node.type, node.typeModifier);
         if(node.typeModifier == null) node.typeModifier = "";
+        //define that the current context is a function, so parameters won't attempt to load values
+        symTab.currentFunc = new FuncSymbol("", "", "", new DeclareStmtListNode());
         node.parameters = Visit(node.parameters);
         symTab.EnterSymbol(node, true);
         symTab.currentFunc = (FuncSymbol) symTab.RetrieveSymbol(node.id.id, symTab, node.parameters);
@@ -51,6 +53,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         if(!(lastStmt instanceof ReturnStmtNode)){
             throw new Exception("Last statement in function needs to be return (in: " + node.toString() + " )");
         }
+        symTab.CloseScope();
         return node;
     };
     public DeclareStmtListNode Visit(DeclareStmtListNode node) throws Exception {
@@ -70,12 +73,10 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public StmtListNode Visit(StmtListNode node) throws Exception {
-        symTab.OpenScope();
         for(int i = 0; i < node.statements.size(); i++){
             StmtNode stmtNode = (StmtNode) Visit(node.statements.get(i));
             node.statements.set(i, stmtNode);
         }
-        symTab.CloseScope();
         return node;
     };
     public ReturnStmtNode Visit(ReturnStmtNode node) throws Exception {
@@ -101,13 +102,15 @@ public class ASTdecorator extends ASTvisitor<Node> {
     };
     public DeclareStmtNode Visit(DeclareStmtNode node) throws Exception {
         if(node.typeModifier == null) node.typeModifier = "";
-        boolean isGlobal = (symTab.scopes.size() == 1);
+        boolean isGlobal = (symTab.scopes.size() == 1) && symTab.currentFunc == null;
         node.id = Visit(node.id);
-        node.value = (ExprNode) Visit(node.value);
-        //type checking
-        TypeDecoration variableDecoration = new TypeDecoration(node.type, node.typeModifier);
-        if(!CompatibleOneway(node.value.typeDecoration, variableDecoration)){
-            throw new TypeException("Declaration error: Expression " + node.value + " does not have type " + node.type + node.typeModifier);
+        if(symTab.currentFunc == null){
+            node.value = (ExprNode) Visit(node.value);
+            //type checking
+            TypeDecoration variableDecoration = new TypeDecoration(node.type, node.typeModifier);
+            if(!CompatibleOneway(node.value.typeDecoration, variableDecoration)){
+                throw new TypeException("Declaration error: Expression " + node.value + " does not have type " + node.type + node.typeModifier);
+            }
         }
         symTab.EnterSymbol(node, symTab, isGlobal);
         return node;
@@ -159,15 +162,18 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     }
     public IfNode Visit(IfNode node) throws Exception {
-        //scope is opened by the StmtListNode
         node.value = (ExprNode) Visit(node.value);
         if(!node.value.typeDecoration.type.equals("bool") || !node.value.typeDecoration.typeModifier.equals("")){
             throw new TypeException("if node's value: " + node.value.toString() + " needs to be boolean");
         }
         if(node.elseStmtNode != null){
+            symTab.OpenScope();
             node.elseStmtNode = (StmtNode) Visit(node.elseStmtNode);
+            symTab.CloseScope();
         }
+        symTab.OpenScope();
         node.ifStmtNodes = Visit(node.ifStmtNodes);
+        symTab.CloseScope();
         return node;
     };
     public SwitchNode Visit(SwitchNode node) throws Exception {
@@ -192,19 +198,21 @@ public class ASTdecorator extends ASTvisitor<Node> {
         return node;
     };
     public DefinedCaseNode Visit(DefinedCaseNode node) throws Exception {
-        //scope is opened by the StmtListNode
         //type checking is done by the switch node
         node.value = (ExprNode) Visit(node.value);
+        symTab.OpenScope();
         node.stmtNodes = Visit(node.stmtNodes);
+        symTab.CloseScope();
         return node;
     };
     public DefaultCaseNode Visit(DefaultCaseNode node) throws Exception {
-        //scope is opened by the StmtListNode
+        symTab.OpenScope();
         node.stmtNodes = Visit(node.stmtNodes);
+        symTab.CloseScope();
         return node;
     };
     public ForeachNode Visit(ForeachNode node) throws Exception {
-        //scope is opened by the StmtListNode
+        symTab.OpenScope();
         node.elementID = Visit(node.elementID);
         node.collectionID = (VariableAccessNode) Visit(node.collectionID);
         //check that the collection exits
@@ -227,24 +235,27 @@ public class ASTdecorator extends ASTvisitor<Node> {
         symTab.EnterSymbol(declElement, symTab, isGlobal);
 
         node.stmtNodes = Visit(node.stmtNodes);
+        symTab.CloseScope();
         return node;
     };
     public LoopNode Visit(LoopNode node) throws Exception {
-        //scope is opened by the StmtListNode
+        symTab.OpenScope();
         node.loopcount = (ExprNode) Visit(node.loopcount);
         if(!node.loopcount.typeDecoration.type.equals("int") || !node.loopcount.typeDecoration.typeModifier.equals("")){
             throw new TypeException("loop needs int as type (in: " + node.toString() + ")");
         }
         node.stmtNodes = Visit(node.stmtNodes);
+        symTab.CloseScope();
         return node;
     };
     public WhileNode Visit(WhileNode node) throws Exception {
-        //scope is opened by the StmtListNode
+        symTab.OpenScope();
         node.conditionExpression = (ExprNode) Visit(node.conditionExpression);
         if(!node.conditionExpression.typeDecoration.type.equals("bool") || !node.conditionExpression.typeDecoration.typeModifier.equals("")){
             throw new TypeException("while needs boolean as type (in: " + node.toString() + ")");
         }
         node.stmtNodes = Visit(node.stmtNodes);
+        symTab.CloseScope();
         return node;
     };
     public ExprStmtNode Visit(ExprStmtNode node) throws Exception {
@@ -642,7 +653,7 @@ public class ASTdecorator extends ASTvisitor<Node> {
         }
     }
     private boolean CompatibleOneway(TypeDecoration T1, TypeDecoration T2){
-        if(Objects.equals(T1, T2)){
+        if(Objects.equals(T1, T2) || T1 == null){
             return true;
         }
         else{

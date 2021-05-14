@@ -59,7 +59,7 @@ drawFunc(delta, startX, endX);
 
 
 //---suggested solution 3 here---
-//only did right-half because it's so incredibly tedious
+//only did right-half of the graph because it's so incredibly tedious
 /*
 point p0 IS createPoint(0.0, f(0.0));
 point p1 IS createPoint(1.0, f(1.0));

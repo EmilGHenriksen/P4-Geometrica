@@ -460,11 +460,12 @@ class VarSymbol extends Symbol {
         if(accessModifier == null) accessModifier = "";
         type = node.type;
         typeModifier = node.typeModifier;
+        if(typeModifier == null) typeModifier = "";
         //fields based on node.type
         fields = new SymTab();
 
         //list or not
-        if(!accessModifier.equals("")){
+        if(!typeModifier.equals("")){
             //.add
             DeclareStmtListNode addDecl = new DeclareStmtListNode();
             String elementModifier = typeModifier.substring(0, typeModifier.length()-2);

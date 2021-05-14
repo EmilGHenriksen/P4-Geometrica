@@ -1,0 +1,36 @@
+/* Exercise description:
+Part 1:
+    -Make a triangle using the given points
+    -Draw this triangle to the screen
+
+Part 2:
+    -Mirror the triangle in the y-axis
+    -Draw it again
+
+Part 3:
+    -Move the (mirrored) triangle into the 3rd quadrant
+    -Draw it again
+*/
+
+//points given
+point A IS createPoint(10.0, 10.0);
+point B IS createPoint(10.0, 20.0);
+point C IS createPoint(20.0, 10.0);
+
+
+//---suggested solution here---
+//Part 1
+triangle t IS createTriangle(A, B, C);
+draw(t);
+
+
+//Part 2
+t.A.x IS -t.A.x;
+t.B.x IS -t.B.x;
+t.C.x IS -t.C.x;
+draw(t);
+
+
+//Part 3
+t.move(0.0, -30.0);
+draw(t);
