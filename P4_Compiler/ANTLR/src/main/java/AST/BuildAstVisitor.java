@@ -133,9 +133,6 @@ public class BuildAstVisitor extends CFG_concreteBaseVisitor<Node> {
     @Override
     public DeclareStmtNode visitDeclare(CFG_concreteParser.DeclareContext context) {
         DeclareStmtNode dcl = new DeclareStmtNode();
-        if(context.AccessModifier() != null) {
-            dcl.accessModifier = context.AccessModifier().getText();
-        }
         dcl.type = context.Type().getText();
         if(context.TypeModifier() != null) {
             dcl.typeModifier = context.TypeModifier().getText();
