@@ -41,8 +41,8 @@ stmt -> return
 stmtList -> '{' stmt* '}'
 
 return -> 'return' expr? ';'
-declare -> AccessModifier? type typeModifier? identifier 'IS' expr ';'
-assign  ->                                     varAccess  'IS' expr ';'
+declare -> type typeModifier? identifier 'IS' expr ';'
+assign  ->                    varAccess  'IS' expr ';'
 //--------------------------------------------------------------------------------
 
 
@@ -128,7 +128,6 @@ angleLiteral  -> "(0|([1-9][0-9]*))([.][0-9]+)?deg"
 
 
 //--------------TYPES-------------------------------------------------------------
-AccessModifier : 'const' ;
 type -> 'bool'
 	  | 'int'    //actually longs
 	  | 'float'  //actually doubles

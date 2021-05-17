@@ -205,9 +205,9 @@ public class out extends Canvas{
     public void _trueMain(){
         while((x < (long)30)) {
             point p1 = createPoint(x, f(x));
-            point p2 = createPoint((double)(x + (double)1.0E-4), f((double)(x + (double)1.0E-4)));
+            point p2 = createPoint((double)(x + (double)0.1), f((double)(x + (double)0.1)));
             line current = createLine(p1, p2);
             draw(current);
-            x = (double)(x + (double)1.0E-4);}
+            x = (double)(x + (double)0.1);}
     }
 }
