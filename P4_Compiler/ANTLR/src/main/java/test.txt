@@ -13,11 +13,11 @@ float f(float x){
 float x IS -30;
 while(x < 30){
     point p1 IS createPoint(x, f(x));
-    point p2 IS createPoint(x+1, f(x+1));
+    point p2 IS createPoint(x+0.0001, f(x+0.0001));
     line current IS createLine(p1, p2);
     draw(current);
 
-    x IS x + 1;
+    x IS x + 0.0001;
 }
 
 
