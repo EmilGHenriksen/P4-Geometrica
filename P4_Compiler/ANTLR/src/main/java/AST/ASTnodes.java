@@ -85,7 +85,6 @@ class ReturnStmtNode extends StmtNode {
     TypeDecoration typeDecoration;
 }
 class DeclareStmtNode extends StmtNode {
-    String accessModifier; //const or not
     String type;
     String typeModifier;
     IdentifierNode id;
@@ -114,8 +113,7 @@ class DeclareStmtNode extends StmtNode {
             DeclareStmtNode D2 = this;
             return D1.id.equals(D2.id)
                     && D1.type.equals(D2.type)
-                    && D1.typeModifier.equals(D2.typeModifier)
-                    && D1.accessModifier.equals(D2.accessModifier);
+                    && D1.typeModifier.equals(D2.typeModifier);
         }
     }
 }

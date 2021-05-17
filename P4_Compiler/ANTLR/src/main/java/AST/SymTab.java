@@ -456,8 +456,6 @@ abstract class Symbol{
 class VarSymbol extends Symbol {
     public VarSymbol(DeclareStmtNode node) throws Exception {
         super(node.id.id);
-        accessModifier = node.accessModifier;
-        if(accessModifier == null) accessModifier = "";
         type = node.type;
         typeModifier = node.typeModifier;
         if(typeModifier == null) typeModifier = "";
@@ -528,7 +526,6 @@ class VarSymbol extends Symbol {
             }
         }
     }
-    String accessModifier;
     String type;
     String typeModifier;
     SymTab fields;

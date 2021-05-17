@@ -39,8 +39,8 @@ stmtListNoBraces : stmt* ;
 
 //--------------statements--------------
 return_ : 'return' expr? ';' ;
-declare : AccessModifier? Type TypeModifier? identifier 'IS' expr ';' ;
-assign  :                                 variableAccess 'IS' expr ';' ;
+declare : Type TypeModifier? identifier 'IS' expr ';' ;
+assign  :                    variableAccess 'IS' expr ';' ;
 
 //--variable access--
 variableAccess : variablePropertyAccess ;
@@ -145,7 +145,6 @@ AngleLiteral  : ('0'|([1-9][0-9]*))('.'[0-9]+)?'deg'
 
 
 //----types----
-AccessModifier : 'const' ;
 Type :  'bool'
 	  | 'int'    //actually longs
 	  | 'float'  //actually doubles
