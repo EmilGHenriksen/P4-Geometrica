@@ -31,7 +31,6 @@ public class CodeGenerator extends ASTvisitor<Node>{
             case "long": return "Long";
             case "double": return "Double";
             case "boolean": return "Boolean";
-            case "string": return "String";
             default: return type;
         }
     }
